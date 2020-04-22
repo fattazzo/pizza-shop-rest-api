@@ -20,19 +20,19 @@ import io.swagger.annotations.Authorization;
 @Api(value = "company", description = "the company API")
 public interface CompanyApi {
 
-	@ApiOperation(value = "Get a Company", nickname = "getCompany", notes = "Gets the details of a single instance of a `Company`.", response = CompanyEntity.class, authorizations = {
+	@ApiOperation(value = "Get a Company", nickname = "getCompany", notes = "Gets the details of a single instance of a Company.", response = CompanyEntity.class, authorizations = {
 			@Authorization(value = "Authentication") }, tags = { "companies", })
 	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Successful response - returns a single `Company`.", response = CompanyEntity.class) })
+			@ApiResponse(code = 200, message = "Successful response - returns a single Company.", response = CompanyEntity.class) })
 	@RequestMapping(value = "/company", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<CompanyEntity> getCompany();
 
-	@ApiOperation(value = "Update a Company", nickname = "updateCompany", notes = "Updates an existing `Company`.", response = CompanyEntity.class, authorizations = {
+	@ApiOperation(value = "Update a Company", nickname = "updateCompany", notes = "Updates an existing Company.", response = CompanyEntity.class, authorizations = {
 			@Authorization(value = "Authentication") }, tags = { "companies", })
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Successful response.", response = CompanyEntity.class) })
 	@RequestMapping(value = "/company", produces = { "application/json" }, consumes = {
 			"application/json" }, method = RequestMethod.PUT)
 	ResponseEntity<CompanyEntity> updateCompany(
-			@ApiParam(value = "Updated `Company` information.", required = true) @Valid @RequestBody CompanyEntity body);
+			@ApiParam(value = "Updated Company information.", required = true) @Valid @RequestBody CompanyEntity body);
 
 }

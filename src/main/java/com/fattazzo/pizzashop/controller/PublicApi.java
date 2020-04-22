@@ -22,7 +22,7 @@ import io.swagger.annotations.Authorization;
 @Api(value = "public", description = "the public API")
 public interface PublicApi {
 
-	@ApiOperation(value = "Create a session", nickname = "login", notes = "Create a `Session` information", response = Session.class, authorizations = {
+	@ApiOperation(value = "Create a session", nickname = "login", notes = "Create a Session information", response = Session.class, authorizations = {
 			@Authorization(value = "Authentication") }, tags = { "session", })
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Login successfull", response = Session.class) })
 	@RequestMapping(value = "/public/session", produces = { "application/json" }, consumes = {
@@ -30,7 +30,7 @@ public interface PublicApi {
 	ResponseEntity<Session> login(
 			@ApiParam(value = "Login user information", required = true) @Valid @RequestBody UserLogin body);
 
-	@ApiOperation(value = "Create new session", nickname = "refreshToken", notes = "Create new `Session` with a valid access token", response = Session.class, authorizations = {
+	@ApiOperation(value = "Create new session", nickname = "refreshToken", notes = "Create new Session with a valid access token", response = Session.class, authorizations = {
 			@Authorization(value = "Authentication") }, tags = { "session", })
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "New session", response = Session.class) })
 	@RequestMapping(value = "/public/session/refresh/{refreshToken}", produces = {
