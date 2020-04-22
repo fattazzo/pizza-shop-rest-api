@@ -8,21 +8,24 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fattazzo.pizzashop.model.dto.UserDto;
 import com.fattazzo.pizzashop.model.entity.Role;
-import com.fattazzo.pizzashop.model.entity.User;
+import com.fattazzo.pizzashop.model.entity.UserEntity;
 
 import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
-public class JwtUser extends UserDto implements UserDetails {
-	public static JwtUser createIstance(User user) {
+@Getter
+@Setter
+@Builder
+public class JwtUser implements UserDetails {
 
-		final List<Role> roles = user.getGroups().stream().flatMap(g -> g.getRoles().stream())
-				.collect(Collectors.toList());
+	private static final long serialVersionUID = -2833270119513844317L;
 
-		return JwtUser.newBuilderExt().username(user.getUsername()).email(user.getEmail()).password(user.getPassword())
-				.roles(roles).build();
+	public static JwtUser createIstance(UserEntity user) {
+
+		return JwtUser.builder().username(user.getUsername()).email(user.getEmail()).password(user.getPassword())
+				.roles(user.getRoles()).build();
 	}
 
 	private static List<GrantedAuthority> mapToGrantedAuthorities(List<Role> authorities) {
@@ -30,23 +33,23 @@ public class JwtUser extends UserDto implements UserDetails {
 				.collect(Collectors.toList());
 	}
 
-	@JsonIgnore
-	private final String password;
+	private String username;
 
-	@Builder(builderMethodName = "newBuilderExt")
-	public JwtUser(String username, String email, List<Role> roles, String password) {
-		super(username, email, roles);
-		this.password = password;
-	}
+	private String password;
+
+	private String email;
+
+	private List<Role> roles;
+
+//	@Builder(builderMethodName = "newBuilderExt")
+//	public JwtUser(String username, String email, List<Role> roles, String password) {
+//		super(username, email, roles);
+//		this.password = password;
+//	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return getRoles() == null ? null : mapToGrantedAuthorities(this.getRoles());
-	}
-
-	@Override
-	public String getPassword() {
-		return this.password;
 	}
 
 	@Override

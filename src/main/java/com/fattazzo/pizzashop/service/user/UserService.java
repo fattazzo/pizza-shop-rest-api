@@ -1,12 +1,14 @@
-package com.fattazzo.pizzashop.service.user.impl;
+package com.fattazzo.pizzashop.service.user;
 
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import javax.mail.internet.MimeMessage;
 
+import org.apache.commons.collections4.ListUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,25 +24,34 @@ import com.fattazzo.pizzashop.exception.security.MailNotSentException;
 import com.fattazzo.pizzashop.exception.security.NoSuchEntityException;
 import com.fattazzo.pizzashop.exception.security.UserNotActiveException;
 import com.fattazzo.pizzashop.model.dto.UserRegistrationInfo;
-import com.fattazzo.pizzashop.model.entity.Group;
+import com.fattazzo.pizzashop.model.entity.GroupEntity;
 import com.fattazzo.pizzashop.model.entity.RegistrationToken;
-import com.fattazzo.pizzashop.model.entity.User;
-import com.fattazzo.pizzashop.model.entity.User.UserStatusEnum;
+import com.fattazzo.pizzashop.model.entity.UserEntity;
+import com.fattazzo.pizzashop.model.entity.UserEntity.UserStatusEnum;
 import com.fattazzo.pizzashop.repository.RegistrationTokenRepository;
 import com.fattazzo.pizzashop.repository.UserRepository;
-import com.fattazzo.pizzashop.service.group.GroupManager;
+import com.fattazzo.pizzashop.service.group.GroupService;
 import com.fattazzo.pizzashop.service.local.LocaleUtilsMessage;
-import com.fattazzo.pizzashop.service.user.UserManager;
 
 @Service
-public class UserManagerImpl implements UserManager {
-	protected static final Logger logger = LoggerFactory.getLogger(UserManagerImpl.class);
+public class UserService {
+
+	public class UserReadonlyException extends RuntimeException {
+		private static final long serialVersionUID = -7569559135419043478L;
+
+		public UserReadonlyException(String s) {
+			super(s);
+		}
+
+	}
+
+	protected static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
 	@Autowired
 	private UserRepository userRepository;
 
 	@Autowired
-	private GroupManager groupManager;
+	private GroupService groupService;
 
 	@Autowired
 	private RegistrationTokenRepository registrationTokenRepository;
@@ -61,7 +72,6 @@ public class UserManagerImpl implements UserManager {
 	LocaleUtilsMessage localeUtilsMessage;
 
 	@Transactional
-	@Override
 	public void confirmRegistration(String username, String registrationToken)
 			throws NoSuchEntityException, ExpiredTokenException {
 		final OffsetDateTime now = OffsetDateTime.now();
@@ -71,11 +81,10 @@ public class UserManagerImpl implements UserManager {
 		if (now.isAfter(registrationTokenEntity.getExpiredAt())) {
 			throw new ExpiredTokenException("Expired Token");
 		}
-		final User user = userRepository.findByUsernameIgnoreCase(registrationTokenEntity.getUsername());
-		if (user == null) {
-			throw new NoSuchEntityException();
-		}
-		user.setStatus(User.UserStatusEnum.Active);
+		final UserEntity user = findByUsername(registrationTokenEntity.getUsername())
+				.orElseThrow(NoSuchEntityException::new);
+
+		user.setStatus(UserEntity.UserStatusEnum.Active);
 		userRepository.save(user);
 		registrationTokenRepository.delete(registrationTokenEntity);
 	}
@@ -90,36 +99,47 @@ public class UserManagerImpl implements UserManager {
 
 	}
 
-	@Override
-	public Optional<User> findAdminUser() {
-		return Optional.ofNullable(userRepository.findByUsernameIgnoreCase("admin"));
+	public void delete(String username) throws NoSuchEntityException, UserReadonlyException {
+
+		final UserEntity userEntity = findByUsername(username).orElseThrow(NoSuchEntityException::new);
+
+		if (userEntity.isReadOnly()) {
+			throw new UserReadonlyException(userEntity.getUsername());
+		}
+		userRepository.delete(userEntity);
 	}
 
-	@Override
-	public Optional<User> findByEmail(String email) {
-		final User user = userRepository.findOneByEmailIgnoreCase(email).orElse(null);
+	public Optional<UserEntity> findAdminUser() {
+		return findByUsername("admin");
+	}
+
+	public List<UserEntity> findAll() {
+		final List<UserEntity> users = userRepository.findAll();
+		return ListUtils.emptyIfNull(users);
+	}
+
+	public Optional<UserEntity> findByEmail(String email) {
+		final UserEntity user = userRepository.findOneByEmailIgnoreCase(email).orElse(null);
 		return Optional.ofNullable(user);
 	}
 
-	@Override
-	public Optional<User> findByUsername(String username) {
-		final User user = userRepository.findByUsernameIgnoreCase(username);
+	public Optional<UserEntity> findByUsername(String username) {
+		final UserEntity user = userRepository.findByUsernameIgnoreCase(username);
 		return Optional.ofNullable(user);
 	}
 
-	@Override
 	@Transactional
 	public void registrateCustomer(UserRegistrationInfo registrationInfo) throws MailNotSentException {
-		final Group group = groupManager.loadCustomerGroup();
+		final GroupEntity group = groupService.loadCustomerGroup();
 		registrateUser(registrationInfo, group, UserStatusEnum.ToConfirm);
 	}
 
-	public void registrateUser(UserRegistrationInfo registrationInfo, Group group, UserStatusEnum status)
+	public void registrateUser(UserRegistrationInfo registrationInfo, GroupEntity group, UserStatusEnum status)
 			throws MailNotSentException {
 
-		final User user = User.builder().username(registrationInfo.getUsername()).email(registrationInfo.getEmail())
-				.password(passwordEncoder.encode(registrationInfo.getPassword())).groups(Arrays.asList(group))
-				.status(status).build();
+		final UserEntity user = UserEntity.builder().username(registrationInfo.getUsername())
+				.email(registrationInfo.getEmail()).password(passwordEncoder.encode(registrationInfo.getPassword()))
+				.groups(Arrays.asList(group)).status(status).build();
 
 		userRepository.save(user);
 
@@ -129,14 +149,12 @@ public class UserManagerImpl implements UserManager {
 		}
 	}
 
-	@Override
 	@Transactional
 	public void registrateWorker(UserRegistrationInfo registrationInfo) throws MailNotSentException {
-		final Group group = groupManager.loadWorkerGroup();
+		final GroupEntity group = groupService.loadWorkerGroup();
 		registrateUser(registrationInfo, group, UserStatusEnum.Active);
 	}
 
-	@Override
 	@Transactional
 	public void resendConfirmRegistrationMail(String username, String email) {
 		RegistrationToken registrationToken = registrationTokenRepository.findOneByUsernameIgnoreCase(username)
@@ -153,8 +171,7 @@ public class UserManagerImpl implements UserManager {
 
 	}
 
-	@Override
-	public User save(User user) {
+	public UserEntity save(UserEntity user) {
 		return userRepository.save(user);
 	}
 
@@ -177,12 +194,11 @@ public class UserManagerImpl implements UserManager {
 		}
 	}
 
-	@Override
 	public void validateUser(String username) throws UserNotActiveException {
-		final Optional<User> userOpt = findByUsername(username);
+		final Optional<UserEntity> userOpt = findByUsername(username);
 
 		if (!userOpt.isPresent() || userOpt.get().getStatus() == null
-				|| userOpt.get().getStatus() != User.UserStatusEnum.Active) {
+				|| userOpt.get().getStatus() != UserEntity.UserStatusEnum.Active) {
 			throw new UserNotActiveException("user not active");
 		}
 	}

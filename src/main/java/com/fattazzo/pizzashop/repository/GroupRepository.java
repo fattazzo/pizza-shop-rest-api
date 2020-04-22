@@ -2,10 +2,10 @@ package com.fattazzo.pizzashop.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.fattazzo.pizzashop.model.entity.Group;
+import com.fattazzo.pizzashop.model.entity.GroupEntity;
 
-public interface GroupRepository extends JpaRepository<Group, String> {
+public interface GroupRepository extends JpaRepository<GroupEntity, String> {
 
-	Group findByNameIgnoreCase(String username);
+	GroupEntity findByNameIgnoreCase(String username);
 
 }

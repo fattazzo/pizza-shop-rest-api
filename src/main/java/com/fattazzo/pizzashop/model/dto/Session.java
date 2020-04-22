@@ -24,7 +24,7 @@ public class Session implements Serializable {
 
 	@Builder.Default
 	@JsonProperty("userInfo")
-	private UserDto userInfo = null;
+	private User userInfo = null;
 
 	@JsonProperty("locale")
 	private String locale;
@@ -84,7 +84,7 @@ public class Session implements Serializable {
 				+ ", accessToken=" + accessToken + ", refreshToken=" + refreshToken + "]";
 	}
 
-	public Session userInfo(UserDto userInfo) {
+	public Session userInfo(User userInfo) {
 		this.userInfo = userInfo;
 		return this;
 	}

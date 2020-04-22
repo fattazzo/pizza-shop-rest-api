@@ -1,4 +1,4 @@
-package com.fattazzo.pizzashop.service.security.impl;
+package com.fattazzo.pizzashop.service.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.fattazzo.pizzashop.model.entity.User;
+import com.fattazzo.pizzashop.model.entity.UserEntity;
 import com.fattazzo.pizzashop.repository.UserRepository;
 import com.fattazzo.pizzashop.security.JwtUser;
 
@@ -17,11 +17,8 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		final User user = userRepository.findByUsernameIgnoreCase(username);
-		if (user == null /*
-							 * || user.getStatus() == null || user.getStatus() !=
-							 * UserEntity.UserStatusEnum.Active
-							 */) {
+		final UserEntity user = userRepository.findByUsernameIgnoreCase(username);
+		if (user == null || user.getStatus() == null || user.getStatus() != UserEntity.UserStatusEnum.Active) {
 			throw new UsernameNotFoundException(String.format("No user found with username '%s'.", username));
 		} else {
 			return JwtUser.createIstance(user);

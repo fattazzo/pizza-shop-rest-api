@@ -4,12 +4,12 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.fattazzo.pizzashop.model.entity.User;
+import com.fattazzo.pizzashop.model.entity.UserEntity;
 
-public interface UserRepository extends JpaRepository<User, String> {
+public interface UserRepository extends JpaRepository<UserEntity, String> {
 
-	User findByUsernameIgnoreCase(String username);
+	UserEntity findByUsernameIgnoreCase(String username);
 
-	Optional<User> findOneByEmailIgnoreCase(String email);
+	Optional<UserEntity> findOneByEmailIgnoreCase(String email);
 
 }

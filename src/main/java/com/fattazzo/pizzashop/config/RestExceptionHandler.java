@@ -23,6 +23,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -47,6 +48,19 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 	@Autowired
 	@Qualifier("errorMessageSource")
 	private MessageSource messageSource;
+
+	@ExceptionHandler(AccessDeniedException.class)
+	public final ResponseEntity<?> handleAccessDeniedException(Exception ex, WebRequest request) {
+
+		final Locale locale = LocaleContextHolder.getLocale();
+
+		final ErrorResponse errorResponse = ErrorResponse.newBuilder().error(ErrorData.newBuilder()
+				.internal(ErrorInternal.newBuilder().exception(ex.getClass().getName()).stack(ex.getMessage()).build())
+				.userMessage(messageSource.getMessage("AccessDeniedException.detail", null, locale))
+				.userTitle(messageSource.getMessage("AccessDeniedException.title", null, locale)).build()).build();
+
+		return new ResponseEntity<>(errorResponse, null, HttpStatus.FORBIDDEN);
+	}
 
 	@ExceptionHandler(ExpiredTokenException.class)
 	public ResponseEntity<?> handleExpiredTokenException(ExpiredTokenException rnfe, HttpServletRequest request) {

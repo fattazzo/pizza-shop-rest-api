@@ -2,6 +2,7 @@ package com.fattazzo.pizzashop.model.entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import org.apache.commons.collections4.CollectionUtils;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,16 +28,10 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Builder
-public class User {
+public class UserEntity {
 
 	public enum UserStatusEnum {
-		Active(0), ToConfirm(1);
-
-		private final int value;
-
-		UserStatusEnum(int value) {
-			this.value = value;
-		}
+		Active, ToConfirm;
 	}
 
 	@Id
@@ -55,10 +52,22 @@ public class User {
 	@Column(length = 200)
 	private String lastName;
 
+	@Builder.Default
+	private boolean readOnly = false;
+
+	@Builder.Default
+	private UserType type = UserType.WORKER;
+
 	@OneToMany
 	@Builder.Default
-	private List<Group> groups = new ArrayList();
+	private List<GroupEntity> groups = new ArrayList();
 
 	@Column(name = "status")
 	private UserStatusEnum status;
+
+	public List<Role> getRoles() {
+		final List<Role> roles = CollectionUtils.emptyIfNull(getGroups()).stream().flatMap(g -> g.getRoles().stream())
+				.collect(Collectors.toList());
+		return roles;
+	}
 }
