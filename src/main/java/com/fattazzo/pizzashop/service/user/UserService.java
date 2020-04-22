@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,12 +23,13 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fattazzo.pizzashop.exception.security.ExpiredTokenException;
 import com.fattazzo.pizzashop.exception.security.MailNotSentException;
 import com.fattazzo.pizzashop.exception.security.NoSuchEntityException;
+import com.fattazzo.pizzashop.exception.security.RestException;
 import com.fattazzo.pizzashop.exception.security.UserNotActiveException;
 import com.fattazzo.pizzashop.model.dto.UserRegistrationInfo;
 import com.fattazzo.pizzashop.model.entity.GroupEntity;
 import com.fattazzo.pizzashop.model.entity.RegistrationToken;
 import com.fattazzo.pizzashop.model.entity.UserEntity;
-import com.fattazzo.pizzashop.model.entity.UserEntity.UserStatusEnum;
+import com.fattazzo.pizzashop.model.entity.UserEntity.UserStatus;
 import com.fattazzo.pizzashop.repository.RegistrationTokenRepository;
 import com.fattazzo.pizzashop.repository.UserRepository;
 import com.fattazzo.pizzashop.service.group.GroupService;
@@ -84,7 +86,7 @@ public class UserService {
 		final UserEntity user = findByUsername(registrationTokenEntity.getUsername())
 				.orElseThrow(NoSuchEntityException::new);
 
-		user.setStatus(UserEntity.UserStatusEnum.Active);
+		user.setStatus(UserEntity.UserStatus.Active);
 		userRepository.save(user);
 		registrationTokenRepository.delete(registrationTokenEntity);
 	}
@@ -130,11 +132,15 @@ public class UserService {
 
 	@Transactional
 	public void registrateCustomer(UserRegistrationInfo registrationInfo) throws MailNotSentException {
-		final GroupEntity group = groupService.loadCustomerGroup();
-		registrateUser(registrationInfo, group, UserStatusEnum.ToConfirm);
+		final GroupEntity group = groupService.loadCustomerGroup()
+				.orElseThrow(() -> RestException.newBuilder()
+						.title(localeUtilsMessage.getErrorLocalizedMessage("group.customer.notfound.title", null))
+						.detail(localeUtilsMessage.getErrorLocalizedMessage("group.customer.notfound.detail", null))
+						.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
+		registrateUser(registrationInfo, group, UserStatus.ToConfirm);
 	}
 
-	public void registrateUser(UserRegistrationInfo registrationInfo, GroupEntity group, UserStatusEnum status)
+	public void registrateUser(UserRegistrationInfo registrationInfo, GroupEntity group, UserStatus status)
 			throws MailNotSentException {
 
 		final UserEntity user = UserEntity.builder().username(registrationInfo.getUsername())
@@ -143,7 +149,7 @@ public class UserService {
 
 		userRepository.save(user);
 
-		if (status == UserStatusEnum.ToConfirm) {
+		if (status == UserStatus.ToConfirm) {
 			final RegistrationToken registrationToken = createRegistrationToken(registrationInfo.getUsername());
 			sendRegistrationMail(registrationToken, registrationInfo.getEmail());
 		}
@@ -151,8 +157,12 @@ public class UserService {
 
 	@Transactional
 	public void registrateWorker(UserRegistrationInfo registrationInfo) throws MailNotSentException {
-		final GroupEntity group = groupService.loadWorkerGroup();
-		registrateUser(registrationInfo, group, UserStatusEnum.Active);
+		final GroupEntity group = groupService.loadWorkerGroup()
+				.orElseThrow(() -> RestException.newBuilder()
+						.title(localeUtilsMessage.getErrorLocalizedMessage("group.worker.notfound.title", null))
+						.detail(localeUtilsMessage.getErrorLocalizedMessage("group.worker.notfound.detail", null))
+						.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
+		registrateUser(registrationInfo, group, UserStatus.Active);
 	}
 
 	@Transactional
@@ -198,7 +208,7 @@ public class UserService {
 		final Optional<UserEntity> userOpt = findByUsername(username);
 
 		if (!userOpt.isPresent() || userOpt.get().getStatus() == null
-				|| userOpt.get().getStatus() != UserEntity.UserStatusEnum.Active) {
+				|| userOpt.get().getStatus() != UserEntity.UserStatus.Active) {
 			throw new UserNotActiveException("user not active");
 		}
 	}

@@ -30,7 +30,7 @@ import lombok.ToString;
 @Builder
 public class UserEntity {
 
-	public enum UserStatusEnum {
+	public enum UserStatus {
 		Active, ToConfirm;
 	}
 
@@ -63,7 +63,7 @@ public class UserEntity {
 	private List<GroupEntity> groups = new ArrayList();
 
 	@Column(name = "status")
-	private UserStatusEnum status;
+	private UserStatus status;
 
 	public List<Role> getRoles() {
 		final List<Role> roles = CollectionUtils.emptyIfNull(getGroups()).stream().flatMap(g -> g.getRoles().stream())

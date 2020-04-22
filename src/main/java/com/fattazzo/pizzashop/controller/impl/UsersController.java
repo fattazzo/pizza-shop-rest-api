@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.fattazzo.pizzashop.controller.UsersApi;
 import com.fattazzo.pizzashop.exception.security.NoSuchEntityException;
@@ -17,11 +19,13 @@ import com.fattazzo.pizzashop.exception.security.RestException;
 import com.fattazzo.pizzashop.model.dto.User;
 import com.fattazzo.pizzashop.model.dto.UserDetails;
 import com.fattazzo.pizzashop.model.entity.UserEntity;
+import com.fattazzo.pizzashop.model.entity.UserEntity.UserStatus;
+import com.fattazzo.pizzashop.model.entity.UserType;
 import com.fattazzo.pizzashop.service.local.LocaleUtilsMessage;
 import com.fattazzo.pizzashop.service.user.UserService;
 import com.fattazzo.pizzashop.service.user.UserService.UserReadonlyException;
 
-@PreAuthorize("@securityService.hasAnyPermission({'SECURITY'})")
+@RestController
 public class UsersController implements UsersApi {
 
 	@Autowired
@@ -33,7 +37,11 @@ public class UsersController implements UsersApi {
 	@Autowired
 	LocaleUtilsMessage localeUtilsMessage;
 
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
 	@Override
+	@PreAuthorize("@securityService.hasAnyPermission({'SECURITY'})")
 	public ResponseEntity<UserDetails> createUser(@Valid UserDetails body) {
 
 		final UserEntity existingUser = userService.findByUsername(body.getUsername()).orElse(null);
@@ -46,13 +54,20 @@ public class UsersController implements UsersApi {
 		}
 
 		UserEntity user = mapper.map(body, UserEntity.class);
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		user.setType(UserType.WORKER);
+		user.setStatus(UserStatus.Active);
 
 		user = userService.save(user);
 
-		return new ResponseEntity<>(mapper.map(user, UserDetails.class), HttpStatus.CREATED);
+		final UserDetails userDetails = mapper.map(user, UserDetails.class);
+		userDetails.setPassword(null);
+
+		return new ResponseEntity<>(userDetails, HttpStatus.CREATED);
 	}
 
 	@Override
+	@PreAuthorize("@securityService.hasAnyPermission({'SECURITY','EDIT_ACCOUNT'})")
 	public ResponseEntity<Void> deleteUser(String userName) {
 
 		try {
@@ -70,7 +85,10 @@ public class UsersController implements UsersApi {
 	@Override
 	public ResponseEntity<UserDetails> getUser(String userName) {
 		final UserEntity user = userService.findByUsername(userName).orElseThrow(NoSuchEntityException::new);
-		return ResponseEntity.ok(mapper.map(user, UserDetails.class));
+
+		final UserDetails userDetails = mapper.map(user, UserDetails.class);
+		userDetails.setPassword(null);
+		return ResponseEntity.ok(userDetails);
 	}
 
 	@Override
@@ -81,6 +99,7 @@ public class UsersController implements UsersApi {
 	}
 
 	@Override
+	@PreAuthorize("@securityService.hasAnyPermission({'SECURITY','EDIT_ACCOUNT'})")
 	public ResponseEntity<UserDetails> updateUser(@Valid UserDetails body, String userName) {
 		final UserEntity existingUser = userService.findByUsername(userName).orElseThrow(NoSuchEntityException::new);
 
@@ -92,9 +111,16 @@ public class UsersController implements UsersApi {
 					.status(HttpStatus.BAD_REQUEST).build();
 
 		}
-		final UserEntity user = userService.save(mapper.map(body, UserEntity.class));
 
-		return ResponseEntity.ok(mapper.map(user, UserDetails.class));
+		UserEntity user = mapper.map(body, UserEntity.class);
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		user.setType(UserType.WORKER);
+		user = userService.save(user);
+
+		final UserDetails userDetails = mapper.map(user, UserDetails.class);
+		userDetails.setPassword(null);
+
+		return ResponseEntity.ok(userDetails);
 	}
 
 }

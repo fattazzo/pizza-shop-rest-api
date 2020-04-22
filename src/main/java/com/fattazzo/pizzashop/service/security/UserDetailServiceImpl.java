@@ -18,7 +18,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		final UserEntity user = userRepository.findByUsernameIgnoreCase(username);
-		if (user == null || user.getStatus() == null || user.getStatus() != UserEntity.UserStatusEnum.Active) {
+		if (user == null || user.getStatus() == null || user.getStatus() != UserEntity.UserStatus.Active) {
 			throw new UsernameNotFoundException(String.format("No user found with username '%s'.", username));
 		} else {
 			return JwtUser.createIstance(user);

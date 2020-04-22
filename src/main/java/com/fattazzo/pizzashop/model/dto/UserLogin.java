@@ -19,7 +19,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(builderMethodName = "newBuilder")
-public class LoginRequest implements Serializable {
+public class UserLogin implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@JsonProperty("username")
@@ -39,7 +39,7 @@ public class LoginRequest implements Serializable {
 		if (o == null || getClass() != o.getClass()) {
 			return false;
 		}
-		final LoginRequest loginRequest = (LoginRequest) o;
+		final UserLogin loginRequest = (UserLogin) o;
 		return Objects.equals(this.username, loginRequest.username)
 				&& Objects.equals(this.password, loginRequest.password)
 				&& Objects.equals(this.locale, loginRequest.locale);
@@ -50,12 +50,12 @@ public class LoginRequest implements Serializable {
 		return Objects.hash(username, password, locale);
 	}
 
-	public LoginRequest locale(String locale) {
+	public UserLogin locale(String locale) {
 		this.locale = locale;
 		return this;
 	}
 
-	public LoginRequest password(String password) {
+	public UserLogin password(String password) {
 		this.password = password;
 		return this;
 	}
@@ -65,7 +65,7 @@ public class LoginRequest implements Serializable {
 		return "LoginRequest [username=" + username + ", password=" + password + ", locale=" + locale + "]";
 	}
 
-	public LoginRequest username(String username) {
+	public UserLogin username(String username) {
 		this.username = username;
 		return this;
 	}

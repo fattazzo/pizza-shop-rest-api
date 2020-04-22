@@ -1,11 +1,11 @@
 package com.fattazzo.pizzashop.model.dto;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 import javax.validation.constraints.NotNull;
 
-import com.fattazzo.pizzashop.model.entity.GroupEntity;
+import com.fattazzo.pizzashop.model.entity.Role;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,17 +20,16 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Builder
-public class UserDetails extends User {
+public class Group {
 
-	private static final long serialVersionUID = -2660656695402448593L;
+	private Integer id;
 
 	@NotNull
-	private String password;
-
-	private String firstName;
-
-	private String lastName;
+	private String name;
 
 	@Builder.Default
-	private List<GroupEntity> groups = new ArrayList();
+	private boolean readOnly = false;
+
+	@Builder.Default
+	Collection<Role> roles = new ArrayList();
 }

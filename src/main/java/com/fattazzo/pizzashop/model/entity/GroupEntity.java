@@ -38,9 +38,9 @@ public class GroupEntity {
 	@Id
 	@Column(unique = true)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Integer id;
 
-	@Column(length = 200)
+	@Column(length = 200, unique = true)
 	@NotNull
 	private String name;
 

@@ -1,5 +1,7 @@
 package com.fattazzo.pizzashop.service.initializer.impl;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -19,34 +21,37 @@ public class GroupsInitializer implements Initializer {
 	@Override
 	public void init() {
 		// Customer
-		GroupEntity group = groupService.loadCustomerGroup();
-		if (group == null) {
-			group = groupService.save(initCustomerGroup());
+		Optional<GroupEntity> group = groupService.loadCustomerGroup();
+		if (!group.isPresent()) {
+			groupService.save(initCustomerGroup());
 		}
 
 		// Worker
 		group = groupService.loadWorkerGroup();
-		if (group == null) {
-			group = groupService.save(initWorkerGroup());
+		if (!group.isPresent()) {
+			groupService.save(initWorkerGroup());
 		}
 
 		// Admin
 		group = groupService.loadAdminGroup();
-		if (group == null) {
-			group = groupService.save(initAdminGroup());
+		if (!group.isPresent()) {
+			groupService.save(initAdminGroup());
 		}
 	}
 
 	private GroupEntity initAdminGroup() {
-		return GroupEntity.builder().name(GroupEntity.NAME_ADMIN).roles(Role.getDefaultAdminRole()).readOnly(true).build();
+		return GroupEntity.builder().name(GroupEntity.NAME_ADMIN).roles(Role.getDefaultAdminRole()).readOnly(true)
+				.build();
 	}
 
 	private GroupEntity initCustomerGroup() {
-		return GroupEntity.builder().name(GroupEntity.NAME_CUSTOMER).roles(Role.getDefaultCustomerRole()).readOnly(true).build();
+		return GroupEntity.builder().name(GroupEntity.NAME_CUSTOMER).roles(Role.getDefaultCustomerRole()).readOnly(true)
+				.build();
 	}
 
 	private GroupEntity initWorkerGroup() {
-		return GroupEntity.builder().name(GroupEntity.NAME_WORKER).roles(Role.getDefaultWorkerRole()).readOnly(true).build();
+		return GroupEntity.builder().name(GroupEntity.NAME_WORKER).roles(Role.getDefaultWorkerRole()).readOnly(true)
+				.build();
 	}
 
 	@Override
