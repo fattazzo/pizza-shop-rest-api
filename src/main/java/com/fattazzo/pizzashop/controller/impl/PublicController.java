@@ -20,9 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fattazzo.pizzashop.controller.PublicApi;
 import com.fattazzo.pizzashop.exception.security.RestException;
-import com.fattazzo.pizzashop.model.dto.Session;
-import com.fattazzo.pizzashop.model.dto.User;
-import com.fattazzo.pizzashop.model.dto.UserLogin;
+import com.fattazzo.pizzashop.model.dto.security.Session;
+import com.fattazzo.pizzashop.model.dto.security.User;
+import com.fattazzo.pizzashop.model.dto.security.UserLogin;
 import com.fattazzo.pizzashop.service.security.JwtTokenManager;
 import com.fattazzo.pizzashop.service.user.UserService;
 

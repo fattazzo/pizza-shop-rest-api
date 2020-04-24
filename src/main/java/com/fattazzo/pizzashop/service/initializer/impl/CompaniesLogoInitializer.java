@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
-import com.fattazzo.pizzashop.model.entity.CompanyLogoEntity;
+import com.fattazzo.pizzashop.model.entity.data.CompanyLogoEntity;
 import com.fattazzo.pizzashop.repository.CompanyLogoRepository;
 import com.fattazzo.pizzashop.service.company.CompanyLogoService;
 import com.fattazzo.pizzashop.service.initializer.Initializer;

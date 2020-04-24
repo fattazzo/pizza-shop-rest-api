@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.fattazzo.pizzashop.model.dto.Group;
+import com.fattazzo.pizzashop.model.dto.security.Group;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

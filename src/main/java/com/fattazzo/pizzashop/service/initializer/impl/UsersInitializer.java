@@ -10,10 +10,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.fattazzo.pizzashop.exception.security.RestException;
-import com.fattazzo.pizzashop.model.entity.GroupEntity;
-import com.fattazzo.pizzashop.model.entity.UserEntity;
-import com.fattazzo.pizzashop.model.entity.UserEntity.UserStatus;
-import com.fattazzo.pizzashop.model.entity.UserType;
+import com.fattazzo.pizzashop.model.entity.security.GroupEntity;
+import com.fattazzo.pizzashop.model.entity.security.UserEntity;
+import com.fattazzo.pizzashop.model.entity.security.UserType;
+import com.fattazzo.pizzashop.model.entity.security.UserEntity.UserStatus;
 import com.fattazzo.pizzashop.service.group.GroupService;
 import com.fattazzo.pizzashop.service.initializer.Initializer;
 import com.fattazzo.pizzashop.service.local.LocaleUtilsMessage;

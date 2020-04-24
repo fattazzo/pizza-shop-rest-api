@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.fattazzo.pizzashop.model.entity.UserEntity;
+import com.fattazzo.pizzashop.model.entity.security.UserEntity;
 import com.fattazzo.pizzashop.repository.UserRepository;
 import com.fattazzo.pizzashop.security.JwtUser;
 

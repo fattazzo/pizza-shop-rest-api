@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fattazzo.pizzashop.controller.ShippingmethodsApi;
 import com.fattazzo.pizzashop.exception.security.NoSuchEntityException;
 import com.fattazzo.pizzashop.exception.security.RestException;
-import com.fattazzo.pizzashop.model.dto.ShippingMethod;
-import com.fattazzo.pizzashop.model.entity.ShippingMethodEntity;
+import com.fattazzo.pizzashop.model.dto.data.ShippingMethod;
+import com.fattazzo.pizzashop.model.entity.data.ShippingMethodEntity;
 import com.fattazzo.pizzashop.service.local.LocaleUtilsMessage;
 import com.fattazzo.pizzashop.service.shippingmethod.ShippingMethodService;
 

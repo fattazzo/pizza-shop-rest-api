@@ -7,7 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import com.fattazzo.pizzashop.model.entity.Role;
+import com.fattazzo.pizzashop.model.entity.security.Role;
 
 @Component("securityService")
 public class SecurityService {

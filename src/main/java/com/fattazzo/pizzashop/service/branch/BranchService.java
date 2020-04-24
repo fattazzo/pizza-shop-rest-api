@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fattazzo.pizzashop.exception.security.NoSuchEntityException;
-import com.fattazzo.pizzashop.model.entity.BranchEntity;
+import com.fattazzo.pizzashop.model.entity.data.BranchEntity;
 import com.fattazzo.pizzashop.repository.BranchRepository;
 import com.fattazzo.pizzashop.service.local.LocaleUtilsMessage;
 

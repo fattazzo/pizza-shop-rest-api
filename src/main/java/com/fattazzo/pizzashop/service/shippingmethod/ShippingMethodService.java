@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fattazzo.pizzashop.exception.security.NoSuchEntityException;
-import com.fattazzo.pizzashop.model.entity.ShippingMethodEntity;
+import com.fattazzo.pizzashop.model.entity.data.ShippingMethodEntity;
 import com.fattazzo.pizzashop.repository.ShippingMethodRepository;
 
 @Service

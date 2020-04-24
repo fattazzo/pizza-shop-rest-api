@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import com.fattazzo.pizzashop.model.entity.GroupEntity;
-import com.fattazzo.pizzashop.model.entity.Role;
+import com.fattazzo.pizzashop.model.entity.security.GroupEntity;
+import com.fattazzo.pizzashop.model.entity.security.Role;
 import com.fattazzo.pizzashop.service.group.GroupService;
 import com.fattazzo.pizzashop.service.initializer.Initializer;
 

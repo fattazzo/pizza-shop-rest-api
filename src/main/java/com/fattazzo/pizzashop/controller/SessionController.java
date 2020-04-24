@@ -25,8 +25,8 @@ import com.fattazzo.pizzashop.exception.security.ExpiredTokenException;
 import com.fattazzo.pizzashop.exception.security.MailNotSentException;
 import com.fattazzo.pizzashop.exception.security.NoSuchEntityException;
 import com.fattazzo.pizzashop.exception.security.RestException;
-import com.fattazzo.pizzashop.model.dto.UserRegistrationInfo;
-import com.fattazzo.pizzashop.model.entity.UserEntity;
+import com.fattazzo.pizzashop.model.dto.security.UserRegistrationInfo;
+import com.fattazzo.pizzashop.model.entity.security.UserEntity;
 import com.fattazzo.pizzashop.service.local.LocaleUtilsMessage;
 import com.fattazzo.pizzashop.service.user.UserService;
 

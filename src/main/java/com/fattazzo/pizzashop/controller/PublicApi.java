@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.fattazzo.pizzashop.model.dto.Session;
-import com.fattazzo.pizzashop.model.dto.UserLogin;
+import com.fattazzo.pizzashop.model.dto.security.Session;
+import com.fattazzo.pizzashop.model.dto.security.UserLogin;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

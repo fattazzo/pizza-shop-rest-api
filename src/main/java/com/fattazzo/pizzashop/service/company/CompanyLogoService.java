@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fattazzo.pizzashop.exception.security.NoSuchEntityException;
-import com.fattazzo.pizzashop.model.entity.CompanyLogoEntity;
+import com.fattazzo.pizzashop.model.entity.data.CompanyLogoEntity;
 import com.fattazzo.pizzashop.repository.CompanyLogoRepository;
 
 @Service

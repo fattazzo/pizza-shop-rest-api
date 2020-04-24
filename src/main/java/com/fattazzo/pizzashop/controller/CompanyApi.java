@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fattazzo.pizzashop.model.dto.Company;
+import com.fattazzo.pizzashop.model.dto.data.Company;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

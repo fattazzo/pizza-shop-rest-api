@@ -3,8 +3,8 @@ package com.fattazzo.pizzashop.service.initializer.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fattazzo.pizzashop.model.entity.Address;
-import com.fattazzo.pizzashop.model.entity.BranchEntity;
+import com.fattazzo.pizzashop.model.entity.data.Address;
+import com.fattazzo.pizzashop.model.entity.data.BranchEntity;
 import com.fattazzo.pizzashop.service.branch.BranchService;
 import com.fattazzo.pizzashop.service.branch.BranchService.BranchPrimaryCheckException;
 import com.fattazzo.pizzashop.service.initializer.Initializer;
