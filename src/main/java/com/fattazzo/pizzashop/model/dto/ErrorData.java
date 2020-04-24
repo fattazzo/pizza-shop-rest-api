@@ -29,9 +29,11 @@ public class ErrorData implements Serializable {
 	@JsonProperty("userMessage")
 	private String userMessage;
 
+	@Builder.Default
 	@JsonProperty("internal")
 	private ErrorInternal internal = null;
 
+	@Builder.Default
 	@JsonProperty("constraintErrors")
 	private List<ConstraintError> constraintErrors = null;
 

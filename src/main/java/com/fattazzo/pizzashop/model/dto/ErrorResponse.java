@@ -21,6 +21,7 @@ import lombok.NoArgsConstructor;
 public class ErrorResponse implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	@Builder.Default
 	@JsonProperty("error")
 	private ErrorData error = null;
 
@@ -43,7 +44,7 @@ public class ErrorResponse implements Serializable {
 
 	/**
 	 * Get error
-	 * 
+	 *
 	 * @return error
 	 */
 	@NotNull

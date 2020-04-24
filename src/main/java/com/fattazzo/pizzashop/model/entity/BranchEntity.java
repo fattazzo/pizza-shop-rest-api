@@ -46,7 +46,6 @@ public class BranchEntity {
 	private String webUrl;
 
 	@Builder.Default
-	@Column(name = "primary_branch")
 	private boolean primary = false;
 
 	@Embedded

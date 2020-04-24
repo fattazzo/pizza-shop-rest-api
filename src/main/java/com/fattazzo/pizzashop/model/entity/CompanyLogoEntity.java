@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -15,11 +16,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-/**
- * Company
- */
 @Entity
-@Table(name = "data_companies")
+@Table(name = "data_companies_logo")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -27,17 +25,13 @@ import lombok.ToString;
 @ToString
 @Builder
 @EqualsAndHashCode
-public class CompanyEntity {
+public class CompanyLogoEntity {
 
 	@Id
 	@Column(unique = true)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@Column(length = 100)
-	private String name;
-
-	@Column(length = 100)
-	private String webUrl;
-
+	@Lob
+	private byte[] value;
 }

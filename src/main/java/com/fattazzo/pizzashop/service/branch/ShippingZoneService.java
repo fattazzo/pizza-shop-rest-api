@@ -22,8 +22,8 @@ public class ShippingZoneService {
 		shippingZoneRepository.deleteById(id);
 	}
 
-	public List<ShippingZoneEntity> findAll() {
-		return shippingZoneRepository.findAll();
+	public List<ShippingZoneEntity> findByBranchId(Integer branchId) {
+		return shippingZoneRepository.findByBranchId(branchId);
 	}
 
 	public Optional<ShippingZoneEntity> findById(Integer id) {

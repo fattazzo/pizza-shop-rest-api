@@ -31,7 +31,7 @@ public class GroupsController implements GroupsApi {
 	private GroupService groupService;
 
 	@Autowired
-	LocaleUtilsMessage localeUtilsMessage;
+	private LocaleUtilsMessage localeUtilsMessage;
 
 	@Override
 	@PreAuthorize("@securityService.hasAnyPermission({'SECURITY'})")

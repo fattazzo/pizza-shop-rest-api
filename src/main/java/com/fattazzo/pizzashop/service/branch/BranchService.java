@@ -63,7 +63,7 @@ public class BranchService {
 			throw new BranchPrimaryCheckException();
 		}
 
-		if (!branch.isPrimary() && !branchRepository.findOneByPrimary(true).isPresent()) {
+		if (!branch.isPrimary() && (!primaryBranch.isPresent() || primaryBranch.get().getId() == branch.getId())) {
 			throw new BranchPrimaryCheckException();
 		}
 

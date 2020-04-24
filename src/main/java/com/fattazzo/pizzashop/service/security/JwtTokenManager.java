@@ -169,6 +169,7 @@ public class JwtTokenManager {
 		return expiration;
 	}
 
+	@SuppressWarnings("unchecked")
 	public Optional<UserDetails> getUserDetails(String authToken) throws ExpiredJwtException {
 		if (StringUtils.isEmpty(authToken)) {
 			return Optional.empty();

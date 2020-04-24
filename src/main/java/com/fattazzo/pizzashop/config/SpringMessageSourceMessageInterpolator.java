@@ -37,7 +37,7 @@ public class SpringMessageSourceMessageInterpolator
 
 	@Override
 	public void setMessageSource(MessageSource messageSource) {
-		this.errorMessageSource = errorMessageSource;
+		this.errorMessageSource = messageSource;
 
 	}
 

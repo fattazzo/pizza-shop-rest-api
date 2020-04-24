@@ -19,7 +19,6 @@ import com.fattazzo.pizzashop.model.dto.Branch;
 import com.fattazzo.pizzashop.model.dto.BranchDetails;
 import com.fattazzo.pizzashop.model.dto.ShippingZone;
 import com.fattazzo.pizzashop.model.entity.BranchEntity;
-import com.fattazzo.pizzashop.model.entity.ShippingZoneEntity;
 import com.fattazzo.pizzashop.service.branch.BranchService;
 import com.fattazzo.pizzashop.service.branch.BranchService.BranchPrimaryCheckException;
 import com.fattazzo.pizzashop.service.branch.ShippingZoneService;
@@ -60,16 +59,6 @@ public class BranchesController implements BranchesApi {
 
 	@Override
 	@PreAuthorize("@securityService.hasAnyPermission({'COMPANY'})")
-	public ResponseEntity<ShippingZone> createShippingZone(@Valid ShippingZone body, Integer branchId) {
-		ShippingZoneEntity zone = mapper.map(body, ShippingZoneEntity.class);
-
-		zone = shippingZoneService.save(zone);
-
-		return new ResponseEntity<>(mapper.map(zone, ShippingZone.class), HttpStatus.CREATED);
-	}
-
-	@Override
-	@PreAuthorize("@securityService.hasAnyPermission({'COMPANY'})")
 	public ResponseEntity<Void> deleteBranch(Integer branchId) {
 
 		try {
@@ -81,13 +70,6 @@ public class BranchesController implements BranchesApi {
 					.status(HttpStatus.CONFLICT).build();
 		}
 
-		return ResponseEntity.noContent().build();
-	}
-
-	@Override
-	@PreAuthorize("@securityService.hasAnyPermission({'COMPANY'})")
-	public ResponseEntity<Void> deleteShippingZone(Integer shippingzoneId, Integer branchId) {
-		shippingZoneService.deleteById(shippingzoneId);
 		return ResponseEntity.noContent().build();
 	}
 
@@ -105,15 +87,8 @@ public class BranchesController implements BranchesApi {
 	}
 
 	@Override
-	public ResponseEntity<ShippingZone> getShippingZone(Integer shippingzoneId, Integer branchId) {
-		final ShippingZoneEntity entity = shippingZoneService.findById(shippingzoneId)
-				.orElseThrow(NoSuchEntityException::new);
-		return ResponseEntity.ok(mapper.map(entity, ShippingZone.class));
-	}
-
-	@Override
 	public ResponseEntity<List<ShippingZone>> getShippingZones(Integer branchId) {
-		final List<ShippingZone> zones = shippingZoneService.findAll().stream()
+		final List<ShippingZone> zones = shippingZoneService.findByBranchId(branchId).stream()
 				.map(sz -> mapper.map(sz, ShippingZone.class)).collect(Collectors.toList());
 		return ResponseEntity.ok(zones);
 	}
@@ -141,25 +116,6 @@ public class BranchesController implements BranchesApi {
 		}
 
 		return ResponseEntity.ok(mapper.map(entity, BranchDetails.class));
-	}
-
-	@Override
-	public ResponseEntity<ShippingZone> updateShippingZone(@Valid ShippingZone body, Integer shippingzoneId,
-			Integer branchId) {
-		final ShippingZoneEntity existingEntity = shippingZoneService.findById(shippingzoneId)
-				.orElseThrow(NoSuchEntityException::new);
-
-		if (!existingEntity.getId().equals(body.getId())) {
-			throw RestException.newBuilder()
-					.title(localeUtilsMessage.getErrorLocalizedMessage("shippingzone.update.failed.title", null))
-					.detail(localeUtilsMessage.getErrorLocalizedMessage("shippingzone.update.failed.idParamNotEquals",
-							null))
-					.status(HttpStatus.BAD_REQUEST).build();
-		}
-
-		final ShippingZoneEntity entity = shippingZoneService.save(mapper.map(body, ShippingZoneEntity.class));
-
-		return ResponseEntity.ok(mapper.map(entity, ShippingZone.class));
 	}
 
 }

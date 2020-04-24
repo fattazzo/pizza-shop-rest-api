@@ -5,6 +5,7 @@ import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -25,9 +26,12 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+	private static final String[] permitAllMatchers = new String[] { "/public/**" };
+
+	private static final String[] permitAllGetMatchers = new String[] { "/company/logo" };
+
 	@Autowired
 	private JwtAuthenticationEntryPoint unauthorizedHandler;
-
 	@Autowired
 	private UserDetailsService userManager;
 
@@ -50,7 +54,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.authorizeRequests().antMatchers(
 						// HttpMethod.GET,
 						"/", "/*.html", "/favicon.ico", "/**/*.html", "/**/*.css", "/**/*.js")
-				.permitAll().antMatchers("/public/**").permitAll().anyRequest().authenticated();
+				.permitAll().antMatchers(permitAllMatchers).permitAll()
+				.antMatchers(HttpMethod.GET, permitAllGetMatchers).permitAll().anyRequest().authenticated();
 
 		// Filtro Custom JWT
 		httpSecurity.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);

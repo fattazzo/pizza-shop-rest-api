@@ -1,23 +1,22 @@
 package com.fattazzo.pizzashop.exception.security;
 
-public class NoSuchEntityException extends RuntimeException{
+public class NoSuchEntityException extends RuntimeException {
 
-    public NoSuchEntityException() {
-        super();
-    }
+	private static final long serialVersionUID = -8043003509060151098L;
 
-    public NoSuchEntityException(String s)
-    {
-        super(s);
-    }
+	public NoSuchEntityException() {
+		super();
+	}
 
-    public NoSuchEntityException(String s, Throwable throwable)
-    {
-        super(s, throwable);
-    }
+	public NoSuchEntityException(String s) {
+		super(s);
+	}
 
-    public NoSuchEntityException(Throwable throwable)
-    {
-        super(throwable);
-    }
+	public NoSuchEntityException(String s, Throwable throwable) {
+		super(s, throwable);
+	}
+
+	public NoSuchEntityException(Throwable throwable) {
+		super(throwable);
+	}
 }

@@ -13,11 +13,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(builderMethodName = "newBuilder")
-public class RestException extends RuntimeException{
+public class RestException extends RuntimeException {
 
-    private String title;
+	private static final long serialVersionUID = 5956676434791674628L;
 
-    private HttpStatus status;
+	private String title;
 
-    private String detail;
+	private HttpStatus status;
+
+	private String detail;
 }

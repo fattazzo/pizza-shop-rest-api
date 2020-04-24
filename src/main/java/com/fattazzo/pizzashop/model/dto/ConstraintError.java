@@ -24,6 +24,7 @@ public class ConstraintError implements Serializable {
 	@JsonProperty("fieldName")
 	private String fieldName;
 
+	@Builder.Default
 	@JsonProperty("constraintsNotRespected")
 	private List<String> constraintsNotRespected = null;
 
@@ -60,7 +61,7 @@ public class ConstraintError implements Serializable {
 
 	/**
 	 * a list of constraints Not Respected
-	 * 
+	 *
 	 * @return constraintsNotRespected
 	 */
 
@@ -70,7 +71,7 @@ public class ConstraintError implements Serializable {
 
 	/**
 	 * the field name
-	 * 
+	 *
 	 * @return fieldName
 	 */
 

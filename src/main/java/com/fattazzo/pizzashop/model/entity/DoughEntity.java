@@ -1,5 +1,7 @@
 package com.fattazzo.pizzashop.model.entity;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,11 +17,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-/**
- * Company
- */
 @Entity
-@Table(name = "data_companies")
+@Table(name = "data_variation_doughs")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -27,17 +26,18 @@ import lombok.ToString;
 @ToString
 @Builder
 @EqualsAndHashCode
-public class CompanyEntity {
+public class DoughEntity {
 
 	@Id
 	@Column(unique = true)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@Column(length = 100)
+	@Column(nullable = false, length = 100)
 	private String name;
 
-	@Column(length = 100)
-	private String webUrl;
+	private String description;
 
+	@Builder.Default
+	private BigDecimal extra = BigDecimal.ZERO;
 }

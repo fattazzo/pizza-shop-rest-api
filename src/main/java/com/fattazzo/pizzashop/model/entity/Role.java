@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum Role {
 
 	WEB_ADMIN("WEB_ADMIN"), SECURITY("SECURITY"), SHIPPING_METHODS("SHIPPING_METHODS"), COMPANY("COMPANY"),
-	EDIT_ACCOUNT("EDIT_ACCOUNT");
+	EDIT_ACCOUNT("EDIT_ACCOUNT"), VARIATIONS("VARIATIONS");
 
 	@JsonCreator
 	public static Role fromValue(String text) {

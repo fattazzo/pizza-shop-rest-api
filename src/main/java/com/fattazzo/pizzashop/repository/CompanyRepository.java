@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.fattazzo.pizzashop.model.entity.CompanyEntity;
 
-public interface CompanyRepository extends JpaRepository<CompanyEntity, String> {
+public interface CompanyRepository extends JpaRepository<CompanyEntity, Integer> {
 
 	Optional<CompanyEntity> findByNameIgnoreCase(String username);
 

@@ -15,11 +15,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-/**
- * Company
- */
 @Entity
-@Table(name = "data_companies")
+@Table(name = "data_variation_toppings")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -27,17 +24,13 @@ import lombok.ToString;
 @ToString
 @Builder
 @EqualsAndHashCode
-public class CompanyEntity {
+public class ToppingEntity {
 
 	@Id
 	@Column(unique = true)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@Column(length = 100)
+	@Column(nullable = false, length = 100)
 	private String name;
-
-	@Column(length = 100)
-	private String webUrl;
-
 }
