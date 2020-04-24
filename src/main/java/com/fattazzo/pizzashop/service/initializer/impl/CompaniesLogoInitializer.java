@@ -1,8 +1,8 @@
 package com.fattazzo.pizzashop.service.initializer.impl;
 
 import java.io.IOException;
-import java.nio.file.Files;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,7 +24,7 @@ public class CompaniesLogoInitializer implements Initializer {
 	@Autowired
 	private CompanyLogoRepository companyLogoRepository;
 
-	@Value("classpath:/images/pizza.png")
+	@Value("classpath:images/pizza.png")
 	Resource logoFile;
 
 	@Override
@@ -34,7 +34,7 @@ public class CompaniesLogoInitializer implements Initializer {
 
 			CompanyLogoEntity logo;
 			try {
-				logo = CompanyLogoEntity.builder().value(Files.readAllBytes(logoFile.getFile().toPath())).build();
+				logo = CompanyLogoEntity.builder().value(IOUtils.toByteArray(logoFile.getInputStream())).build();
 				companyLogoRepository.save(logo);
 			} catch (final IOException e) {
 				e.printStackTrace();
