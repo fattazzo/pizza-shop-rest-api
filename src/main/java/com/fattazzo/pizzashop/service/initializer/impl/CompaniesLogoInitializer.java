@@ -24,7 +24,7 @@ public class CompaniesLogoInitializer implements Initializer {
 	@Autowired
 	private CompanyLogoRepository companyLogoRepository;
 
-	@Value("images/pizza.png")
+	@Value("classpath:/images/pizza.png")
 	Resource logoFile;
 
 	@Override
