@@ -13,7 +13,7 @@ import javax.validation.constraints.*;
  * Company
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-25T15:30:26.294Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-25T18:00:16.605Z[GMT]")
 public class Company   {
   @JsonProperty("id")
   private Integer id = null;
@@ -36,9 +36,8 @@ public class Company   {
    * Unique identifier
    * @return id
   **/
-  @ApiModelProperty(required = true, value = "Unique identifier")
-      @NotNull
-
+  @ApiModelProperty(value = "Unique identifier")
+  
     public Integer getId() {
     return id;
   }

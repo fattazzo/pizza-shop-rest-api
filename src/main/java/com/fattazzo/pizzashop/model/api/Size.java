@@ -14,7 +14,7 @@ import javax.validation.constraints.*;
  * Size
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-25T15:30:26.294Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-25T18:00:16.605Z[GMT]")
 public class Size   {
   @JsonProperty("id")
   private Integer id = null;
@@ -40,9 +40,8 @@ public class Size   {
    * Get id
    * @return id
   **/
-  @ApiModelProperty(required = true, value = "")
-      @NotNull
-
+  @ApiModelProperty(value = "")
+  
     public Integer getId() {
     return id;
   }

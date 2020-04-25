@@ -14,7 +14,7 @@ import javax.validation.constraints.*;
  * Body
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-25T15:30:26.294Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-25T18:00:16.605Z[GMT]")
 public class Body   {
   @JsonProperty("file")
   private Resource file = null;
