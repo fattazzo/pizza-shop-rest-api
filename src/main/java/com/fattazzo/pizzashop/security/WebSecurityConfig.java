@@ -26,7 +26,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-	private static final String[] permitAllMatchers = new String[] { "/public/**" };
+	private static final String[] permitAllMatchers = new String[] { "/public/**", "/swagger-resources/**",
+			"/swagger-ui.html", "/v2/api-docs", "/webjars/**" };
 
 	private static final String[] permitAllGetMatchers = new String[] { "/company/logo" };
 

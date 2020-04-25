@@ -1,28 +1,158 @@
 package com.fattazzo.pizzashop.model.dto.data;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import java.util.Objects;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
-@Builder
-@EqualsAndHashCode
+import javax.validation.constraints.NotNull;
+
+import org.springframework.validation.annotation.Validated;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+/**
+ * Any ingredient that can be added extra to the standard pizza
+ */
+@ApiModel(description = "Any ingredient that can be added extra to the standard pizza")
+@Validated
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-25T13:58:43.091Z[GMT]")
 public class Topping {
+	@JsonProperty("id")
+	private Integer id = null;
 
-	private Integer id;
+	@JsonProperty("name")
+	private String name = null;
 
-	private String name;
+	@JsonProperty("description")
+	private String description = null;
 
-	private String description;
+	@JsonProperty("enabled")
+	private Boolean enabled = null;
 
-	@Builder.Default
-	private boolean enabled = Boolean.FALSE;
+	public Topping description(String description) {
+		this.description = description;
+		return this;
+	}
+
+	public Topping enabled(Boolean enabled) {
+		this.enabled = enabled;
+		return this;
+	}
+
+	@Override
+	public boolean equals(java.lang.Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		final Topping topping = (Topping) o;
+		return Objects.equals(this.id, topping.id) && Objects.equals(this.name, topping.name)
+				&& Objects.equals(this.description, topping.description)
+				&& Objects.equals(this.enabled, topping.enabled);
+	}
+
+	/**
+	 * Get description
+	 * 
+	 * @return description
+	 **/
+	@ApiModelProperty(value = "")
+
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * Get id
+	 * 
+	 * @return id
+	 **/
+	@ApiModelProperty(required = true, value = "")
+	@NotNull
+
+	public Integer getId() {
+		return id;
+	}
+
+	/**
+	 * Get name
+	 * 
+	 * @return name
+	 **/
+	@ApiModelProperty(required = true, value = "")
+	@NotNull
+
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, name, description, enabled);
+	}
+
+	public Topping id(Integer id) {
+		this.id = id;
+		return this;
+	}
+
+	/**
+	 * Get enabled
+	 * 
+	 * @return enabled
+	 **/
+	@ApiModelProperty(required = true, value = "")
+	@NotNull
+
+	public Boolean isEnabled() {
+		return enabled;
+	}
+
+	public Topping name(String name) {
+		this.name = name;
+		return this;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * Convert the given object to string with each line indented by 4 spaces
+	 * (except the first line).
+	 */
+	private String toIndentedString(java.lang.Object o) {
+		if (o == null) {
+			return "null";
+		}
+		return o.toString().replace("\n", "\n    ");
+	}
+
+	@Override
+	public String toString() {
+		final StringBuilder sb = new StringBuilder();
+		sb.append("class Topping {\n");
+
+		sb.append("    id: ").append(toIndentedString(id)).append("\n");
+		sb.append("    name: ").append(toIndentedString(name)).append("\n");
+		sb.append("    description: ").append(toIndentedString(description)).append("\n");
+		sb.append("    enabled: ").append(toIndentedString(enabled)).append("\n");
+		sb.append("}");
+		return sb.toString();
+	}
 }

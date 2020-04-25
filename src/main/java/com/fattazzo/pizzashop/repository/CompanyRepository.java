@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.fattazzo.pizzashop.model.entity.data.CompanyEntity;
+import com.fattazzo.pizzashop.entity.data.CompanyEntity;
 
 public interface CompanyRepository extends JpaRepository<CompanyEntity, Integer> {
 

@@ -6,8 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fattazzo.pizzashop.entity.data.SizeEntity;
 import com.fattazzo.pizzashop.exception.security.NoSuchEntityException;
-import com.fattazzo.pizzashop.model.entity.data.SizeEntity;
 import com.fattazzo.pizzashop.repository.SizeRepository;
 
 @Service
@@ -23,6 +23,10 @@ public class SizeService {
 
 	public List<SizeEntity> findAll() {
 		return sizeRepository.findAll();
+	}
+
+	public List<SizeEntity> findAllEnabled() {
+		return sizeRepository.findByEnabledTrue();
 	}
 
 	public Optional<SizeEntity> findById(Integer id) {

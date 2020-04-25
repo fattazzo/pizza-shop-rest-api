@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.fattazzo.pizzashop.model.entity.security.GroupEntity;
+import com.fattazzo.pizzashop.entity.security.GroupEntity;
 
 public interface GroupRepository extends JpaRepository<GroupEntity, Integer> {
 

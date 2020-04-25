@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.fattazzo.pizzashop.model.entity.security.RegistrationToken;
+import com.fattazzo.pizzashop.entity.security.RegistrationToken;
 
 public interface RegistrationTokenRepository extends JpaRepository<RegistrationToken, String> {
 

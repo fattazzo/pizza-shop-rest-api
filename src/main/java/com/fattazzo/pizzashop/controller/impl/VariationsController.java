@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,21 +13,24 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fattazzo.pizzashop.controller.VariationsApi;
+import com.fattazzo.pizzashop.controller.api.VariationsApi;
+import com.fattazzo.pizzashop.entity.data.DoughEntity;
+import com.fattazzo.pizzashop.entity.data.SizeEntity;
+import com.fattazzo.pizzashop.entity.data.ToppingEntity;
 import com.fattazzo.pizzashop.exception.security.NoSuchEntityException;
 import com.fattazzo.pizzashop.exception.security.RestException;
 import com.fattazzo.pizzashop.model.dto.data.Dough;
 import com.fattazzo.pizzashop.model.dto.data.Size;
 import com.fattazzo.pizzashop.model.dto.data.Topping;
-import com.fattazzo.pizzashop.model.entity.data.DoughEntity;
-import com.fattazzo.pizzashop.model.entity.data.SizeEntity;
-import com.fattazzo.pizzashop.model.entity.data.ToppingEntity;
 import com.fattazzo.pizzashop.service.local.LocaleUtilsMessage;
 import com.fattazzo.pizzashop.service.variation.DoughService;
 import com.fattazzo.pizzashop.service.variation.SizeService;
 import com.fattazzo.pizzashop.service.variation.ToppingService;
 
+import io.swagger.annotations.Api;
+
 @RestController
+@Api(tags = { "variations" })
 public class VariationsController implements VariationsApi {
 
 	@Autowired
@@ -129,9 +133,11 @@ public class VariationsController implements VariationsApi {
 	}
 
 	@Override
-	public ResponseEntity<List<Dough>> getDoughs() {
-		final List<Dough> doughs = doughService.findAll().stream().map(d -> mapper.map(d, Dough.class))
-				.collect(Collectors.toList());
+	public ResponseEntity<List<Dough>> getDoughs(@Valid Boolean includeDisabled) {
+		final List<DoughEntity> entities = (BooleanUtils.isTrue(includeDisabled)) ? doughService.findAll()
+				: doughService.findAllEnabled();
+
+		final List<Dough> doughs = entities.stream().map(d -> mapper.map(d, Dough.class)).collect(Collectors.toList());
 		return ResponseEntity.ok(doughs);
 	}
 
@@ -142,9 +148,11 @@ public class VariationsController implements VariationsApi {
 	}
 
 	@Override
-	public ResponseEntity<List<Size>> getSizes() {
-		final List<Size> sizes = sizeService.findAll().stream().map(s -> mapper.map(s, Size.class))
-				.collect(Collectors.toList());
+	public ResponseEntity<List<Size>> getSizes(@Valid Boolean includeDisabled) {
+		final List<SizeEntity> entities = (BooleanUtils.isTrue(includeDisabled)) ? sizeService.findAll()
+				: sizeService.findAllEnabled();
+
+		final List<Size> sizes = entities.stream().map(s -> mapper.map(s, Size.class)).collect(Collectors.toList());
 		return ResponseEntity.ok(sizes);
 	}
 
@@ -155,8 +163,11 @@ public class VariationsController implements VariationsApi {
 	}
 
 	@Override
-	public ResponseEntity<List<Topping>> getToppings() {
-		final List<Topping> toppings = toppingService.findAll().stream().map(t -> mapper.map(t, Topping.class))
+	public ResponseEntity<List<Topping>> getToppings(@Valid Boolean includeDisabled) {
+		final List<ToppingEntity> entities = (BooleanUtils.isTrue(includeDisabled)) ? toppingService.findAll()
+				: toppingService.findAllEnabled();
+
+		final List<Topping> toppings = entities.stream().map(t -> mapper.map(t, Topping.class))
 				.collect(Collectors.toList());
 		return ResponseEntity.ok(toppings);
 	}

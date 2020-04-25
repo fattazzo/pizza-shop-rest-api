@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import com.fattazzo.pizzashop.model.entity.data.CompanyEntity;
+import com.fattazzo.pizzashop.entity.data.CompanyEntity;
 import com.fattazzo.pizzashop.service.company.CompanyService;
 import com.fattazzo.pizzashop.service.initializer.Initializer;
 

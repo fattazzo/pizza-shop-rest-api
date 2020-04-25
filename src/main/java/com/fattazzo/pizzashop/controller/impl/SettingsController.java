@@ -10,13 +10,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fattazzo.pizzashop.controller.SettingsApi;
+import com.fattazzo.pizzashop.controller.api.SettingsApi;
+import com.fattazzo.pizzashop.entity.security.SettingsEntity;
 import com.fattazzo.pizzashop.exception.security.NoSuchEntityException;
 import com.fattazzo.pizzashop.model.dto.security.Settings;
-import com.fattazzo.pizzashop.model.entity.security.SettingsEntity;
 import com.fattazzo.pizzashop.service.settings.SettingsService;
 
+import io.swagger.annotations.Api;
+
 @RestController
+@Api(tags = { "settings" })
 public class SettingsController implements SettingsApi {
 
 	@Autowired

@@ -12,16 +12,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fattazzo.pizzashop.controller.GroupsApi;
+import com.fattazzo.pizzashop.controller.api.GroupsApi;
+import com.fattazzo.pizzashop.entity.security.GroupEntity;
 import com.fattazzo.pizzashop.exception.security.NoSuchEntityException;
 import com.fattazzo.pizzashop.exception.security.RestException;
 import com.fattazzo.pizzashop.model.dto.security.Group;
-import com.fattazzo.pizzashop.model.entity.security.GroupEntity;
 import com.fattazzo.pizzashop.service.group.GroupService;
 import com.fattazzo.pizzashop.service.group.GroupService.GroupReadonlyException;
 import com.fattazzo.pizzashop.service.local.LocaleUtilsMessage;
 
+import io.swagger.annotations.Api;
+
 @RestController
+@Api(tags = { "groups" })
 public class GroupsController implements GroupsApi {
 
 	@Autowired

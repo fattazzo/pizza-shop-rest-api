@@ -17,17 +17,20 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.fattazzo.pizzashop.controller.CompanyApi;
+import com.fattazzo.pizzashop.controller.api.CompanyApi;
+import com.fattazzo.pizzashop.entity.data.CompanyEntity;
+import com.fattazzo.pizzashop.entity.data.CompanyLogoEntity;
 import com.fattazzo.pizzashop.exception.security.NoSuchEntityException;
 import com.fattazzo.pizzashop.exception.security.RestException;
 import com.fattazzo.pizzashop.model.dto.data.Company;
-import com.fattazzo.pizzashop.model.entity.data.CompanyEntity;
-import com.fattazzo.pizzashop.model.entity.data.CompanyLogoEntity;
 import com.fattazzo.pizzashop.service.company.CompanyLogoService;
 import com.fattazzo.pizzashop.service.company.CompanyService;
 import com.fattazzo.pizzashop.service.local.LocaleUtilsMessage;
 
+import io.swagger.annotations.Api;
+
 @RestController
+@Api(tags = { "companies" })
 public class CompaniesController implements CompanyApi {
 
 	@Autowired

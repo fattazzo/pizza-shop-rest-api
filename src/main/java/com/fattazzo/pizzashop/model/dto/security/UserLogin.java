@@ -1,35 +1,29 @@
 package com.fattazzo.pizzashop.model.dto.security;
 
-import java.io.Serializable;
 import java.util.Objects;
+
+import javax.validation.constraints.NotNull;
+
+import org.springframework.validation.annotation.Validated;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
- * LoginRequest
+ * UserLogin
  */
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder(builderMethodName = "newBuilder")
-public class UserLogin implements Serializable {
-	private static final long serialVersionUID = 1L;
-
+@Validated
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-25T13:58:43.091Z[GMT]")
+public class UserLogin {
 	@JsonProperty("username")
-	private String username;
+	private String username = null;
 
 	@JsonProperty("password")
-	private String password;
+	private String password = null;
 
 	@JsonProperty("locale")
-	private String locale;
+	private String locale = null;
 
 	@Override
 	public boolean equals(java.lang.Object o) {
@@ -39,10 +33,44 @@ public class UserLogin implements Serializable {
 		if (o == null || getClass() != o.getClass()) {
 			return false;
 		}
-		final UserLogin loginRequest = (UserLogin) o;
-		return Objects.equals(this.username, loginRequest.username)
-				&& Objects.equals(this.password, loginRequest.password)
-				&& Objects.equals(this.locale, loginRequest.locale);
+		final UserLogin userLogin = (UserLogin) o;
+		return Objects.equals(this.username, userLogin.username) && Objects.equals(this.password, userLogin.password)
+				&& Objects.equals(this.locale, userLogin.locale);
+	}
+
+	/**
+	 * Get locale
+	 * 
+	 * @return locale
+	 **/
+	@ApiModelProperty(value = "")
+
+	public String getLocale() {
+		return locale;
+	}
+
+	/**
+	 * Get password
+	 * 
+	 * @return password
+	 **/
+	@ApiModelProperty(required = true, value = "")
+	@NotNull
+
+	public String getPassword() {
+		return password;
+	}
+
+	/**
+	 * Get username
+	 * 
+	 * @return username
+	 **/
+	@ApiModelProperty(required = true, value = "")
+	@NotNull
+
+	public String getUsername() {
+		return username;
 	}
 
 	@Override
@@ -60,9 +88,39 @@ public class UserLogin implements Serializable {
 		return this;
 	}
 
+	public void setLocale(String locale) {
+		this.locale = locale;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	/**
+	 * Convert the given object to string with each line indented by 4 spaces
+	 * (except the first line).
+	 */
+	private String toIndentedString(java.lang.Object o) {
+		if (o == null) {
+			return "null";
+		}
+		return o.toString().replace("\n", "\n    ");
+	}
+
 	@Override
 	public String toString() {
-		return "LoginRequest [username=" + username + ", password=" + password + ", locale=" + locale + "]";
+		final StringBuilder sb = new StringBuilder();
+		sb.append("class UserLogin {\n");
+
+		sb.append("    username: ").append(toIndentedString(username)).append("\n");
+		sb.append("    password: ").append(toIndentedString(password)).append("\n");
+		sb.append("    locale: ").append(toIndentedString(locale)).append("\n");
+		sb.append("}");
+		return sb.toString();
 	}
 
 	public UserLogin username(String username) {

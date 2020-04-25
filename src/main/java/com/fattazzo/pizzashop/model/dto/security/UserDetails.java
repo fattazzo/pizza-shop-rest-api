@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
-import com.fattazzo.pizzashop.model.entity.security.GroupEntity;
+import com.fattazzo.pizzashop.entity.security.GroupEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

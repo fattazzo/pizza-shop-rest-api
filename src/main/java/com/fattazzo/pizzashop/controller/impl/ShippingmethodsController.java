@@ -12,15 +12,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fattazzo.pizzashop.controller.ShippingmethodsApi;
+import com.fattazzo.pizzashop.controller.api.ShippingmethodsApi;
+import com.fattazzo.pizzashop.entity.data.ShippingMethodEntity;
 import com.fattazzo.pizzashop.exception.security.NoSuchEntityException;
 import com.fattazzo.pizzashop.exception.security.RestException;
 import com.fattazzo.pizzashop.model.dto.data.ShippingMethod;
-import com.fattazzo.pizzashop.model.entity.data.ShippingMethodEntity;
 import com.fattazzo.pizzashop.service.local.LocaleUtilsMessage;
 import com.fattazzo.pizzashop.service.shippingmethod.ShippingMethodService;
 
+import io.swagger.annotations.Api;
+
 @RestController
+@Api(tags = { "shippingmethods" })
 public class ShippingmethodsController implements ShippingmethodsApi {
 
 	@Autowired

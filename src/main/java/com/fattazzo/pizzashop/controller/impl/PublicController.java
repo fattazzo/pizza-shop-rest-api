@@ -18,7 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fattazzo.pizzashop.controller.PublicApi;
+import com.fattazzo.pizzashop.controller.api.PublicApi;
 import com.fattazzo.pizzashop.exception.security.RestException;
 import com.fattazzo.pizzashop.model.dto.security.Session;
 import com.fattazzo.pizzashop.model.dto.security.User;
@@ -61,8 +61,8 @@ public class PublicController implements PublicApi {
 
 		final User user = modelMapper.map(userDetails, User.class);
 
-		return ResponseEntity.ok(Session.newBuilder().userInfo(user).locale(locale.getCountry()).environment(enviroment)
-				.accessToken(accessToken).refreshToken(refreshToken).build());
+		return ResponseEntity.ok(new Session().userInfo(user).locale(locale.getCountry()).enviroment(enviroment)
+				.accessToken(accessToken).refreshToken(refreshToken));
 	}
 
 	@Override
@@ -83,8 +83,8 @@ public class PublicController implements PublicApi {
 
 		final User user = modelMapper.map(userDetails, User.class);
 
-		return ResponseEntity.ok(Session.newBuilder().userInfo(user).locale(locale.getCountry()).environment(enviroment)
-				.accessToken(accessToken).refreshToken(refreshToken).build());
+		return ResponseEntity.ok(new Session().userInfo(user).locale(locale.getCountry()).enviroment(enviroment)
+				.accessToken(accessToken).refreshToken(refreshToken));
 	}
 
 }

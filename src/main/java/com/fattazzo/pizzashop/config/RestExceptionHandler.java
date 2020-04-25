@@ -35,10 +35,10 @@ import com.fattazzo.pizzashop.exception.security.ExpiredTokenException;
 import com.fattazzo.pizzashop.exception.security.NoSuchEntityException;
 import com.fattazzo.pizzashop.exception.security.RestException;
 import com.fattazzo.pizzashop.exception.security.UserNotActiveException;
-import com.fattazzo.pizzashop.model.dto.ConstraintError;
-import com.fattazzo.pizzashop.model.dto.ErrorData;
-import com.fattazzo.pizzashop.model.dto.ErrorInternal;
-import com.fattazzo.pizzashop.model.dto.ErrorResponse;
+import com.fattazzo.pizzashop.model.error.ConstraintError;
+import com.fattazzo.pizzashop.model.error.ErrorData;
+import com.fattazzo.pizzashop.model.error.ErrorInternal;
+import com.fattazzo.pizzashop.model.error.ErrorResponse;
 
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {

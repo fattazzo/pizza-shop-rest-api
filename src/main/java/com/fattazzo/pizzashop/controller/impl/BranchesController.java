@@ -10,21 +10,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
 
-import com.fattazzo.pizzashop.controller.BranchesApi;
+import com.fattazzo.pizzashop.controller.api.BranchesApi;
+import com.fattazzo.pizzashop.entity.data.BranchEntity;
 import com.fattazzo.pizzashop.exception.security.NoSuchEntityException;
 import com.fattazzo.pizzashop.exception.security.RestException;
 import com.fattazzo.pizzashop.model.dto.data.Branch;
 import com.fattazzo.pizzashop.model.dto.data.BranchDetails;
 import com.fattazzo.pizzashop.model.dto.data.ShippingZone;
-import com.fattazzo.pizzashop.model.entity.data.BranchEntity;
 import com.fattazzo.pizzashop.service.branch.BranchService;
 import com.fattazzo.pizzashop.service.branch.BranchService.BranchPrimaryCheckException;
 import com.fattazzo.pizzashop.service.branch.ShippingZoneService;
 import com.fattazzo.pizzashop.service.local.LocaleUtilsMessage;
 
-@RestController
+import io.swagger.annotations.Api;
+
+@Controller
+@Api(tags = { "branches" })
 public class BranchesController implements BranchesApi {
 
 	@Autowired

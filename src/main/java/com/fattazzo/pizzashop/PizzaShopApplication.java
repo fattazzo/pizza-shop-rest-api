@@ -1,7 +1,6 @@
 package com.fattazzo.pizzashop;
 
 import java.util.Comparator;
-import java.util.List;
 import java.util.TimeZone;
 
 import javax.annotation.PostConstruct;
@@ -17,7 +16,12 @@ import org.springframework.context.annotation.Bean;
 
 import com.fattazzo.pizzashop.service.initializer.Initializer;
 
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
 @SpringBootApplication
+@EnableSwagger2
+//@ComponentScan(basePackages = { "com.fattazzo.pizzashop.model.entity", "com.fattazzo.pizzashop.controller",
+//		"com.fattazzo.pizzashop.config" })
 public class PizzaShopApplication {
 
 	protected static final Logger logger = LoggerFactory.getLogger(PizzaShopApplication.class);
@@ -27,7 +31,7 @@ public class PizzaShopApplication {
 	}
 
 	@Autowired
-	private List<Initializer> appInitializer;
+	private java.util.List<Initializer> appInitializer;
 
 	@Bean
 	public CommandLineRunner initData() {

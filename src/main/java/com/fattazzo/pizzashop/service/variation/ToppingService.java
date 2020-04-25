@@ -6,8 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fattazzo.pizzashop.entity.data.ToppingEntity;
 import com.fattazzo.pizzashop.exception.security.NoSuchEntityException;
-import com.fattazzo.pizzashop.model.entity.data.ToppingEntity;
 import com.fattazzo.pizzashop.repository.ToppingRepository;
 
 @Service
@@ -23,6 +23,10 @@ public class ToppingService {
 
 	public List<ToppingEntity> findAll() {
 		return toppingRepository.findAll();
+	}
+
+	public List<ToppingEntity> findAllEnabled() {
+		return toppingRepository.findByEnabledTrue();
 	}
 
 	public Optional<ToppingEntity> findById(Integer id) {
