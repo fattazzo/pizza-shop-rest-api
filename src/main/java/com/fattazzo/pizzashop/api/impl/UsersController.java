@@ -1,4 +1,4 @@
-package com.fattazzo.pizzashop.controller.impl;
+package com.fattazzo.pizzashop.api.impl;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,7 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fattazzo.pizzashop.controller.api.UsersApi;
+import com.fattazzo.pizzashop.api.UsersApi;
 import com.fattazzo.pizzashop.entity.security.UserEntity;
 import com.fattazzo.pizzashop.entity.security.UserType;
 import com.fattazzo.pizzashop.entity.security.UserEntity.UserStatus;

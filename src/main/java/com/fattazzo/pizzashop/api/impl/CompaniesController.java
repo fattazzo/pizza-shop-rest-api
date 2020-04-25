@@ -1,4 +1,4 @@
-package com.fattazzo.pizzashop.controller.impl;
+package com.fattazzo.pizzashop.api.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.fattazzo.pizzashop.controller.api.CompanyApi;
+import com.fattazzo.pizzashop.api.CompanyApi;
 import com.fattazzo.pizzashop.entity.data.CompanyEntity;
 import com.fattazzo.pizzashop.entity.data.CompanyLogoEntity;
 import com.fattazzo.pizzashop.exception.security.NoSuchEntityException;

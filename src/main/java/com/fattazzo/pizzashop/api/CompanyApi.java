@@ -1,4 +1,4 @@
-package com.fattazzo.pizzashop.controller.api;
+package com.fattazzo.pizzashop.api;
 
 import javax.validation.Valid;
 

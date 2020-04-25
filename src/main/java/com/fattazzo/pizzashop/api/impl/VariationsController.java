@@ -1,4 +1,4 @@
-package com.fattazzo.pizzashop.controller.impl;
+package com.fattazzo.pizzashop.api.impl;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fattazzo.pizzashop.controller.api.VariationsApi;
+import com.fattazzo.pizzashop.api.VariationsApi;
 import com.fattazzo.pizzashop.entity.data.DoughEntity;
 import com.fattazzo.pizzashop.entity.data.SizeEntity;
 import com.fattazzo.pizzashop.entity.data.ToppingEntity;
