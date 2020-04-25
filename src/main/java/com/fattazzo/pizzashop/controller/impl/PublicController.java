@@ -1,4 +1,4 @@
-package com.fattazzo.pizzashop.api.impl;
+package com.fattazzo.pizzashop.controller.impl;
 
 import java.util.Locale;
 
@@ -18,7 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fattazzo.pizzashop.api.PublicApi;
+import com.fattazzo.pizzashop.controller.api.PublicApi;
 import com.fattazzo.pizzashop.exception.security.RestException;
 import com.fattazzo.pizzashop.model.dto.security.Session;
 import com.fattazzo.pizzashop.model.dto.security.User;

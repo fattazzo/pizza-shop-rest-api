@@ -1,4 +1,4 @@
-package com.fattazzo.pizzashop.api.impl;
+package com.fattazzo.pizzashop.controller.impl;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
-import com.fattazzo.pizzashop.api.BranchesApi;
+import com.fattazzo.pizzashop.controller.api.BranchesApi;
 import com.fattazzo.pizzashop.entity.data.BranchEntity;
 import com.fattazzo.pizzashop.exception.security.NoSuchEntityException;
 import com.fattazzo.pizzashop.exception.security.RestException;
