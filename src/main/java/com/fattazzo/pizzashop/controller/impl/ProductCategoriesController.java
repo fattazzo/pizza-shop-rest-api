@@ -17,7 +17,7 @@ import com.fattazzo.pizzashop.controller.api.ProductcategoriesApi;
 import com.fattazzo.pizzashop.entity.data.ProductCategoryEntity;
 import com.fattazzo.pizzashop.exception.security.NoSuchEntityException;
 import com.fattazzo.pizzashop.exception.security.RestException;
-import com.fattazzo.pizzashop.model.dto.data.ProductCategory;
+import com.fattazzo.pizzashop.model.api.ProductCategory;
 import com.fattazzo.pizzashop.service.local.LocaleUtilsMessage;
 import com.fattazzo.pizzashop.service.product.ProductCategoryService;
 

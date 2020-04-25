@@ -26,7 +26,7 @@ import com.fattazzo.pizzashop.exception.security.ExpiredTokenException;
 import com.fattazzo.pizzashop.exception.security.MailNotSentException;
 import com.fattazzo.pizzashop.exception.security.NoSuchEntityException;
 import com.fattazzo.pizzashop.exception.security.RestException;
-import com.fattazzo.pizzashop.model.dto.security.UserRegistrationInfo;
+import com.fattazzo.pizzashop.model.UserRegistrationInfo;
 import com.fattazzo.pizzashop.service.local.LocaleUtilsMessage;
 import com.fattazzo.pizzashop.service.user.UserService;
 
@@ -123,7 +123,7 @@ public class SessionController {
 		if (!user.isPresent()) {
 			throw new NoSuchEntityException();
 		}
-		if (user.get().getStatus() == UserEntity.UserStatus.Active) {
+		if (user.get().getStatus() == UserEntity.UserStatus.ACTIVE) {
 			final RestException exception = RestException.newBuilder()
 					.title("Reinvio Mail di conferma registrazione in errore")
 					.detail("E'  necessario il token di registrazione").status(HttpStatus.BAD_REQUEST).build();

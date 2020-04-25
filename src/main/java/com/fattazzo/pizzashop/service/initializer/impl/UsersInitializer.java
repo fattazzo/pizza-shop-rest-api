@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 
 import com.fattazzo.pizzashop.entity.security.GroupEntity;
 import com.fattazzo.pizzashop.entity.security.UserEntity;
-import com.fattazzo.pizzashop.entity.security.UserType;
 import com.fattazzo.pizzashop.entity.security.UserEntity.UserStatus;
+import com.fattazzo.pizzashop.entity.security.UserType;
 import com.fattazzo.pizzashop.exception.security.RestException;
 import com.fattazzo.pizzashop.service.group.GroupService;
 import com.fattazzo.pizzashop.service.initializer.Initializer;
@@ -52,7 +52,7 @@ public class UsersInitializer implements Initializer {
 
 	private UserEntity initAdminUser(GroupEntity group) {
 		return UserEntity.builder().username("admin").password(passwordEncoder.encode("admin")).email("admin@email.com")
-				.type(UserType.ADMIN).groups(Arrays.asList(group)).status(UserStatus.Active).readOnly(true).build();
+				.type(UserType.ADMIN).groups(Arrays.asList(group)).status(UserStatus.ACTIVE).readOnly(true).build();
 	}
 
 	@Override

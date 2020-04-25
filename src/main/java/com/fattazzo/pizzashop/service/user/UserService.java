@@ -29,7 +29,7 @@ import com.fattazzo.pizzashop.exception.security.MailNotSentException;
 import com.fattazzo.pizzashop.exception.security.NoSuchEntityException;
 import com.fattazzo.pizzashop.exception.security.RestException;
 import com.fattazzo.pizzashop.exception.security.UserNotActiveException;
-import com.fattazzo.pizzashop.model.dto.security.UserRegistrationInfo;
+import com.fattazzo.pizzashop.model.UserRegistrationInfo;
 import com.fattazzo.pizzashop.repository.RegistrationTokenRepository;
 import com.fattazzo.pizzashop.repository.UserRepository;
 import com.fattazzo.pizzashop.service.group.GroupService;
@@ -86,7 +86,7 @@ public class UserService {
 		final UserEntity user = findByUsername(registrationTokenEntity.getUsername())
 				.orElseThrow(NoSuchEntityException::new);
 
-		user.setStatus(UserEntity.UserStatus.Active);
+		user.setStatus(UserEntity.UserStatus.ACTIVE);
 		userRepository.save(user);
 		registrationTokenRepository.delete(registrationTokenEntity);
 	}
@@ -137,7 +137,7 @@ public class UserService {
 						.title(localeUtilsMessage.getErrorLocalizedMessage("group.customer.notfound.title", null))
 						.detail(localeUtilsMessage.getErrorLocalizedMessage("group.customer.notfound.detail", null))
 						.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
-		registrateUser(registrationInfo, group, UserStatus.ToConfirm);
+		registrateUser(registrationInfo, group, UserStatus.TOCONFIRM);
 	}
 
 	public void registrateUser(UserRegistrationInfo registrationInfo, GroupEntity group, UserStatus status)
@@ -149,7 +149,7 @@ public class UserService {
 
 		userRepository.save(user);
 
-		if (status == UserStatus.ToConfirm) {
+		if (status == UserStatus.TOCONFIRM) {
 			final RegistrationToken registrationToken = createRegistrationToken(registrationInfo.getUsername());
 			sendRegistrationMail(registrationToken, registrationInfo.getEmail());
 		}
@@ -162,7 +162,7 @@ public class UserService {
 						.title(localeUtilsMessage.getErrorLocalizedMessage("group.worker.notfound.title", null))
 						.detail(localeUtilsMessage.getErrorLocalizedMessage("group.worker.notfound.detail", null))
 						.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
-		registrateUser(registrationInfo, group, UserStatus.Active);
+		registrateUser(registrationInfo, group, UserStatus.ACTIVE);
 	}
 
 	@Transactional
@@ -208,7 +208,7 @@ public class UserService {
 		final Optional<UserEntity> userOpt = findByUsername(username);
 
 		if (!userOpt.isPresent() || userOpt.get().getStatus() == null
-				|| userOpt.get().getStatus() != UserEntity.UserStatus.Active) {
+				|| userOpt.get().getStatus() != UserEntity.UserStatus.ACTIVE) {
 			throw new UserNotActiveException("user not active");
 		}
 	}

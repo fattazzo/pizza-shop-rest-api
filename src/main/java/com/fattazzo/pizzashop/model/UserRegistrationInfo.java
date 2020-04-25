@@ -1,4 +1,4 @@
-package com.fattazzo.pizzashop.model.dto.security;
+package com.fattazzo.pizzashop.model;
 
 import java.io.Serializable;
 import java.util.Objects;

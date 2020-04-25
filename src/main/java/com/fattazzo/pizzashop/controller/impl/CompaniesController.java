@@ -22,7 +22,7 @@ import com.fattazzo.pizzashop.entity.data.CompanyEntity;
 import com.fattazzo.pizzashop.entity.data.CompanyLogoEntity;
 import com.fattazzo.pizzashop.exception.security.NoSuchEntityException;
 import com.fattazzo.pizzashop.exception.security.RestException;
-import com.fattazzo.pizzashop.model.dto.data.Company;
+import com.fattazzo.pizzashop.model.api.Company;
 import com.fattazzo.pizzashop.service.company.CompanyLogoService;
 import com.fattazzo.pizzashop.service.company.CompanyService;
 import com.fattazzo.pizzashop.service.local.LocaleUtilsMessage;

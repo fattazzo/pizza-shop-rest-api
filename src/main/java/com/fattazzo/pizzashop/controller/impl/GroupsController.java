@@ -16,7 +16,7 @@ import com.fattazzo.pizzashop.controller.api.GroupsApi;
 import com.fattazzo.pizzashop.entity.security.GroupEntity;
 import com.fattazzo.pizzashop.exception.security.NoSuchEntityException;
 import com.fattazzo.pizzashop.exception.security.RestException;
-import com.fattazzo.pizzashop.model.dto.security.Group;
+import com.fattazzo.pizzashop.model.api.Group;
 import com.fattazzo.pizzashop.service.group.GroupService;
 import com.fattazzo.pizzashop.service.group.GroupService.GroupReadonlyException;
 import com.fattazzo.pizzashop.service.local.LocaleUtilsMessage;

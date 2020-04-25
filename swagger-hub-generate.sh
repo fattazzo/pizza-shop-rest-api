@@ -1,16 +1,11 @@
-cd src/app/open-api
+mkdir /tmp/pizzashop/spring-server-stub
+rm -rf /tmp/pizzashop/spring-server-stub/*
+rm -rf /tmp/pizzashop/spring-server-stub/.*
 
-# rimuovo tutte le api precedentemente generate
-rm -rf ..?* .[!.]* *
+unzip /tmp/spring-server-generated.zip -d /tmp/pizzashop/spring-server-stub
 
-# scompatto il client generato da swagger-hub
-unzip /tmp/typescript-angular-client-generated.zip
+rm src/main/java/com/fattazzo/pizzashop/controller/api/*
 
-# rimuovo tutto quello che non serve
-rm -f README.md
-rm -f git_push.sh
-rm -f .swagger-codegen-ignore
-rm -f .gitignore
-rm -rf .swagger-codegen
-rm -f .npmignore
-rm -f ng-package.json
+cp /tmp/pizzashop/spring-server-stub/src/main/java/com/fattazzo/pizzashop/controller/api/* src/main/java/com/fattazzo/pizzashop/controller/api
+
+cp /tmp/pizzashop/spring-server-stub/src/main/java/com/fattazzo/pizzashop/model/api/* src/main/java/com/fattazzo/pizzashop/model/api

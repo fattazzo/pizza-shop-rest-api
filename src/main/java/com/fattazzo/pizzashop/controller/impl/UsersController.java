@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fattazzo.pizzashop.controller.api.UsersApi;
 import com.fattazzo.pizzashop.entity.security.UserEntity;
-import com.fattazzo.pizzashop.entity.security.UserType;
 import com.fattazzo.pizzashop.entity.security.UserEntity.UserStatus;
+import com.fattazzo.pizzashop.entity.security.UserType;
 import com.fattazzo.pizzashop.exception.security.NoSuchEntityException;
 import com.fattazzo.pizzashop.exception.security.RestException;
-import com.fattazzo.pizzashop.model.dto.security.User;
-import com.fattazzo.pizzashop.model.dto.security.UserDetails;
+import com.fattazzo.pizzashop.model.api.User;
+import com.fattazzo.pizzashop.model.api.UserDetails;
 import com.fattazzo.pizzashop.service.local.LocaleUtilsMessage;
 import com.fattazzo.pizzashop.service.user.UserService;
 import com.fattazzo.pizzashop.service.user.UserService.UserReadonlyException;
@@ -59,7 +59,7 @@ public class UsersController implements UsersApi {
 		UserEntity user = mapper.map(body, UserEntity.class);
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		user.setType(UserType.WORKER);
-		user.setStatus(UserStatus.Active);
+		user.setStatus(UserStatus.ACTIVE);
 
 		user = userService.save(user);
 

@@ -31,7 +31,7 @@ import lombok.ToString;
 public class UserEntity {
 
 	public enum UserStatus {
-		Active, ToConfirm;
+		ACTIVE, TOCONFIRM;
 	}
 
 	@Id
@@ -62,7 +62,6 @@ public class UserEntity {
 	@Builder.Default
 	private List<GroupEntity> groups = new ArrayList();
 
-	@Column(name = "status")
 	private UserStatus status;
 
 	public List<Role> getRoles() {
