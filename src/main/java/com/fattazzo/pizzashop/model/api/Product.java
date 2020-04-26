@@ -1,10 +1,7 @@
 package com.fattazzo.pizzashop.model.api;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.validation.annotation.Validated;
@@ -14,25 +11,27 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * Group
+ * Product
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-26T14:55:34.957Z[GMT]")
-public class Group   {
+public class Product   {
   @JsonProperty("id")
   private Integer id = null;
 
   @JsonProperty("name")
   private String name = null;
 
-  @JsonProperty("roles")
-  @Valid
-  private List<Role> roles = null;
+  @JsonProperty("description")
+  private String description = null;
 
-  @JsonProperty("readOnly")
-  private Boolean readOnly = null;
+  @JsonProperty("enabled")
+  private Boolean enabled = null;
 
-  public Group id(Integer id) {
+  @JsonProperty("price")
+  private Double price = null;
+
+  public Product id(Integer id) {
     this.id = id;
     return this;
   }
@@ -51,7 +50,7 @@ public class Group   {
     this.id = id;
   }
 
-  public Group name(String name) {
+  public Product name(String name) {
     this.name = name;
     return this;
   }
@@ -71,51 +70,63 @@ public class Group   {
     this.name = name;
   }
 
-  public Group roles(List<Role> roles) {
-    this.roles = roles;
-    return this;
-  }
-
-  public Group addRolesItem(Role rolesItem) {
-    if (this.roles == null) {
-      this.roles = new ArrayList<Role>();
-    }
-    this.roles.add(rolesItem);
+  public Product description(String description) {
+    this.description = description;
     return this;
   }
 
   /**
-   * List of assigned `Role'
-   * @return roles
+   * Get description
+   * @return description
   **/
-  @ApiModelProperty(value = "List of assigned `Role'")
-      @Valid
-    public List<Role> getRoles() {
-    return roles;
+  @ApiModelProperty(value = "")
+  
+    public String getDescription() {
+    return description;
   }
 
-  public void setRoles(List<Role> roles) {
-    this.roles = roles;
+  public void setDescription(String description) {
+    this.description = description;
   }
 
-  public Group readOnly(Boolean readOnly) {
-    this.readOnly = readOnly;
+  public Product enabled(Boolean enabled) {
+    this.enabled = enabled;
     return this;
   }
 
   /**
-   * Read only groups cannot be deleted
-   * @return readOnly
+   * Get enabled
+   * @return enabled
   **/
-  @ApiModelProperty(required = true, value = "Read only groups cannot be deleted")
+  @ApiModelProperty(required = true, value = "")
       @NotNull
 
-    public Boolean isReadOnly() {
-    return readOnly;
+    public Boolean isEnabled() {
+    return enabled;
   }
 
-  public void setReadOnly(Boolean readOnly) {
-    this.readOnly = readOnly;
+  public void setEnabled(Boolean enabled) {
+    this.enabled = enabled;
+  }
+
+  public Product price(Double price) {
+    this.price = price;
+    return this;
+  }
+
+  /**
+   * Get price
+   * @return price
+  **/
+  @ApiModelProperty(required = true, value = "")
+      @NotNull
+
+    public Double getPrice() {
+    return price;
+  }
+
+  public void setPrice(Double price) {
+    this.price = price;
   }
 
 
@@ -127,27 +138,29 @@ public class Group   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Group group = (Group) o;
-    return Objects.equals(this.id, group.id) &&
-        Objects.equals(this.name, group.name) &&
-        Objects.equals(this.roles, group.roles) &&
-        Objects.equals(this.readOnly, group.readOnly);
+    Product product = (Product) o;
+    return Objects.equals(this.id, product.id) &&
+        Objects.equals(this.name, product.name) &&
+        Objects.equals(this.description, product.description) &&
+        Objects.equals(this.enabled, product.enabled) &&
+        Objects.equals(this.price, product.price);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, roles, readOnly);
+    return Objects.hash(id, name, description, enabled, price);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Group {\n");
+    sb.append("class Product {\n");
     
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    sb.append("    roles: ").append(toIndentedString(roles)).append("\n");
-    sb.append("    readOnly: ").append(toIndentedString(readOnly)).append("\n");
+    sb.append("    description: ").append(toIndentedString(description)).append("\n");
+    sb.append("    enabled: ").append(toIndentedString(enabled)).append("\n");
+    sb.append("    price: ").append(toIndentedString(price)).append("\n");
     sb.append("}");
     return sb.toString();
   }

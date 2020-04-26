@@ -1,10 +1,13 @@
 package com.fattazzo.pizzashop.entity.data;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -16,7 +19,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "data_variation_toppings")
+@Table(name = "data_products")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -24,18 +27,23 @@ import lombok.ToString;
 @ToString
 @Builder
 @EqualsAndHashCode
-public class ToppingEntity {
+public class ProductEntity {
 
 	@Id
 	@Column(unique = true)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@Column(nullable = false, length = 100)
+	@Column(nullable = false)
 	private String name;
 
 	private String description;
 
-	@Builder.Default
-	private boolean enabled = Boolean.TRUE;
+	private Boolean enabled;
+
+	private BigDecimal price;
+
+	@ManyToOne(optional = false)
+	private ProductCategoryEntity category;
+
 }

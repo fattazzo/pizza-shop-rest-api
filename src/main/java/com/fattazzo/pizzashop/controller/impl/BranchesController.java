@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.fattazzo.pizzashop.controller.api.BranchesApi;
 import com.fattazzo.pizzashop.entity.data.BranchEntity;
@@ -26,7 +26,7 @@ import com.fattazzo.pizzashop.service.local.LocaleUtilsMessage;
 
 import io.swagger.annotations.Api;
 
-@Controller
+@RestController
 @Api(tags = { "branches" })
 public class BranchesController implements BranchesApi {
 

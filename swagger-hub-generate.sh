@@ -1,4 +1,4 @@
-mkdir /tmp/pizzashop/spring-server-stub
+mkdir -p /tmp/pizzashop/spring-server-stub
 rm -rf /tmp/pizzashop/spring-server-stub/*
 rm -rf /tmp/pizzashop/spring-server-stub/.*
 

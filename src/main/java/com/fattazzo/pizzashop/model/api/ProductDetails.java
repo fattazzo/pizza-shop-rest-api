@@ -3,8 +3,8 @@ package com.fattazzo.pizzashop.model.api;
 import java.util.Objects;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
-import org.springframework.core.io.Resource;
 import org.springframework.validation.annotation.Validated;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -12,32 +12,33 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * Body
+ * ProductDetails
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-26T14:55:34.957Z[GMT]")
-public class Body   {
-  @JsonProperty("file")
-  private Resource file = null;
+public class ProductDetails extends Product  {
+  @JsonProperty("category")
+  private ProductCategory category = null;
 
-  public Body file(Resource file) {
-    this.file = file;
+  public ProductDetails category(ProductCategory category) {
+    this.category = category;
     return this;
   }
 
   /**
-   * Get file
-   * @return file
+   * Get category
+   * @return category
   **/
-  @ApiModelProperty(value = "")
-  
+  @ApiModelProperty(required = true, value = "")
+      @NotNull
+
     @Valid
-    public Resource getFile() {
-    return file;
+    public ProductCategory getCategory() {
+    return category;
   }
 
-  public void setFile(Resource file) {
-    this.file = file;
+  public void setCategory(ProductCategory category) {
+    this.category = category;
   }
 
 
@@ -49,21 +50,22 @@ public class Body   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Body body = (Body) o;
-    return Objects.equals(this.file, body.file);
+    ProductDetails productDetails = (ProductDetails) o;
+    return Objects.equals(this.category, productDetails.category) &&
+        super.equals(o);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(file);
+    return Objects.hash(category, super.hashCode());
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Body {\n");
-    
-    sb.append("    file: ").append(toIndentedString(file)).append("\n");
+    sb.append("class ProductDetails {\n");
+    sb.append("    ").append(toIndentedString(super.toString())).append("\n");
+    sb.append("    category: ").append(toIndentedString(category)).append("\n");
     sb.append("}");
     return sb.toString();
   }
