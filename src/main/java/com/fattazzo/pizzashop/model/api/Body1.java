@@ -11,15 +11,15 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * Body
+ * Body1
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-28T06:15:14.926Z[GMT]")
-public class Body   {
+public class Body1   {
   @JsonProperty("file")
   private Resource file = null;
 
-  public Body file(Resource file) {
+  public Body1 file(Resource file) {
     this.file = file;
     return this;
   }
@@ -48,8 +48,8 @@ public class Body   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Body body = (Body) o;
-    return Objects.equals(this.file, body.file);
+    Body1 body1 = (Body1) o;
+    return Objects.equals(this.file, body1.file);
   }
 
   @Override
@@ -60,7 +60,7 @@ public class Body   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Body {\n");
+    sb.append("class Body1 {\n");
     
     sb.append("    file: ").append(toIndentedString(file)).append("\n");
     sb.append("}");

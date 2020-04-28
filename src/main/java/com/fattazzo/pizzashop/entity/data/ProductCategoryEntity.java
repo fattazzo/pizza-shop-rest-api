@@ -1,10 +1,15 @@
 package com.fattazzo.pizzashop.entity.data;
 
+import java.util.Set;
+import java.util.TreeSet;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -39,4 +44,13 @@ public class ProductCategoryEntity {
 	@Builder.Default
 	private Boolean enabled = true;
 
+	@EqualsAndHashCode.Exclude
+	@Builder.Default
+	@ManyToMany(fetch = FetchType.EAGER)
+	private Set<DoughEntity> doughs = new TreeSet<>();
+
+	@EqualsAndHashCode.Exclude
+	@Builder.Default
+	@ManyToMany(fetch = FetchType.EAGER)
+	private Set<SizeEntity> sizes = new TreeSet<>();
 }

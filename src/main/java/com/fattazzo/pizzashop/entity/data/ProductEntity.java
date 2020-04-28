@@ -2,13 +2,20 @@ package com.fattazzo.pizzashop.entity.data;
 
 import java.math.BigDecimal;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,11 +46,17 @@ public class ProductEntity {
 
 	private String description;
 
-	private Boolean enabled;
+	@Builder.Default
+	private boolean enabled = Boolean.TRUE;
 
 	private BigDecimal price;
 
 	@ManyToOne(optional = false)
 	private ProductCategoryEntity category;
+
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	@JoinColumn
+	@LazyToOne(value = LazyToOneOption.NO_PROXY)
+	private ProductImageEntity image;
 
 }

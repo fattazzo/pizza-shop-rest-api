@@ -4,10 +4,8 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fattazzo.pizzashop.model.api.Dough;
-import com.fattazzo.pizzashop.model.api.Product;
 import com.fattazzo.pizzashop.model.api.ProductCategory;
 import com.fattazzo.pizzashop.model.api.Size;
-import com.fattazzo.pizzashop.model.api.ToppingExtra;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
@@ -17,11 +15,11 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * ProductDetails
+ * ProductCategoryDetails
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-28T06:15:14.926Z[GMT]")
-public class ProductDetails extends Product  {
+public class ProductCategoryDetails extends ProductCategory  {
   @JsonProperty("doughs")
   @Valid
   private List<Dough> doughs = null;
@@ -30,16 +28,12 @@ public class ProductDetails extends Product  {
   @Valid
   private List<Size> sizes = null;
 
-  @JsonProperty("toppingExtras")
-  @Valid
-  private List<ToppingExtra> toppingExtras = null;
-
-  public ProductDetails doughs(List<Dough> doughs) {
+  public ProductCategoryDetails doughs(List<Dough> doughs) {
     this.doughs = doughs;
     return this;
   }
 
-  public ProductDetails addDoughsItem(Dough doughsItem) {
+  public ProductCategoryDetails addDoughsItem(Dough doughsItem) {
     if (this.doughs == null) {
       this.doughs = new ArrayList<Dough>();
     }
@@ -51,7 +45,7 @@ public class ProductDetails extends Product  {
    * Get doughs
    * @return doughs
   **/
-  @ApiModelProperty(readOnly = true, value = "")
+  @ApiModelProperty(value = "")
       @Valid
     public List<Dough> getDoughs() {
     return doughs;
@@ -61,12 +55,12 @@ public class ProductDetails extends Product  {
     this.doughs = doughs;
   }
 
-  public ProductDetails sizes(List<Size> sizes) {
+  public ProductCategoryDetails sizes(List<Size> sizes) {
     this.sizes = sizes;
     return this;
   }
 
-  public ProductDetails addSizesItem(Size sizesItem) {
+  public ProductCategoryDetails addSizesItem(Size sizesItem) {
     if (this.sizes == null) {
       this.sizes = new ArrayList<Size>();
     }
@@ -78,7 +72,7 @@ public class ProductDetails extends Product  {
    * Get sizes
    * @return sizes
   **/
-  @ApiModelProperty(readOnly = true, value = "")
+  @ApiModelProperty(value = "")
       @Valid
     public List<Size> getSizes() {
     return sizes;
@@ -86,33 +80,6 @@ public class ProductDetails extends Product  {
 
   public void setSizes(List<Size> sizes) {
     this.sizes = sizes;
-  }
-
-  public ProductDetails toppingExtras(List<ToppingExtra> toppingExtras) {
-    this.toppingExtras = toppingExtras;
-    return this;
-  }
-
-  public ProductDetails addToppingExtrasItem(ToppingExtra toppingExtrasItem) {
-    if (this.toppingExtras == null) {
-      this.toppingExtras = new ArrayList<ToppingExtra>();
-    }
-    this.toppingExtras.add(toppingExtrasItem);
-    return this;
-  }
-
-  /**
-   * Get toppingExtras
-   * @return toppingExtras
-  **/
-  @ApiModelProperty(readOnly = true, value = "")
-      @Valid
-    public List<ToppingExtra> getToppingExtras() {
-    return toppingExtras;
-  }
-
-  public void setToppingExtras(List<ToppingExtra> toppingExtras) {
-    this.toppingExtras = toppingExtras;
   }
 
 
@@ -124,26 +91,24 @@ public class ProductDetails extends Product  {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ProductDetails productDetails = (ProductDetails) o;
-    return Objects.equals(this.doughs, productDetails.doughs) &&
-        Objects.equals(this.sizes, productDetails.sizes) &&
-        Objects.equals(this.toppingExtras, productDetails.toppingExtras) &&
+    ProductCategoryDetails productCategoryDetails = (ProductCategoryDetails) o;
+    return Objects.equals(this.doughs, productCategoryDetails.doughs) &&
+        Objects.equals(this.sizes, productCategoryDetails.sizes) &&
         super.equals(o);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(doughs, sizes, toppingExtras, super.hashCode());
+    return Objects.hash(doughs, sizes, super.hashCode());
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class ProductDetails {\n");
+    sb.append("class ProductCategoryDetails {\n");
     sb.append("    ").append(toIndentedString(super.toString())).append("\n");
     sb.append("    doughs: ").append(toIndentedString(doughs)).append("\n");
     sb.append("    sizes: ").append(toIndentedString(sizes)).append("\n");
-    sb.append("    toppingExtras: ").append(toIndentedString(toppingExtras)).append("\n");
     sb.append("}");
     return sb.toString();
   }

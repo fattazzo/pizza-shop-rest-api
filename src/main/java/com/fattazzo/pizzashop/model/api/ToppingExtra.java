@@ -1,24 +1,24 @@
 package com.fattazzo.pizzashop.model.api;
 
-import java.math.BigDecimal;
 import java.util.Objects;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-
-import org.springframework.validation.annotation.Validated;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fattazzo.pizzashop.model.api.Dough;
+import com.fattazzo.pizzashop.model.api.Size;
+import com.fattazzo.pizzashop.model.api.Topping;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.math.BigDecimal;
+import org.springframework.validation.annotation.Validated;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * Price of the topping based on a dough and size
  */
 @ApiModel(description = "Price of the topping based on a dough and size")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-26T14:55:34.957Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-28T06:15:14.926Z[GMT]")
 public class ToppingExtra   {
   @JsonProperty("id")
   private Integer id = null;
@@ -37,9 +37,6 @@ public class ToppingExtra   {
 
   @JsonProperty("enabled")
   private Boolean enabled = null;
-
-  @JsonProperty("toppingEnabled")
-  private Boolean toppingEnabled = null;
 
   public ToppingExtra id(Integer id) {
     this.id = id;
@@ -164,26 +161,6 @@ public class ToppingExtra   {
     this.enabled = enabled;
   }
 
-  public ToppingExtra toppingEnabled(Boolean toppingEnabled) {
-    this.toppingEnabled = toppingEnabled;
-    return this;
-  }
-
-  /**
-   * Get toppingEnabled
-   * @return toppingEnabled
-  **/
-  @ApiModelProperty(required = true, value = "")
-      @NotNull
-
-    public Boolean isToppingEnabled() {
-    return toppingEnabled;
-  }
-
-  public void setToppingEnabled(Boolean toppingEnabled) {
-    this.toppingEnabled = toppingEnabled;
-  }
-
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -199,13 +176,12 @@ public class ToppingExtra   {
         Objects.equals(this.dough, toppingExtra.dough) &&
         Objects.equals(this.size, toppingExtra.size) &&
         Objects.equals(this.extra, toppingExtra.extra) &&
-        Objects.equals(this.enabled, toppingExtra.enabled) &&
-        Objects.equals(this.toppingEnabled, toppingExtra.toppingEnabled);
+        Objects.equals(this.enabled, toppingExtra.enabled);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, topping, dough, size, extra, enabled, toppingEnabled);
+    return Objects.hash(id, topping, dough, size, extra, enabled);
   }
 
   @Override
@@ -219,7 +195,6 @@ public class ToppingExtra   {
     sb.append("    size: ").append(toIndentedString(size)).append("\n");
     sb.append("    extra: ").append(toIndentedString(extra)).append("\n");
     sb.append("    enabled: ").append(toIndentedString(enabled)).append("\n");
-    sb.append("    toppingEnabled: ").append(toIndentedString(toppingEnabled)).append("\n");
     sb.append("}");
     return sb.toString();
   }

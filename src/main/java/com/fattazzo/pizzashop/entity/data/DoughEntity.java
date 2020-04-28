@@ -43,4 +43,6 @@ public class DoughEntity {
 
 	@Builder.Default
 	private boolean enabled = Boolean.FALSE;
+
+	private Integer order;
 }

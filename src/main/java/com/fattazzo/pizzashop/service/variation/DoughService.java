@@ -22,11 +22,11 @@ public class DoughService {
 	}
 
 	public List<DoughEntity> findAll() {
-		return doughRepository.findAll();
+		return doughRepository.findAllByOrderByOrderAsc();
 	}
 
 	public List<DoughEntity> findAllEnabled() {
-		return doughRepository.findByEnabledTrue();
+		return doughRepository.findByEnabledTrueOrderByOrderAsc();
 	}
 
 	public Optional<DoughEntity> findById(Integer id) {

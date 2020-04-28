@@ -16,14 +16,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "data_companies_logo")
+@Table(name = "data_products_images")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode
-public class CompanyLogoEntity {
+public class ProductImageEntity {
 
 	@Id
 	@Column(unique = true)

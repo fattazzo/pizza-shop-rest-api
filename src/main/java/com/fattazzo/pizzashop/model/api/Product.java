@@ -1,20 +1,20 @@
 package com.fattazzo.pizzashop.model.api;
 
 import java.util.Objects;
-
-import javax.validation.constraints.NotNull;
-
-import org.springframework.validation.annotation.Validated;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fattazzo.pizzashop.model.api.ProductCategory;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.springframework.validation.annotation.Validated;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * Product
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-26T14:55:34.957Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-28T06:15:14.926Z[GMT]")
 public class Product   {
   @JsonProperty("id")
   private Integer id = null;
@@ -30,6 +30,9 @@ public class Product   {
 
   @JsonProperty("price")
   private Double price = null;
+
+  @JsonProperty("category")
+  private ProductCategory category = null;
 
   public Product id(Integer id) {
     this.id = id;
@@ -129,6 +132,27 @@ public class Product   {
     this.price = price;
   }
 
+  public Product category(ProductCategory category) {
+    this.category = category;
+    return this;
+  }
+
+  /**
+   * Get category
+   * @return category
+  **/
+  @ApiModelProperty(required = true, value = "")
+      @NotNull
+
+    @Valid
+    public ProductCategory getCategory() {
+    return category;
+  }
+
+  public void setCategory(ProductCategory category) {
+    this.category = category;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -143,12 +167,13 @@ public class Product   {
         Objects.equals(this.name, product.name) &&
         Objects.equals(this.description, product.description) &&
         Objects.equals(this.enabled, product.enabled) &&
-        Objects.equals(this.price, product.price);
+        Objects.equals(this.price, product.price) &&
+        Objects.equals(this.category, product.category);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, description, enabled, price);
+    return Objects.hash(id, name, description, enabled, price, category);
   }
 
   @Override
@@ -161,6 +186,7 @@ public class Product   {
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    enabled: ").append(toIndentedString(enabled)).append("\n");
     sb.append("    price: ").append(toIndentedString(price)).append("\n");
+    sb.append("    category: ").append(toIndentedString(category)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -5,26 +5,27 @@
  */
 package com.fattazzo.pizzashop.controller.api;
 
-import java.util.List;
-
-import javax.validation.Valid;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
 import com.fattazzo.pizzashop.model.api.Product;
 import com.fattazzo.pizzashop.model.api.ProductDetails;
+import org.springframework.core.io.Resource;
+import io.swagger.annotations.*;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.CookieValue;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.Authorization;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-26T14:55:34.957Z[GMT]")
+import javax.validation.Valid;
+import javax.validation.constraints.*;
+import java.util.List;
+import java.util.Map;
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-28T06:15:14.926Z[GMT]")
 @Api(value = "products", description = "the products API")
 public interface ProductsApi {
 
@@ -46,7 +47,17 @@ public interface ProductsApi {
         @ApiResponse(code = 204, message = "Successful response.") })
     @RequestMapping(value = "/products/{productId}",
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteProduct(@ApiParam(value = "A unique identifier for a `Product`.",required=true) @PathVariable("productId") String productId
+    ResponseEntity<Void> deleteProduct(@ApiParam(value = "A unique identifier for a `Product`.",required=true) @PathVariable("productId") Integer productId
+);
+
+
+    @ApiOperation(value = "Delete a Product image", nickname = "deleteProductImage", notes = "Deletes an existing `Product` image.", authorizations = {
+        @Authorization(value = "BearerAuth")    }, tags={ "products", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 204, message = "Successful response.") })
+    @RequestMapping(value = "/products/{productId}/image",
+        method = RequestMethod.DELETE)
+    ResponseEntity<Void> deleteProductImage(@ApiParam(value = "A unique identifier for a `Product`.",required=true) @PathVariable("productId") Integer productId
 );
 
 
@@ -57,18 +68,31 @@ public interface ProductsApi {
     @RequestMapping(value = "/products/{productId}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<ProductDetails> getProduct(@ApiParam(value = "A unique identifier for a `Product`.",required=true) @PathVariable("productId") String productId
+    ResponseEntity<ProductDetails> getProduct(@ApiParam(value = "A unique identifier for a `Product`.",required=true) @PathVariable("productId") Integer productId
 );
 
 
-    @ApiOperation(value = "List All products", nickname = "getproducts", notes = "Gets a list of all `Product` entities.", response = Product.class, responseContainer = "List", authorizations = {
+    @ApiOperation(value = "Get a Product image", nickname = "getProductImage", notes = "Gets a `Product` image.", response = Resource.class, authorizations = {
+        @Authorization(value = "BearerAuth")    }, tags={ "products", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "`Product` image", response = Resource.class),
+        @ApiResponse(code = 204, message = "`Product` image not present") })
+    @RequestMapping(value = "/products/{productId}/image",
+        produces = { "image/png" }, 
+        method = RequestMethod.GET)
+    ResponseEntity<Resource> getProductImage(@ApiParam(value = "A unique identifier for a `Product`.",required=true) @PathVariable("productId") Integer productId
+);
+
+
+    @ApiOperation(value = "List All products", nickname = "getProducts", notes = "Gets a list of all `Product` entities.", response = Product.class, responseContainer = "List", authorizations = {
         @Authorization(value = "BearerAuth")    }, tags={ "products", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Successful response - returns an array of `Product` entities.", response = Product.class, responseContainer = "List") })
     @RequestMapping(value = "/products",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<List<Product>> getproducts();
+    ResponseEntity<List<Product>> getProducts(@ApiParam(value = "If true, the list of all entities include enabled and disabled `Product`" ) @RequestHeader(value="includeDisabled", required=false) Boolean includeDisabled
+);
 
 
     @ApiOperation(value = "Update a Product", nickname = "updateProduct", notes = "Updates an existing `Product`.", response = ProductDetails.class, authorizations = {
@@ -80,7 +104,19 @@ public interface ProductsApi {
         consumes = { "application/json" },
         method = RequestMethod.PUT)
     ResponseEntity<ProductDetails> updateProduct(@ApiParam(value = "Updated `Product` information." ,required=true )  @Valid @RequestBody ProductDetails body
-,@ApiParam(value = "A unique identifier for a `Product`.",required=true) @PathVariable("productId") String productId
+,@ApiParam(value = "A unique identifier for a `Product`.",required=true) @PathVariable("productId") Integer productId
+);
+
+
+    @ApiOperation(value = "Update a Product image", nickname = "updateProductImage", notes = "Updates an existing `Product` image.", authorizations = {
+        @Authorization(value = "BearerAuth")    }, tags={ "products", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 204, message = "Successful response") })
+    @RequestMapping(value = "/products/{productId}/image",
+        consumes = { "multipart/form-data" },
+        method = RequestMethod.PUT)
+    ResponseEntity<Void> updateProductImage(@ApiParam(value = "file detail") @Valid @RequestPart("file") MultipartFile file
+,@ApiParam(value = "A unique identifier for a `Product`.",required=true) @PathVariable("productId") Integer productId
 );
 
 }

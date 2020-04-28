@@ -1,20 +1,21 @@
 package com.fattazzo.pizzashop.model.api;
 
 import java.util.Objects;
-
-import javax.validation.Valid;
-
-import org.springframework.validation.annotation.Validated;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fattazzo.pizzashop.model.api.Address;
+import com.fattazzo.pizzashop.model.api.ShippingMethod;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.springframework.validation.annotation.Validated;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * DeliveryAddress
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-26T14:55:34.957Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-28T06:15:14.926Z[GMT]")
 public class DeliveryAddress   {
   @JsonProperty("id")
   private Integer id = null;

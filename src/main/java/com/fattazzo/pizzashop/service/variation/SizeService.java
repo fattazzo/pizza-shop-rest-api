@@ -22,11 +22,11 @@ public class SizeService {
 	}
 
 	public List<SizeEntity> findAll() {
-		return sizeRepository.findAll();
+		return sizeRepository.findAllByOrderByOrderAsc();
 	}
 
 	public List<SizeEntity> findAllEnabled() {
-		return sizeRepository.findByEnabledTrue();
+		return sizeRepository.findByEnabledTrueOrderByOrderAsc();
 	}
 
 	public Optional<SizeEntity> findById(Integer id) {

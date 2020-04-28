@@ -1,22 +1,20 @@
 package com.fattazzo.pizzashop.model.api;
 
-import java.math.BigDecimal;
 import java.util.Objects;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-
-import org.springframework.validation.annotation.Validated;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.math.BigDecimal;
+import org.springframework.validation.annotation.Validated;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * Dough
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-26T14:55:34.957Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-28T06:15:14.926Z[GMT]")
 public class Dough   {
   @JsonProperty("id")
   private Integer id = null;
@@ -32,6 +30,9 @@ public class Dough   {
 
   @JsonProperty("enabled")
   private Boolean enabled = null;
+
+  @JsonProperty("order")
+  private Integer order = null;
 
   public Dough id(Integer id) {
     this.id = id;
@@ -132,6 +133,25 @@ public class Dough   {
     this.enabled = enabled;
   }
 
+  public Dough order(Integer order) {
+    this.order = order;
+    return this;
+  }
+
+  /**
+   * Get order
+   * @return order
+  **/
+  @ApiModelProperty(value = "")
+  
+    public Integer getOrder() {
+    return order;
+  }
+
+  public void setOrder(Integer order) {
+    this.order = order;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -146,12 +166,13 @@ public class Dough   {
         Objects.equals(this.name, dough.name) &&
         Objects.equals(this.description, dough.description) &&
         Objects.equals(this.extra, dough.extra) &&
-        Objects.equals(this.enabled, dough.enabled);
+        Objects.equals(this.enabled, dough.enabled) &&
+        Objects.equals(this.order, dough.order);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, description, extra, enabled);
+    return Objects.hash(id, name, description, extra, enabled, order);
   }
 
   @Override
@@ -164,6 +185,7 @@ public class Dough   {
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    extra: ").append(toIndentedString(extra)).append("\n");
     sb.append("    enabled: ").append(toIndentedString(enabled)).append("\n");
+    sb.append("    order: ").append(toIndentedString(order)).append("\n");
     sb.append("}");
     return sb.toString();
   }

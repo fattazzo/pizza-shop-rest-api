@@ -2,6 +2,7 @@ package com.fattazzo.pizzashop.service.variation;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +34,16 @@ public class ToppingExtraService {
 	private ToppingService toppingService;
 
 	public List<ToppingExtraEntity> findAll() {
-		return toppingExtraRepository.findAll(Sort.by(Direction.ASC, "topping.name"));
+		final List<ToppingExtraEntity> entities = toppingExtraRepository
+				.findAll(Sort.by(Direction.ASC, "topping.name"));
+
+		final Comparator<ToppingExtraEntity> comparator = Comparator
+				.<ToppingExtraEntity, String>comparing(te -> te.getTopping().getName())
+				.thenComparing(te -> te.getDough().getOrder()).thenComparing(te -> te.getSize().getOrder());
+
+		entities.sort(comparator);
+
+		return entities;
 	}
 
 	public List<ToppingExtraEntity> findAll(Integer doughId, Integer sizeId) {
@@ -62,7 +72,11 @@ public class ToppingExtraService {
 			}
 		}
 
-		entities.sort((te1, te2) -> te1.getTopping().getName().compareTo(te2.getTopping().getName()));
+		final Comparator<ToppingExtraEntity> comparator = Comparator
+				.<ToppingExtraEntity, String>comparing(te -> te.getTopping().getName())
+				.thenComparing(te -> te.getDough().getOrder()).thenComparing(te -> te.getSize().getOrder());
+
+		entities.sort(comparator);
 
 		return entities;
 	}

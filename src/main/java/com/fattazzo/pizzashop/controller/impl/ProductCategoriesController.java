@@ -18,6 +18,7 @@ import com.fattazzo.pizzashop.entity.data.ProductCategoryEntity;
 import com.fattazzo.pizzashop.exception.security.NoSuchEntityException;
 import com.fattazzo.pizzashop.exception.security.RestException;
 import com.fattazzo.pizzashop.model.api.ProductCategory;
+import com.fattazzo.pizzashop.model.api.ProductCategoryDetails;
 import com.fattazzo.pizzashop.service.local.LocaleUtilsMessage;
 import com.fattazzo.pizzashop.service.product.ProductCategoryService;
 
@@ -38,7 +39,7 @@ public class ProductCategoriesController implements ProductcategoriesApi {
 
 	@Override
 	@PreAuthorize("@securityService.hasAnyPermission({'PRODUCTS'})")
-	public ResponseEntity<ProductCategory> createProductCategory(@Valid ProductCategory body) {
+	public ResponseEntity<ProductCategoryDetails> createProductCategory(@Valid ProductCategoryDetails body) {
 		final ProductCategoryEntity existingEntity = productCategoryService.findByName(body.getName()).orElse(null);
 		if (existingEntity != null) {
 			throw RestException.newBuilder()
@@ -52,7 +53,7 @@ public class ProductCategoriesController implements ProductcategoriesApi {
 
 		category = productCategoryService.save(category);
 
-		return new ResponseEntity<>(mapper.map(category, ProductCategory.class), HttpStatus.CREATED);
+		return new ResponseEntity<>(mapper.map(category, ProductCategoryDetails.class), HttpStatus.CREATED);
 	}
 
 	@Override
@@ -74,15 +75,15 @@ public class ProductCategoriesController implements ProductcategoriesApi {
 	}
 
 	@Override
-	public ResponseEntity<ProductCategory> getProductCategory(Integer productcategoryId) {
+	public ResponseEntity<ProductCategoryDetails> getProductCategory(Integer productcategoryId) {
 		final ProductCategoryEntity entity = productCategoryService.findById(productcategoryId)
 				.orElseThrow(NoSuchEntityException::new);
-		return ResponseEntity.ok(mapper.map(entity, ProductCategory.class));
+		return ResponseEntity.ok(mapper.map(entity, ProductCategoryDetails.class));
 	}
 
 	@Override
 	@PreAuthorize("@securityService.hasAnyPermission({'PRODUCTS'})")
-	public ResponseEntity<ProductCategory> updateProductCategory(@Valid ProductCategory body,
+	public ResponseEntity<ProductCategoryDetails> updateProductCategory(@Valid ProductCategoryDetails body,
 			Integer productcategoryId) {
 		final ProductCategoryEntity existingEntity = productCategoryService.findById(productcategoryId)
 				.orElseThrow(NoSuchEntityException::new);
@@ -96,7 +97,10 @@ public class ProductCategoriesController implements ProductcategoriesApi {
 
 		final ProductCategoryEntity category = productCategoryService
 				.save(mapper.map(body, ProductCategoryEntity.class));
-		return ResponseEntity.ok(mapper.map(category, ProductCategory.class));
+
+		final ProductCategoryDetails productCategoryDetails = mapper.map(category, ProductCategoryDetails.class);
+
+		return ResponseEntity.ok(productCategoryDetails);
 	}
 
 }

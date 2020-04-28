@@ -5,38 +5,38 @@
  */
 package com.fattazzo.pizzashop.controller.api;
 
-import java.util.List;
-
-import javax.validation.Valid;
-
+import com.fattazzo.pizzashop.model.api.ProductCategory;
+import com.fattazzo.pizzashop.model.api.ProductCategoryDetails;
+import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.CookieValue;
 
-import com.fattazzo.pizzashop.model.api.ProductCategory;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.Authorization;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-26T14:55:34.957Z[GMT]")
+import javax.validation.Valid;
+import javax.validation.constraints.*;
+import java.util.List;
+import java.util.Map;
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-28T06:15:14.926Z[GMT]")
 @Api(value = "productcategories", description = "the productcategories API")
 public interface ProductcategoriesApi {
 
-    @ApiOperation(value = "Create a ProductCategory", nickname = "createProductCategory", notes = "Creates a new instance of a `ProductCategory`.", response = ProductCategory.class, authorizations = {
+    @ApiOperation(value = "Create a ProductCategory", nickname = "createProductCategory", notes = "Creates a new instance of a `ProductCategory`.", response = ProductCategoryDetails.class, authorizations = {
         @Authorization(value = "BearerAuth")    }, tags={ "products", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 201, message = "Successful response.", response = ProductCategory.class) })
+        @ApiResponse(code = 201, message = "Successful response.", response = ProductCategoryDetails.class) })
     @RequestMapping(value = "/productcategories",
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<ProductCategory> createProductCategory(@ApiParam(value = "A new `ProductCategory` to be created." ,required=true )  @Valid @RequestBody ProductCategory body
+    ResponseEntity<ProductCategoryDetails> createProductCategory(@ApiParam(value = "A new `ProductCategory` to be created." ,required=true )  @Valid @RequestBody ProductCategoryDetails body
 );
 
 
@@ -61,26 +61,26 @@ public interface ProductcategoriesApi {
 );
 
 
-    @ApiOperation(value = "Get a ProductCategory", nickname = "getProductCategory", notes = "Gets the details of a single instance of a `ProductCategory`.", response = ProductCategory.class, authorizations = {
+    @ApiOperation(value = "Get a ProductCategory", nickname = "getProductCategory", notes = "Gets the details of a single instance of a `ProductCategory`.", response = ProductCategoryDetails.class, authorizations = {
         @Authorization(value = "BearerAuth")    }, tags={ "products", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Successful response - returns a single `ProductCategory`.", response = ProductCategory.class) })
+        @ApiResponse(code = 200, message = "Successful response - returns a single `ProductCategory`.", response = ProductCategoryDetails.class) })
     @RequestMapping(value = "/productcategories/{productcategoryId}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<ProductCategory> getProductCategory(@ApiParam(value = "A unique identifier for a `ProductCategory`.",required=true) @PathVariable("productcategoryId") Integer productcategoryId
+    ResponseEntity<ProductCategoryDetails> getProductCategory(@ApiParam(value = "A unique identifier for a `ProductCategory`.",required=true) @PathVariable("productcategoryId") Integer productcategoryId
 );
 
 
-    @ApiOperation(value = "Update a ProductCategory", nickname = "updateProductCategory", notes = "Updates an existing `ProductCategory`.", response = ProductCategory.class, authorizations = {
+    @ApiOperation(value = "Update a ProductCategory", nickname = "updateProductCategory", notes = "Updates an existing `ProductCategory`.", response = ProductCategoryDetails.class, authorizations = {
         @Authorization(value = "BearerAuth")    }, tags={ "products", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 202, message = "Successful response.", response = ProductCategory.class) })
+        @ApiResponse(code = 202, message = "Successful response.", response = ProductCategoryDetails.class) })
     @RequestMapping(value = "/productcategories/{productcategoryId}",
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<ProductCategory> updateProductCategory(@ApiParam(value = "Updated `ProductCategory` information." ,required=true )  @Valid @RequestBody ProductCategory body
+    ResponseEntity<ProductCategoryDetails> updateProductCategory(@ApiParam(value = "Updated `ProductCategory` information." ,required=true )  @Valid @RequestBody ProductCategoryDetails body
 ,@ApiParam(value = "A unique identifier for a `ProductCategory`.",required=true) @PathVariable("productcategoryId") Integer productcategoryId
 );
 
