@@ -7,15 +7,11 @@ import com.fattazzo.pizzashop.model.api.DashBoardProducts;
 import com.fattazzo.pizzashop.model.api.DashboardCustomers;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
  * Dashboard
  */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-28T14:20:54.148Z[GMT]")
+
 public class Dashboard   {
   @JsonProperty("customers")
   private DashboardCustomers customers = null;
@@ -33,9 +29,6 @@ public class Dashboard   {
    * @return customers
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
-
-    @Valid
     public DashboardCustomers getCustomers() {
     return customers;
   }
@@ -54,9 +47,6 @@ public class Dashboard   {
    * @return products
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
-
-    @Valid
     public DashBoardProducts getProducts() {
     return products;
   }

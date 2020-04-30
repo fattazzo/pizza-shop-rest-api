@@ -9,7 +9,6 @@ import com.fattazzo.pizzashop.model.api.Company;
 import org.springframework.core.io.Resource;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -20,13 +19,10 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.CookieValue;
 
-import javax.validation.Valid;
-import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-28T14:20:54.148Z[GMT]")
-@Api(value = "company", description = "the company API")
-public interface CompanyApi {
+@Api(value = "Companies", description = "the Companies API")
+public interface CompaniesApi {
 
     @ApiOperation(value = "Get a Company", nickname = "getCompany", notes = "Gets the details of a single instance of a `Company`.", response = Company.class, authorizations = {
         @Authorization(value = "BearerAuth")    }, tags={ "companies", })
@@ -56,7 +52,7 @@ public interface CompanyApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<Company> updateCompany(@ApiParam(value = "Updated `Company` information." ,required=true )  @Valid @RequestBody Company body
+    ResponseEntity<Company> updateCompany(@ApiParam(value = "Updated `Company` information." ,required=true )   @RequestBody Company body
 );
 
 
@@ -67,7 +63,7 @@ public interface CompanyApi {
     @RequestMapping(value = "/company/logo",
         consumes = { "multipart/form-data" },
         method = RequestMethod.PUT)
-    ResponseEntity<Void> updateLogo(@ApiParam(value = "file detail") @Valid @RequestPart("file") MultipartFile file
+    ResponseEntity<Void> updateLogo(@ApiParam(value = "file detail")  @RequestPart("file") MultipartFile file
 );
 
 }

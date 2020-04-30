@@ -8,7 +8,6 @@ package com.fattazzo.pizzashop.controller.api;
 import com.fattazzo.pizzashop.model.api.Group;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -19,12 +18,9 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.CookieValue;
 
-import javax.validation.Valid;
-import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-28T14:20:54.148Z[GMT]")
-@Api(value = "groups", description = "the groups API")
+@Api(value = "Groups", description = "the Groups API")
 public interface GroupsApi {
 
     @ApiOperation(value = "Create a Group", nickname = "createGroup", notes = "Creates a new instance of a `Group`.", response = Group.class, authorizations = {
@@ -35,7 +31,7 @@ public interface GroupsApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Group> createGroup(@ApiParam(value = "A new `Group` to be created." ,required=true )  @Valid @RequestBody Group body
+    ResponseEntity<Group> createGroup(@ApiParam(value = "A new `Group` to be created." ,required=true )   @RequestBody Group body
 );
 
 
@@ -78,7 +74,7 @@ public interface GroupsApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<Group> updateGroup(@ApiParam(value = "Updated `Group` information." ,required=true )  @Valid @RequestBody Group body
+    ResponseEntity<Group> updateGroup(@ApiParam(value = "Updated `Group` information." ,required=true )   @RequestBody Group body
 ,@ApiParam(value = "A unique identifier for a `Company`.",required=true) @PathVariable("groupId") Integer groupId
 );
 

@@ -6,16 +6,12 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
- * Dough
+ * VariationDough
  */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-28T14:20:54.148Z[GMT]")
-public class Dough   {
+
+public class VariationDough   {
   @JsonProperty("id")
   private Integer id = null;
 
@@ -34,17 +30,16 @@ public class Dough   {
   @JsonProperty("order")
   private Integer order = null;
 
-  public Dough id(Integer id) {
+  public VariationDough id(Integer id) {
     this.id = id;
     return this;
   }
 
   /**
-   * Get id
+   * Unique identifier
    * @return id
   **/
-  @ApiModelProperty(value = "")
-  
+  @ApiModelProperty(value = "Unique identifier")
     public Integer getId() {
     return id;
   }
@@ -53,7 +48,7 @@ public class Dough   {
     this.id = id;
   }
 
-  public Dough name(String name) {
+  public VariationDough name(String name) {
     this.name = name;
     return this;
   }
@@ -63,8 +58,6 @@ public class Dough   {
    * @return name
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
-
     public String getName() {
     return name;
   }
@@ -73,7 +66,7 @@ public class Dough   {
     this.name = name;
   }
 
-  public Dough description(String description) {
+  public VariationDough description(String description) {
     this.description = description;
     return this;
   }
@@ -83,7 +76,6 @@ public class Dough   {
    * @return description
   **/
   @ApiModelProperty(value = "")
-  
     public String getDescription() {
     return description;
   }
@@ -92,7 +84,7 @@ public class Dough   {
     this.description = description;
   }
 
-  public Dough extra(BigDecimal extra) {
+  public VariationDough extra(BigDecimal extra) {
     this.extra = extra;
     return this;
   }
@@ -102,9 +94,6 @@ public class Dough   {
    * @return extra
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
-
-    @Valid
     public BigDecimal getExtra() {
     return extra;
   }
@@ -113,7 +102,7 @@ public class Dough   {
     this.extra = extra;
   }
 
-  public Dough enabled(Boolean enabled) {
+  public VariationDough enabled(Boolean enabled) {
     this.enabled = enabled;
     return this;
   }
@@ -123,8 +112,6 @@ public class Dough   {
    * @return enabled
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
-
     public Boolean isEnabled() {
     return enabled;
   }
@@ -133,7 +120,7 @@ public class Dough   {
     this.enabled = enabled;
   }
 
-  public Dough order(Integer order) {
+  public VariationDough order(Integer order) {
     this.order = order;
     return this;
   }
@@ -143,7 +130,6 @@ public class Dough   {
    * @return order
   **/
   @ApiModelProperty(value = "")
-  
     public Integer getOrder() {
     return order;
   }
@@ -161,13 +147,13 @@ public class Dough   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Dough dough = (Dough) o;
-    return Objects.equals(this.id, dough.id) &&
-        Objects.equals(this.name, dough.name) &&
-        Objects.equals(this.description, dough.description) &&
-        Objects.equals(this.extra, dough.extra) &&
-        Objects.equals(this.enabled, dough.enabled) &&
-        Objects.equals(this.order, dough.order);
+    VariationDough variationDough = (VariationDough) o;
+    return Objects.equals(this.id, variationDough.id) &&
+        Objects.equals(this.name, variationDough.name) &&
+        Objects.equals(this.description, variationDough.description) &&
+        Objects.equals(this.extra, variationDough.extra) &&
+        Objects.equals(this.enabled, variationDough.enabled) &&
+        Objects.equals(this.order, variationDough.order);
   }
 
   @Override
@@ -178,7 +164,7 @@ public class Dough   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Dough {\n");
+    sb.append("class VariationDough {\n");
     
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");

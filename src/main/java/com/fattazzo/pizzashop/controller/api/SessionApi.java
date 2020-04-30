@@ -5,11 +5,11 @@
  */
 package com.fattazzo.pizzashop.controller.api;
 
+import com.fattazzo.pizzashop.model.api.ErrorResponse;
 import com.fattazzo.pizzashop.model.api.Session;
 import com.fattazzo.pizzashop.model.api.UserLogin;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -20,13 +20,10 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.CookieValue;
 
-import javax.validation.Valid;
-import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-28T14:20:54.148Z[GMT]")
-@Api(value = "public", description = "the public API")
-public interface PublicApi {
+@Api(value = "Session", description = "the Session API")
+public interface SessionApi {
 
     @ApiOperation(value = "Create a session", nickname = "login", notes = "Create a `Session` information", response = Session.class, authorizations = {
         @Authorization(value = "BearerAuth")    }, tags={ "session", })
@@ -36,14 +33,15 @@ public interface PublicApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Session> login(@ApiParam(value = "Login user information" ,required=true )  @Valid @RequestBody UserLogin body
+    ResponseEntity<Session> login(@ApiParam(value = "Login user information" ,required=true )   @RequestBody UserLogin body
 );
 
 
     @ApiOperation(value = "Create new session", nickname = "refreshToken", notes = "Create new `Session` with a valid access token", response = Session.class, authorizations = {
         @Authorization(value = "BearerAuth")    }, tags={ "session", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "New session", response = Session.class) })
+        @ApiResponse(code = 200, message = "New session", response = Session.class),
+        @ApiResponse(code = 400, message = "Response failed", response = ErrorResponse.class) })
     @RequestMapping(value = "/public/session/refresh/{refreshToken}",
         produces = { "application/json" }, 
         method = RequestMethod.POST)

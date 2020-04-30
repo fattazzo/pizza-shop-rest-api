@@ -8,7 +8,6 @@ package com.fattazzo.pizzashop.controller.api;
 import com.fattazzo.pizzashop.model.api.Dashboard;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -19,12 +18,9 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.CookieValue;
 
-import javax.validation.Valid;
-import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-28T14:20:54.148Z[GMT]")
-@Api(value = "dashboard", description = "the dashboard API")
+@Api(value = "Dashboard", description = "the Dashboard API")
 public interface DashboardApi {
 
     @ApiOperation(value = "Get a Dashboard", nickname = "getDashboard", notes = "Gets a `Dashboard`.", response = Dashboard.class, authorizations = {

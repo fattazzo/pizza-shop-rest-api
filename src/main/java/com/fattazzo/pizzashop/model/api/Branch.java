@@ -6,15 +6,11 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fattazzo.pizzashop.model.api.Address;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
  * Branch
  */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-28T14:20:54.148Z[GMT]")
+
 public class Branch   {
   @JsonProperty("id")
   private Integer id = null;
@@ -40,11 +36,10 @@ public class Branch   {
   }
 
   /**
-   * Get id
+   * Unique identifier
    * @return id
   **/
-  @ApiModelProperty(value = "")
-  
+  @ApiModelProperty(value = "Unique identifier")
     public Integer getId() {
     return id;
   }
@@ -63,7 +58,6 @@ public class Branch   {
    * @return phone
   **/
   @ApiModelProperty(value = "")
-  
     public String getPhone() {
     return phone;
   }
@@ -78,11 +72,10 @@ public class Branch   {
   }
 
   /**
-   * Get webUrl
+   * Web site url
    * @return webUrl
   **/
-  @ApiModelProperty(value = "")
-  
+  @ApiModelProperty(value = "Web site url")
     public String getWebUrl() {
     return webUrl;
   }
@@ -101,8 +94,6 @@ public class Branch   {
    * @return primary
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
-
     public Boolean isPrimary() {
     return primary;
   }
@@ -121,9 +112,6 @@ public class Branch   {
    * @return address
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
-
-    @Valid
     public Address getAddress() {
     return address;
   }
@@ -142,8 +130,6 @@ public class Branch   {
    * @return enabled
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
-
     public Boolean isEnabled() {
     return enabled;
   }

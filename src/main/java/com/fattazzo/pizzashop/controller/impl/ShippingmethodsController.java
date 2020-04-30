@@ -3,6 +3,7 @@ package com.fattazzo.pizzashop.controller.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
@@ -34,6 +35,13 @@ public class ShippingmethodsController implements ShippingmethodsApi {
 
 	@Autowired
 	LocaleUtilsMessage localeUtilsMessage;
+
+	private final HttpServletRequest request;
+
+	@Autowired
+	public ShippingmethodsController(HttpServletRequest httpServletRequest) {
+		this.request = httpServletRequest;
+	}
 
 	@Override
 	@PreAuthorize("@securityService.hasAnyPermission({'SHIPPING_METHODS'})")
@@ -75,9 +83,8 @@ public class ShippingmethodsController implements ShippingmethodsApi {
 
 		if (!existingEntity.getId().equals(body.getId())) {
 			throw RestException.newBuilder()
-					.title(localeUtilsMessage.getErrorLocalizedMessage("shippingmethod.update.failed.title", null))
-					.detail(localeUtilsMessage.getErrorLocalizedMessage("shippingmethod.update.failed.idParamNotEquals",
-							null))
+					.title(localeUtilsMessage.getMessage("shippingmethod.update.failed.title", null, request))
+					.detail(localeUtilsMessage.getMessage("idParamNotEquals", null, request))
 					.status(HttpStatus.BAD_REQUEST).build();
 		}
 

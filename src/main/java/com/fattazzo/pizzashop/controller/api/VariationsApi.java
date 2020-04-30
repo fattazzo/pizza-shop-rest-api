@@ -5,12 +5,11 @@
  */
 package com.fattazzo.pizzashop.controller.api;
 
-import com.fattazzo.pizzashop.model.api.Dough;
-import com.fattazzo.pizzashop.model.api.Size;
 import com.fattazzo.pizzashop.model.api.Topping;
+import com.fattazzo.pizzashop.model.api.VariationDough;
+import com.fattazzo.pizzashop.model.api.VariationSize;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -21,35 +20,32 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.CookieValue;
 
-import javax.validation.Valid;
-import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-28T14:20:54.148Z[GMT]")
-@Api(value = "variations", description = "the variations API")
+@Api(value = "Variations", description = "the Variations API")
 public interface VariationsApi {
 
-    @ApiOperation(value = "Create a Dough", nickname = "createDough", notes = "Creates a new instance of a `Dough`.", response = Dough.class, authorizations = {
+    @ApiOperation(value = "Create a Dough", nickname = "createDough", notes = "Creates a new instance of a `Dough`.", response = VariationDough.class, authorizations = {
         @Authorization(value = "BearerAuth")    }, tags={ "variations", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 201, message = "Successful response.", response = Dough.class) })
+        @ApiResponse(code = 201, message = "Successful response.", response = VariationDough.class) })
     @RequestMapping(value = "/variations/doughs",
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Dough> createDough(@ApiParam(value = "A new `Dough` to be created." ,required=true )  @Valid @RequestBody Dough body
+    ResponseEntity<VariationDough> createDough(@ApiParam(value = "A new `Dough` to be created." ,required=true )   @RequestBody VariationDough body
 );
 
 
-    @ApiOperation(value = "Create a Size", nickname = "createSize", notes = "Creates a new instance of a `Size`.", response = Size.class, authorizations = {
+    @ApiOperation(value = "Create a Size", nickname = "createSize", notes = "Creates a new instance of a `Size`.", response = VariationSize.class, authorizations = {
         @Authorization(value = "BearerAuth")    }, tags={ "variations", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 201, message = "Successful response.", response = Size.class) })
+        @ApiResponse(code = 201, message = "Successful response.", response = VariationSize.class) })
     @RequestMapping(value = "/variations/sizes",
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Size> createSize(@ApiParam(value = "A new `Size` to be created." ,required=true )  @Valid @RequestBody Size body
+    ResponseEntity<VariationSize> createSize(@ApiParam(value = "A new `Size` to be created." ,required=true )   @RequestBody VariationSize body
 );
 
 
@@ -61,7 +57,7 @@ public interface VariationsApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Topping> createTopping(@ApiParam(value = "A new `Topping` to be created." ,required=true )  @Valid @RequestBody Topping body
+    ResponseEntity<Topping> createTopping(@ApiParam(value = "A new `Topping` to be created." ,required=true )   @RequestBody Topping body
 );
 
 
@@ -95,47 +91,47 @@ public interface VariationsApi {
 );
 
 
-    @ApiOperation(value = "Get a Dough", nickname = "getDough", notes = "Gets the details of a single instance of a `Dough`.", response = Dough.class, authorizations = {
+    @ApiOperation(value = "Get a Dough", nickname = "getDough", notes = "Gets the details of a single instance of a `Dough`.", response = VariationDough.class, authorizations = {
         @Authorization(value = "BearerAuth")    }, tags={ "variations", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Successful response - returns a single `Dough`.", response = Dough.class) })
+        @ApiResponse(code = 200, message = "Successful response - returns a single `Dough`.", response = VariationDough.class) })
     @RequestMapping(value = "/variations/doughs/{doughId}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<Dough> getDough(@ApiParam(value = "A unique identifier for a `Dough`.",required=true) @PathVariable("doughId") Integer doughId
+    ResponseEntity<VariationDough> getDough(@ApiParam(value = "A unique identifier for a `Dough`.",required=true) @PathVariable("doughId") Integer doughId
 );
 
 
-    @ApiOperation(value = "List All doughs", nickname = "getDoughs", notes = "Gets a list of all `Dough` entities.", response = Dough.class, responseContainer = "List", authorizations = {
+    @ApiOperation(value = "List All doughs", nickname = "getDoughs", notes = "Gets a list of all `Dough` entities.", response = VariationDough.class, responseContainer = "List", authorizations = {
         @Authorization(value = "BearerAuth")    }, tags={ "variations", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Successful response - returns an array of `Dough` entities.", response = Dough.class, responseContainer = "List") })
+        @ApiResponse(code = 200, message = "Successful response - returns an array of `Dough` entities.", response = VariationDough.class, responseContainer = "List") })
     @RequestMapping(value = "/variations/doughs",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<List<Dough>> getDoughs(@ApiParam(value = "If true, the list of all entities include enabled and disabled `Dough`") @Valid @RequestParam(value = "includeDisabled", required = false) Boolean includeDisabled
+    ResponseEntity<List<VariationDough>> getDoughs(@ApiParam(value = "If true, the list of all entities include enabled and disabled `Dough`")  @RequestParam(value = "includeDisabled", required = false) Boolean includeDisabled
 );
 
 
-    @ApiOperation(value = "Get a Size", nickname = "getSize", notes = "Gets the details of a single instance of a `Size`.", response = Size.class, authorizations = {
+    @ApiOperation(value = "Get a Size", nickname = "getSize", notes = "Gets the details of a single instance of a `Size`.", response = VariationSize.class, authorizations = {
         @Authorization(value = "BearerAuth")    }, tags={ "variations", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Successful response - returns a single `Size`.", response = Size.class) })
+        @ApiResponse(code = 200, message = "Successful response - returns a single `Size`.", response = VariationSize.class) })
     @RequestMapping(value = "/variations/sizes/{sizeId}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<Size> getSize(@ApiParam(value = "A unique identifier for a `Size`.",required=true) @PathVariable("sizeId") Integer sizeId
+    ResponseEntity<VariationSize> getSize(@ApiParam(value = "A unique identifier for a `Size`.",required=true) @PathVariable("sizeId") Integer sizeId
 );
 
 
-    @ApiOperation(value = "List All sizes", nickname = "getSizes", notes = "Gets a list of all `Size` entities.", response = Size.class, responseContainer = "List", authorizations = {
+    @ApiOperation(value = "List All sizes", nickname = "getSizes", notes = "Gets a list of all `Size` entities.", response = VariationSize.class, responseContainer = "List", authorizations = {
         @Authorization(value = "BearerAuth")    }, tags={ "variations", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Successful response - returns an array of `Size` entities.", response = Size.class, responseContainer = "List") })
+        @ApiResponse(code = 200, message = "Successful response - returns an array of `Size` entities.", response = VariationSize.class, responseContainer = "List") })
     @RequestMapping(value = "/variations/sizes",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<List<Size>> getSizes(@ApiParam(value = "If true, the list of all entities include enabled and disabled `Size`") @Valid @RequestParam(value = "includeDisabled", required = false) Boolean includeDisabled
+    ResponseEntity<List<VariationSize>> getSizes(@ApiParam(value = "If true, the list of all entities include enabled and disabled `Size`")  @RequestParam(value = "includeDisabled", required = false) Boolean includeDisabled
 );
 
 
@@ -157,32 +153,32 @@ public interface VariationsApi {
     @RequestMapping(value = "/variations/toppings",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<List<Topping>> getToppings(@ApiParam(value = "If true, the list of all entities include enabled and disabled `Topping`") @Valid @RequestParam(value = "includeDisabled", required = false) Boolean includeDisabled
+    ResponseEntity<List<Topping>> getToppings(@ApiParam(value = "If true, the list of all entities include enabled and disabled `Topping`")  @RequestParam(value = "includeDisabled", required = false) Boolean includeDisabled
 );
 
 
-    @ApiOperation(value = "Update a Dough", nickname = "updateDough", notes = "Updates an existing `Dough`.", response = Dough.class, authorizations = {
+    @ApiOperation(value = "Update a Dough", nickname = "updateDough", notes = "Updates an existing `Dough`.", response = VariationDough.class, authorizations = {
         @Authorization(value = "BearerAuth")    }, tags={ "variations", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 202, message = "Successful response.", response = Dough.class) })
+        @ApiResponse(code = 202, message = "Successful response.", response = VariationDough.class) })
     @RequestMapping(value = "/variations/doughs/{doughId}",
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<Dough> updateDough(@ApiParam(value = "Updated `Dough` information." ,required=true )  @Valid @RequestBody Dough body
+    ResponseEntity<VariationDough> updateDough(@ApiParam(value = "Updated `Dough` information." ,required=true )   @RequestBody VariationDough body
 ,@ApiParam(value = "A unique identifier for a `Dough`.",required=true) @PathVariable("doughId") Integer doughId
 );
 
 
-    @ApiOperation(value = "Update a Size", nickname = "updateSize", notes = "Updates an existing `Size`.", response = Size.class, authorizations = {
+    @ApiOperation(value = "Update a Size", nickname = "updateSize", notes = "Updates an existing `Size`.", response = VariationSize.class, authorizations = {
         @Authorization(value = "BearerAuth")    }, tags={ "variations", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 202, message = "Successful response.", response = Size.class) })
+        @ApiResponse(code = 202, message = "Successful response.", response = VariationSize.class) })
     @RequestMapping(value = "/variations/sizes/{sizeId}",
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<Size> updateSize(@ApiParam(value = "Updated `Size` information." ,required=true )  @Valid @RequestBody Size body
+    ResponseEntity<VariationSize> updateSize(@ApiParam(value = "Updated `Size` information." ,required=true )   @RequestBody VariationSize body
 ,@ApiParam(value = "A unique identifier for a `Size`.",required=true) @PathVariable("sizeId") Integer sizeId
 );
 
@@ -195,7 +191,7 @@ public interface VariationsApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<Topping> updateTopping(@ApiParam(value = "Updated `Topping` information." ,required=true )  @Valid @RequestBody Topping body
+    ResponseEntity<Topping> updateTopping(@ApiParam(value = "Updated `Topping` information." ,required=true )   @RequestBody Topping body
 ,@ApiParam(value = "A unique identifier for a `Topping`.",required=true) @PathVariable("toppingId") Integer toppingId
 );
 

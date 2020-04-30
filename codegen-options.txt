@@ -1,0 +1,8 @@
+useTags=true
+configPackage=com.fattazzo.pizzashop.config
+interfaceOnly=true
+apiPackage=com.fattazzo.pizzashop.controller.api
+invokerPackage=com.fattazzo.pizzashop
+swaggerDocketConfig=true
+modelPackage=com.fattazzo.pizzashop.model.api
+hideGenerationTimestamp=true

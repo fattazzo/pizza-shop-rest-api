@@ -6,15 +6,11 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fattazzo.pizzashop.model.api.ProductCategory;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
  * Product
  */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-28T14:20:54.148Z[GMT]")
+
 public class Product   {
   @JsonProperty("id")
   private Integer id = null;
@@ -40,11 +36,10 @@ public class Product   {
   }
 
   /**
-   * Get id
+   * Unique identifier
    * @return id
   **/
-  @ApiModelProperty(value = "")
-  
+  @ApiModelProperty(value = "Unique identifier")
     public Integer getId() {
     return id;
   }
@@ -63,8 +58,6 @@ public class Product   {
    * @return name
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
-
     public String getName() {
     return name;
   }
@@ -83,7 +76,6 @@ public class Product   {
    * @return description
   **/
   @ApiModelProperty(value = "")
-  
     public String getDescription() {
     return description;
   }
@@ -102,8 +94,6 @@ public class Product   {
    * @return enabled
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
-
     public Boolean isEnabled() {
     return enabled;
   }
@@ -122,8 +112,6 @@ public class Product   {
    * @return price
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
-
     public Double getPrice() {
     return price;
   }
@@ -142,9 +130,6 @@ public class Product   {
    * @return category
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
-
-    @Valid
     public ProductCategory getCategory() {
     return category;
   }

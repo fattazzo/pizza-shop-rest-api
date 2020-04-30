@@ -5,15 +5,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
  * DashboardCustomers
  */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-28T14:20:54.148Z[GMT]")
+
 public class DashboardCustomers   {
   @JsonProperty("total")
   private Integer total = null;
@@ -31,8 +27,6 @@ public class DashboardCustomers   {
    * @return total
   **/
   @ApiModelProperty(required = true, value = "Total user of type 'Customer'")
-      @NotNull
-
     public Integer getTotal() {
     return total;
   }
@@ -51,8 +45,6 @@ public class DashboardCustomers   {
    * @return toConfirm
   **/
   @ApiModelProperty(required = true, value = "Number of 'Customer' users who need to confirm registration")
-      @NotNull
-
     public Integer getToConfirm() {
     return toConfirm;
   }

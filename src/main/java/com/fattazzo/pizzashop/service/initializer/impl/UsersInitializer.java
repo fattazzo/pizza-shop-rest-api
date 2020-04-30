@@ -42,7 +42,7 @@ public class UsersInitializer implements Initializer {
 			final Optional<GroupEntity> adminGroup = groupService.loadAdminGroup();
 			if (!adminGroup.isPresent()) {
 				throw RestException.newBuilder()
-						.title(localeUtilsMessage.getErrorLocalizedMessage("ApplicationInitializzation.title", null))
+						.title(localeUtilsMessage.getMessage("ApplicationInitializzation.title", null))
 						.detail("Admin group not found").status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 			}
 

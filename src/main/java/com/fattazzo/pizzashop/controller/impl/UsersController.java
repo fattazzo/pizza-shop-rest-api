@@ -3,6 +3,7 @@ package com.fattazzo.pizzashop.controller.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
@@ -43,6 +44,13 @@ public class UsersController implements UsersApi {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
+	private final HttpServletRequest request;
+
+	@Autowired
+	public UsersController(HttpServletRequest httpServletRequest) {
+		this.request = httpServletRequest;
+	}
+
 	@Override
 	@PreAuthorize("@securityService.hasAnyPermission({'SECURITY'})")
 	public ResponseEntity<UserDetails> createUser(@Valid UserDetails body) {
@@ -50,9 +58,9 @@ public class UsersController implements UsersApi {
 		final UserEntity existingUser = userService.findByUsername(body.getUsername()).orElse(null);
 		if (existingUser != null) {
 			throw RestException.newBuilder()
-					.title(localeUtilsMessage.getErrorLocalizedMessage("user.insert.failed.title", null))
-					.detail(localeUtilsMessage.getErrorLocalizedMessage("user.insert.failed.alreadyexist",
-							new Object[] { existingUser.getUsername() }))
+					.title(localeUtilsMessage.getMessage("user.insert.failed.title", null, request))
+					.detail(localeUtilsMessage.getMessage("user.insert.failed.alreadyexist",
+							new Object[] { existingUser.getUsername() }, request))
 					.status(HttpStatus.BAD_REQUEST).build();
 		}
 
@@ -77,9 +85,9 @@ public class UsersController implements UsersApi {
 			userService.delete(userName);
 		} catch (final UserReadonlyException e) {
 			throw RestException.newBuilder()
-					.title(localeUtilsMessage.getErrorLocalizedMessage("user.delete.failed.title", null))
-					.detail(localeUtilsMessage.getErrorLocalizedMessage("user.delete.failed.readonly",
-							new Object[] { e.getMessage() }))
+					.title(localeUtilsMessage.getMessage("user.delete.failed.title", null, request))
+					.detail(localeUtilsMessage.getMessage("user.delete.failed.readonly",
+							new Object[] { e.getMessage() }, request))
 					.status(HttpStatus.BAD_REQUEST).build();
 		}
 		return ResponseEntity.noContent().build();
@@ -108,9 +116,8 @@ public class UsersController implements UsersApi {
 
 		if (!existingUser.getUsername().equals(body.getUsername())) {
 			throw RestException.newBuilder()
-					.title(localeUtilsMessage.getErrorLocalizedMessage("user.update.failed.title", null))
-					.detail(localeUtilsMessage.getErrorLocalizedMessage("user.update.failed.usernamecannotchange",
-							null))
+					.title(localeUtilsMessage.getMessage("user.update.failed.title", null, request))
+					.detail(localeUtilsMessage.getMessage("user.update.failed.usernamecannotchange", null, request))
 					.status(HttpStatus.BAD_REQUEST).build();
 
 		}

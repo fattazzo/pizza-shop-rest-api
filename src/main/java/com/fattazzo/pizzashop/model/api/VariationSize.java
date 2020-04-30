@@ -6,16 +6,12 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
- * Size
+ * VariationSize
  */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-28T14:20:54.148Z[GMT]")
-public class Size   {
+
+public class VariationSize   {
   @JsonProperty("id")
   private Integer id = null;
 
@@ -34,7 +30,7 @@ public class Size   {
   @JsonProperty("order")
   private Integer order = null;
 
-  public Size id(Integer id) {
+  public VariationSize id(Integer id) {
     this.id = id;
     return this;
   }
@@ -44,7 +40,6 @@ public class Size   {
    * @return id
   **/
   @ApiModelProperty(value = "")
-  
     public Integer getId() {
     return id;
   }
@@ -53,7 +48,7 @@ public class Size   {
     this.id = id;
   }
 
-  public Size name(String name) {
+  public VariationSize name(String name) {
     this.name = name;
     return this;
   }
@@ -63,8 +58,6 @@ public class Size   {
    * @return name
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
-
     public String getName() {
     return name;
   }
@@ -73,7 +66,7 @@ public class Size   {
     this.name = name;
   }
 
-  public Size description(String description) {
+  public VariationSize description(String description) {
     this.description = description;
     return this;
   }
@@ -83,7 +76,6 @@ public class Size   {
    * @return description
   **/
   @ApiModelProperty(value = "")
-  
     public String getDescription() {
     return description;
   }
@@ -92,7 +84,7 @@ public class Size   {
     this.description = description;
   }
 
-  public Size extra(BigDecimal extra) {
+  public VariationSize extra(BigDecimal extra) {
     this.extra = extra;
     return this;
   }
@@ -102,9 +94,6 @@ public class Size   {
    * @return extra
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
-
-    @Valid
     public BigDecimal getExtra() {
     return extra;
   }
@@ -113,7 +102,7 @@ public class Size   {
     this.extra = extra;
   }
 
-  public Size enabled(Boolean enabled) {
+  public VariationSize enabled(Boolean enabled) {
     this.enabled = enabled;
     return this;
   }
@@ -123,8 +112,6 @@ public class Size   {
    * @return enabled
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
-
     public Boolean isEnabled() {
     return enabled;
   }
@@ -133,7 +120,7 @@ public class Size   {
     this.enabled = enabled;
   }
 
-  public Size order(Integer order) {
+  public VariationSize order(Integer order) {
     this.order = order;
     return this;
   }
@@ -143,7 +130,6 @@ public class Size   {
    * @return order
   **/
   @ApiModelProperty(value = "")
-  
     public Integer getOrder() {
     return order;
   }
@@ -161,13 +147,13 @@ public class Size   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Size size = (Size) o;
-    return Objects.equals(this.id, size.id) &&
-        Objects.equals(this.name, size.name) &&
-        Objects.equals(this.description, size.description) &&
-        Objects.equals(this.extra, size.extra) &&
-        Objects.equals(this.enabled, size.enabled) &&
-        Objects.equals(this.order, size.order);
+    VariationSize variationSize = (VariationSize) o;
+    return Objects.equals(this.id, variationSize.id) &&
+        Objects.equals(this.name, variationSize.name) &&
+        Objects.equals(this.description, variationSize.description) &&
+        Objects.equals(this.extra, variationSize.extra) &&
+        Objects.equals(this.enabled, variationSize.enabled) &&
+        Objects.equals(this.order, variationSize.order);
   }
 
   @Override
@@ -178,7 +164,7 @@ public class Size   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Size {\n");
+    sb.append("class VariationSize {\n");
     
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");

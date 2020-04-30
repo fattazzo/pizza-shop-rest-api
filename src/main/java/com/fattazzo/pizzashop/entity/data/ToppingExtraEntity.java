@@ -38,10 +38,10 @@ public class ToppingExtraEntity {
 	private ToppingEntity topping;
 
 	@ManyToOne(optional = false)
-	private DoughEntity dough;
+	private VariationDoughEntity dough;
 
 	@ManyToOne(optional = false)
-	private SizeEntity size;
+	private VariationSizeEntity size;
 
 	@Builder.Default
 	private BigDecimal extra = BigDecimal.ZERO;

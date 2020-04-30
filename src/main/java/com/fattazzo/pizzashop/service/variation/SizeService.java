@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fattazzo.pizzashop.entity.data.SizeEntity;
+import com.fattazzo.pizzashop.entity.data.VariationSizeEntity;
 import com.fattazzo.pizzashop.exception.security.NoSuchEntityException;
 import com.fattazzo.pizzashop.repository.SizeRepository;
 
@@ -21,23 +21,23 @@ public class SizeService {
 		sizeRepository.deleteById(id);
 	}
 
-	public List<SizeEntity> findAll() {
+	public List<VariationSizeEntity> findAll() {
 		return sizeRepository.findAllByOrderByOrderAsc();
 	}
 
-	public List<SizeEntity> findAllEnabled() {
+	public List<VariationSizeEntity> findAllEnabled() {
 		return sizeRepository.findByEnabledTrueOrderByOrderAsc();
 	}
 
-	public Optional<SizeEntity> findById(Integer id) {
+	public Optional<VariationSizeEntity> findById(Integer id) {
 		return sizeRepository.findById(id);
 	}
 
-	public Optional<SizeEntity> findByName(String name) {
+	public Optional<VariationSizeEntity> findByName(String name) {
 		return sizeRepository.findByNameIgnoreCase(name);
 	}
 
-	public SizeEntity save(SizeEntity dough) {
+	public VariationSizeEntity save(VariationSizeEntity dough) {
 		if (dough.getId() != null) {
 			findById(dough.getId()).orElseThrow(NoSuchEntityException::new);
 		}

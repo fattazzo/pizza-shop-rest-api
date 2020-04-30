@@ -5,15 +5,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
  * Settings
  */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-28T14:20:54.148Z[GMT]")
+
 public class Settings   {
   @JsonProperty("id")
   private Integer id = null;
@@ -30,11 +26,10 @@ public class Settings   {
   }
 
   /**
-   * Get id
+   * Unique identifier
    * @return id
   **/
-  @ApiModelProperty(value = "")
-  
+  @ApiModelProperty(value = "Unique identifier")
     public Integer getId() {
     return id;
   }
@@ -49,12 +44,10 @@ public class Settings   {
   }
 
   /**
-   * Get currencySymbol
+   * Currency symbol
    * @return currencySymbol
   **/
-  @ApiModelProperty(required = true, value = "")
-      @NotNull
-
+  @ApiModelProperty(required = true, value = "Currency symbol")
     public String getCurrencySymbol() {
     return currencySymbol;
   }
@@ -69,12 +62,12 @@ public class Settings   {
   }
 
   /**
-   * Get currencyDecimals
+   * Number of decimals used for currency
+   * minimum: 0
+   * maximum: 5
    * @return currencyDecimals
   **/
-  @ApiModelProperty(required = true, value = "")
-      @NotNull
-
+  @ApiModelProperty(required = true, value = "Number of decimals used for currency")
     public Integer getCurrencyDecimals() {
     return currencyDecimals;
   }

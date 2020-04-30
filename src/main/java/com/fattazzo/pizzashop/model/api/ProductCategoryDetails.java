@@ -3,39 +3,35 @@ package com.fattazzo.pizzashop.model.api;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fattazzo.pizzashop.model.api.Dough;
 import com.fattazzo.pizzashop.model.api.ProductCategory;
-import com.fattazzo.pizzashop.model.api.Size;
+import com.fattazzo.pizzashop.model.api.VariationDough;
+import com.fattazzo.pizzashop.model.api.VariationSize;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
  * ProductCategoryDetails
  */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-28T14:20:54.148Z[GMT]")
+
 public class ProductCategoryDetails extends ProductCategory  {
   @JsonProperty("doughs")
-  @Valid
-  private List<Dough> doughs = null;
+  
+  private List<VariationDough> doughs = null;
 
   @JsonProperty("sizes")
-  @Valid
-  private List<Size> sizes = null;
+  
+  private List<VariationSize> sizes = null;
 
-  public ProductCategoryDetails doughs(List<Dough> doughs) {
+  public ProductCategoryDetails doughs(List<VariationDough> doughs) {
     this.doughs = doughs;
     return this;
   }
 
-  public ProductCategoryDetails addDoughsItem(Dough doughsItem) {
+  public ProductCategoryDetails addDoughsItem(VariationDough doughsItem) {
     if (this.doughs == null) {
-      this.doughs = new ArrayList<Dough>();
+      this.doughs = new ArrayList<VariationDough>();
     }
     this.doughs.add(doughsItem);
     return this;
@@ -46,23 +42,22 @@ public class ProductCategoryDetails extends ProductCategory  {
    * @return doughs
   **/
   @ApiModelProperty(value = "")
-      @Valid
-    public List<Dough> getDoughs() {
+    public List<VariationDough> getDoughs() {
     return doughs;
   }
 
-  public void setDoughs(List<Dough> doughs) {
+  public void setDoughs(List<VariationDough> doughs) {
     this.doughs = doughs;
   }
 
-  public ProductCategoryDetails sizes(List<Size> sizes) {
+  public ProductCategoryDetails sizes(List<VariationSize> sizes) {
     this.sizes = sizes;
     return this;
   }
 
-  public ProductCategoryDetails addSizesItem(Size sizesItem) {
+  public ProductCategoryDetails addSizesItem(VariationSize sizesItem) {
     if (this.sizes == null) {
-      this.sizes = new ArrayList<Size>();
+      this.sizes = new ArrayList<VariationSize>();
     }
     this.sizes.add(sizesItem);
     return this;
@@ -73,12 +68,11 @@ public class ProductCategoryDetails extends ProductCategory  {
    * @return sizes
   **/
   @ApiModelProperty(value = "")
-      @Valid
-    public List<Size> getSizes() {
+    public List<VariationSize> getSizes() {
     return sizes;
   }
 
-  public void setSizes(List<Size> sizes) {
+  public void setSizes(List<VariationSize> sizes) {
     this.sizes = sizes;
   }
 

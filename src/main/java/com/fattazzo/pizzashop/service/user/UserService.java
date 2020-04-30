@@ -4,11 +4,13 @@ import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 import javax.mail.internet.MimeMessage;
 
 import org.apache.commons.collections4.ListUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,18 +22,21 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fattazzo.pizzashop.entity.data.CompanyEntity;
 import com.fattazzo.pizzashop.entity.security.GroupEntity;
 import com.fattazzo.pizzashop.entity.security.RegistrationToken;
 import com.fattazzo.pizzashop.entity.security.UserEntity;
 import com.fattazzo.pizzashop.entity.security.UserEntity.UserStatus;
+import com.fattazzo.pizzashop.entity.security.UserType;
 import com.fattazzo.pizzashop.exception.security.ExpiredTokenException;
 import com.fattazzo.pizzashop.exception.security.MailNotSentException;
 import com.fattazzo.pizzashop.exception.security.NoSuchEntityException;
 import com.fattazzo.pizzashop.exception.security.RestException;
 import com.fattazzo.pizzashop.exception.security.UserNotActiveException;
-import com.fattazzo.pizzashop.model.UserRegistrationInfo;
+import com.fattazzo.pizzashop.model.api.UserRegistrationInfo;
 import com.fattazzo.pizzashop.repository.RegistrationTokenRepository;
 import com.fattazzo.pizzashop.repository.UserRepository;
+import com.fattazzo.pizzashop.service.company.CompanyService;
 import com.fattazzo.pizzashop.service.group.GroupService;
 import com.fattazzo.pizzashop.service.local.LocaleUtilsMessage;
 
@@ -54,6 +59,9 @@ public class UserService {
 
 	@Autowired
 	private GroupService groupService;
+
+	@Autowired
+	private CompanyService companyService;
 
 	@Autowired
 	private RegistrationTokenRepository registrationTokenRepository;
@@ -131,42 +139,25 @@ public class UserService {
 	}
 
 	@Transactional
-	public void registrateCustomer(UserRegistrationInfo registrationInfo) throws MailNotSentException {
+	public void registrateCustomer(UserRegistrationInfo registrationInfo, Locale locale) throws MailNotSentException {
 		final GroupEntity group = groupService.loadCustomerGroup()
 				.orElseThrow(() -> RestException.newBuilder()
-						.title(localeUtilsMessage.getErrorLocalizedMessage("group.customer.notfound.title", null))
-						.detail(localeUtilsMessage.getErrorLocalizedMessage("group.customer.notfound.detail", null))
+						.title(localeUtilsMessage.getMessage("group.customer.notfound.title", null))
+						.detail(localeUtilsMessage.getMessage("group.customer.notfound.detail", null))
 						.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
-		registrateUser(registrationInfo, group, UserStatus.TOCONFIRM);
-	}
-
-	public void registrateUser(UserRegistrationInfo registrationInfo, GroupEntity group, UserStatus status)
-			throws MailNotSentException {
 
 		final UserEntity user = UserEntity.builder().username(registrationInfo.getUsername())
 				.email(registrationInfo.getEmail()).password(passwordEncoder.encode(registrationInfo.getPassword()))
-				.groups(Arrays.asList(group)).status(status).build();
+				.groups(Arrays.asList(group)).status(UserStatus.TOCONFIRM).type(UserType.CUSTOMER).build();
 
 		userRepository.save(user);
 
-		if (status == UserStatus.TOCONFIRM) {
-			final RegistrationToken registrationToken = createRegistrationToken(registrationInfo.getUsername());
-			sendRegistrationMail(registrationToken, registrationInfo.getEmail());
-		}
+		final RegistrationToken registrationToken = createRegistrationToken(registrationInfo.getUsername());
+		sendRegistrationMail(registrationToken, registrationInfo.getEmail(), locale);
 	}
 
 	@Transactional
-	public void registrateWorker(UserRegistrationInfo registrationInfo) throws MailNotSentException {
-		final GroupEntity group = groupService.loadWorkerGroup()
-				.orElseThrow(() -> RestException.newBuilder()
-						.title(localeUtilsMessage.getErrorLocalizedMessage("group.worker.notfound.title", null))
-						.detail(localeUtilsMessage.getErrorLocalizedMessage("group.worker.notfound.detail", null))
-						.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
-		registrateUser(registrationInfo, group, UserStatus.ACTIVE);
-	}
-
-	@Transactional
-	public void resendConfirmRegistrationMail(String username, String email) {
+	public void resendConfirmRegistrationMail(String username, String email, Locale locale) {
 		RegistrationToken registrationToken = registrationTokenRepository.findOneByUsernameIgnoreCase(username)
 				.orElse(null);
 
@@ -177,7 +168,8 @@ public class UserService {
 		logger.info("debug l [{}] ", l);
 
 		registrationToken = createRegistrationToken(username);
-		sendRegistrationMail(registrationToken, email);
+
+		sendRegistrationMail(registrationToken, email, locale);
 
 	}
 
@@ -185,18 +177,30 @@ public class UserService {
 		return userRepository.save(user);
 	}
 
-	private void sendRegistrationMail(RegistrationToken registrationToken, String email) throws MailNotSentException {
+	private void sendRegistrationMail(RegistrationToken registrationToken, String email, Locale locale)
+			throws MailNotSentException {
+
+		final CompanyEntity company = companyService.load()
+				.orElseThrow(() -> RestException.newBuilder()
+						.title(localeUtilsMessage.getMessage("company.load.failed", null))
+						.detail(localeUtilsMessage.getMessage("company.load.notfound", null))
+						.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
+
 		try {
 			final MimeMessage message = sender.createMimeMessage();
 
 			// Enable the multipart flag!
 			final MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-			final String registratioTemplate = localeUtilsMessage.getErrorLocalizedMessage("activationMail", null);
+			final String registrationTemplate = localeUtilsMessage.getMessage("activationMail.text", null, locale);
+			final String registrationText = StringUtils.replaceEach(registrationTemplate,
+					new String[] { "@1", "@2", "@3" },
+					new String[] { registrationToken.getUsername(), registrationToken.getToken(), company.getName() });
+
 			helper.setTo(email);
-			helper.setText(registratioTemplate.replace("@1", registrationToken.getUsername()).replace("@2",
-					registrationToken.getToken()), true);
-			helper.setSubject("Attivazione Account Pizza Shop");
+			helper.setText(registrationText, true);
+			helper.setSubject(localeUtilsMessage.getMessage("activationMail.subject",
+					new Object[] { company.getName() }, locale));
 
 			sender.send(message);
 		} catch (final Exception exception) {

@@ -18,7 +18,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "data_variation_doughs")
+@Table(name = "data_variation_size")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -26,7 +26,7 @@ import lombok.ToString;
 @ToString
 @Builder
 @EqualsAndHashCode
-public class DoughEntity {
+public class VariationSizeEntity {
 
 	@Id
 	@Column(unique = true)

@@ -10,7 +10,6 @@ import com.fattazzo.pizzashop.model.api.ProductDetails;
 import org.springframework.core.io.Resource;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -21,12 +20,9 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.CookieValue;
 
-import javax.validation.Valid;
-import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-28T14:20:54.148Z[GMT]")
-@Api(value = "products", description = "the products API")
+@Api(value = "Products", description = "the Products API")
 public interface ProductsApi {
 
     @ApiOperation(value = "Create a Product", nickname = "createProduct", notes = "Creates a new instance of a `Product`.", response = ProductDetails.class, authorizations = {
@@ -37,7 +33,7 @@ public interface ProductsApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<ProductDetails> createProduct(@ApiParam(value = "A new `Product` to be created." ,required=true )  @Valid @RequestBody ProductDetails body
+    ResponseEntity<ProductDetails> createProduct(@ApiParam(value = "A new `Product` to be created." ,required=true )   @RequestBody ProductDetails body
 );
 
 
@@ -103,7 +99,7 @@ public interface ProductsApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<ProductDetails> updateProduct(@ApiParam(value = "Updated `Product` information." ,required=true )  @Valid @RequestBody ProductDetails body
+    ResponseEntity<ProductDetails> updateProduct(@ApiParam(value = "Updated `Product` information." ,required=true )   @RequestBody ProductDetails body
 ,@ApiParam(value = "A unique identifier for a `Product`.",required=true) @PathVariable("productId") Integer productId
 );
 
@@ -115,7 +111,7 @@ public interface ProductsApi {
     @RequestMapping(value = "/products/{productId}/image",
         consumes = { "multipart/form-data" },
         method = RequestMethod.PUT)
-    ResponseEntity<Void> updateProductImage(@ApiParam(value = "file detail") @Valid @RequestPart("file") MultipartFile file
+    ResponseEntity<Void> updateProductImage(@ApiParam(value = "file detail")  @RequestPart("file") MultipartFile file
 ,@ApiParam(value = "A unique identifier for a `Product`.",required=true) @PathVariable("productId") Integer productId
 );
 

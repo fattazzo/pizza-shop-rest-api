@@ -3,34 +3,34 @@ package com.fattazzo.pizzashop.model.api;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fattazzo.pizzashop.model.api.ErrorData;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import org.springframework.core.io.Resource;
 
 /**
- * Body1
+ * ErrorResponse
  */
 
-public class Body1   {
-  @JsonProperty("file")
-  private Resource file = null;
+public class ErrorResponse   {
+  @JsonProperty("error")
+  private ErrorData error = null;
 
-  public Body1 file(Resource file) {
-    this.file = file;
+  public ErrorResponse error(ErrorData error) {
+    this.error = error;
     return this;
   }
 
   /**
-   * Get file
-   * @return file
+   * Get error
+   * @return error
   **/
-  @ApiModelProperty(value = "")
-    public Resource getFile() {
-    return file;
+  @ApiModelProperty(required = true, value = "")
+    public ErrorData getError() {
+    return error;
   }
 
-  public void setFile(Resource file) {
-    this.file = file;
+  public void setError(ErrorData error) {
+    this.error = error;
   }
 
 
@@ -42,21 +42,21 @@ public class Body1   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Body1 body1 = (Body1) o;
-    return Objects.equals(this.file, body1.file);
+    ErrorResponse errorResponse = (ErrorResponse) o;
+    return Objects.equals(this.error, errorResponse.error);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(file);
+    return Objects.hash(error);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Body1 {\n");
+    sb.append("class ErrorResponse {\n");
     
-    sb.append("    file: ").append(toIndentedString(file)).append("\n");
+    sb.append("    error: ").append(toIndentedString(error)).append("\n");
     sb.append("}");
     return sb.toString();
   }

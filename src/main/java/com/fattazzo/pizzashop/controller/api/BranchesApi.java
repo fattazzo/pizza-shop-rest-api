@@ -10,7 +10,6 @@ import com.fattazzo.pizzashop.model.api.BranchDetails;
 import com.fattazzo.pizzashop.model.api.ShippingZone;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -21,12 +20,9 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.CookieValue;
 
-import javax.validation.Valid;
-import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-28T14:20:54.148Z[GMT]")
-@Api(value = "branches", description = "the branches API")
+@Api(value = "Branches", description = "the Branches API")
 public interface BranchesApi {
 
     @ApiOperation(value = "Create a Branch for company", nickname = "createBranch", notes = "Creates a new instance of a `Branch`.", response = BranchDetails.class, authorizations = {
@@ -38,7 +34,7 @@ public interface BranchesApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<BranchDetails> createBranch(@ApiParam(value = "A new `Branch` to be created." ,required=true )  @Valid @RequestBody BranchDetails body
+    ResponseEntity<BranchDetails> createBranch(@ApiParam(value = "A new `Branch` to be created." ,required=true )   @RequestBody BranchDetails body
 );
 
 
@@ -93,7 +89,7 @@ public interface BranchesApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<BranchDetails> updateBranch(@ApiParam(value = "Updated `Branch` information." ,required=true )  @Valid @RequestBody BranchDetails body
+    ResponseEntity<BranchDetails> updateBranch(@ApiParam(value = "Updated `Branch` information." ,required=true )   @RequestBody BranchDetails body
 ,@ApiParam(value = "A unique identifier for a `Branch`.",required=true) @PathVariable("branchId") Integer branchId
 );
 

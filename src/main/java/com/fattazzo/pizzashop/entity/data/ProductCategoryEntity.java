@@ -47,10 +47,10 @@ public class ProductCategoryEntity {
 	@EqualsAndHashCode.Exclude
 	@Builder.Default
 	@ManyToMany(fetch = FetchType.EAGER)
-	private Set<DoughEntity> doughs = new TreeSet<>();
+	private Set<VariationDoughEntity> doughs = new TreeSet<>();
 
 	@EqualsAndHashCode.Exclude
 	@Builder.Default
 	@ManyToMany(fetch = FetchType.EAGER)
-	private Set<SizeEntity> sizes = new TreeSet<>();
+	private Set<VariationSizeEntity> sizes = new TreeSet<>();
 }

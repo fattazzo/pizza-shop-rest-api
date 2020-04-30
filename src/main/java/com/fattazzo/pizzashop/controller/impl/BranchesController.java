@@ -3,6 +3,7 @@ package com.fattazzo.pizzashop.controller.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
@@ -42,6 +43,13 @@ public class BranchesController implements BranchesApi {
 	@Autowired
 	private ShippingZoneService shippingZoneService;
 
+	private final HttpServletRequest request;
+
+	@Autowired
+	public BranchesController(HttpServletRequest httpServletRequest) {
+		this.request = httpServletRequest;
+	}
+
 	@Override
 	@PreAuthorize("@securityService.hasAnyPermission({'COMPANY'})")
 	public ResponseEntity<BranchDetails> createBranch(@Valid BranchDetails body) {
@@ -52,8 +60,8 @@ public class BranchesController implements BranchesApi {
 			branch = branchService.save(branch);
 		} catch (final BranchPrimaryCheckException e) {
 			throw RestException.newBuilder()
-					.title(localeUtilsMessage.getErrorLocalizedMessage("branch.insert.failed.title", null))
-					.detail(localeUtilsMessage.getErrorLocalizedMessage("branch.failed.primaryCheck", null))
+					.title(localeUtilsMessage.getMessage("branch.insert.failed.title", null, request))
+					.detail(localeUtilsMessage.getMessage("branch.failed.primaryCheck", null, request))
 					.status(HttpStatus.CONFLICT).build();
 		}
 
@@ -68,8 +76,8 @@ public class BranchesController implements BranchesApi {
 			branchService.deleteById(branchId);
 		} catch (final BranchPrimaryCheckException e) {
 			throw RestException.newBuilder()
-					.title(localeUtilsMessage.getErrorLocalizedMessage("branch.delete.failed.title", null))
-					.detail(localeUtilsMessage.getErrorLocalizedMessage("branch.failed.primaryCheck", null))
+					.title(localeUtilsMessage.getMessage("branch.delete.failed.title", null, request))
+					.detail(localeUtilsMessage.getMessage("branch.failed.primaryCheck", null, request))
 					.status(HttpStatus.CONFLICT).build();
 		}
 
@@ -103,8 +111,8 @@ public class BranchesController implements BranchesApi {
 
 		if (!existingEntity.getId().equals(body.getId())) {
 			throw RestException.newBuilder()
-					.title(localeUtilsMessage.getErrorLocalizedMessage("branch.update.failed.title", null))
-					.detail(localeUtilsMessage.getErrorLocalizedMessage("branch.update.failed.idParamNotEquals", null))
+					.title(localeUtilsMessage.getMessage("branch.update.failed.title", null, request))
+					.detail(localeUtilsMessage.getMessage("idParamNotEquals", null, request))
 					.status(HttpStatus.BAD_REQUEST).build();
 		}
 
@@ -113,8 +121,8 @@ public class BranchesController implements BranchesApi {
 			entity = branchService.save(mapper.map(body, BranchEntity.class));
 		} catch (final BranchPrimaryCheckException e) {
 			throw RestException.newBuilder()
-					.title(localeUtilsMessage.getErrorLocalizedMessage("branch.update.failed.title", null))
-					.detail(localeUtilsMessage.getErrorLocalizedMessage("branch.failed.primaryCheck", null))
+					.title(localeUtilsMessage.getMessage("branch.update.failed.title", null, request))
+					.detail(localeUtilsMessage.getMessage("branch.failed.primaryCheck", null, request))
 					.status(HttpStatus.CONFLICT).build();
 		}
 

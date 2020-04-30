@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -27,11 +28,11 @@ import com.fattazzo.pizzashop.entity.data.ProductImageEntity;
 import com.fattazzo.pizzashop.entity.data.ToppingExtraEntity;
 import com.fattazzo.pizzashop.exception.security.NoSuchEntityException;
 import com.fattazzo.pizzashop.exception.security.RestException;
-import com.fattazzo.pizzashop.model.api.Dough;
 import com.fattazzo.pizzashop.model.api.Product;
 import com.fattazzo.pizzashop.model.api.ProductDetails;
-import com.fattazzo.pizzashop.model.api.Size;
 import com.fattazzo.pizzashop.model.api.ToppingExtra;
+import com.fattazzo.pizzashop.model.api.VariationDough;
+import com.fattazzo.pizzashop.model.api.VariationSize;
 import com.fattazzo.pizzashop.service.local.LocaleUtilsMessage;
 import com.fattazzo.pizzashop.service.product.ProductCategoryService;
 import com.fattazzo.pizzashop.service.product.ProductService;
@@ -57,6 +58,13 @@ public class ProductsController implements ProductsApi {
 
 	@Autowired
 	private ToppingExtraService toppingExtraService;
+
+	private final HttpServletRequest request;
+
+	@Autowired
+	public ProductsController(HttpServletRequest httpServletRequest) {
+		this.request = httpServletRequest;
+	}
 
 	@Override
 	@PreAuthorize("@securityService.hasAnyPermission({'PRODUCTS'})")
@@ -132,10 +140,10 @@ public class ProductsController implements ProductsApi {
 
 		final ProductCategoryEntity categoryEntity = productCategoryService
 				.findById(productEntity.getCategory().getId()).orElseThrow(NoSuchEntityException::new);
-		final List<Dough> doughs = CollectionUtils.emptyIfNull(categoryEntity.getDoughs()).stream()
-				.filter(d -> d.isEnabled()).map(d -> mapper.map(d, Dough.class)).collect(Collectors.toList());
-		final List<Size> sizes = CollectionUtils.emptyIfNull(categoryEntity.getSizes()).stream()
-				.filter(s -> s.isEnabled()).map(s -> mapper.map(s, Size.class)).collect(Collectors.toList());
+		final List<VariationDough> doughs = CollectionUtils.emptyIfNull(categoryEntity.getDoughs()).stream()
+				.filter(d -> d.isEnabled()).map(d -> mapper.map(d, VariationDough.class)).collect(Collectors.toList());
+		final List<VariationSize> sizes = CollectionUtils.emptyIfNull(categoryEntity.getSizes()).stream()
+				.filter(s -> s.isEnabled()).map(s -> mapper.map(s, VariationSize.class)).collect(Collectors.toList());
 		productDetails.setDoughs(doughs);
 		productDetails.setSizes(sizes);
 
@@ -158,8 +166,8 @@ public class ProductsController implements ProductsApi {
 
 		if (!existingEntity.getId().equals(body.getId())) {
 			throw RestException.newBuilder()
-					.title(localeUtilsMessage.getErrorLocalizedMessage("product.update.failed.title", null))
-					.detail(localeUtilsMessage.getErrorLocalizedMessage("idParamNotEquals", null))
+					.title(localeUtilsMessage.getMessage("product.update.failed.title", null, request))
+					.detail(localeUtilsMessage.getMessage("idParamNotEquals", null, request))
 					.status(HttpStatus.BAD_REQUEST).build();
 		}
 
@@ -185,8 +193,8 @@ public class ProductsController implements ProductsApi {
 			image.setValue(file.getBytes());
 		} catch (final IOException e) {
 			throw RestException.newBuilder()
-					.title(localeUtilsMessage.getErrorLocalizedMessage("company.logo.update.failed.title", null))
-					.detail(localeUtilsMessage.getErrorLocalizedMessage("company.logo.update.failed.detail", null))
+					.title(localeUtilsMessage.getMessage("company.logo.update.failed.title", null, request))
+					.detail(localeUtilsMessage.getMessage("company.logo.update.failed.detail", null, request))
 					.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 

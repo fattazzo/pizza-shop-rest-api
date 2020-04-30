@@ -3,6 +3,7 @@ package com.fattazzo.pizzashop.controller.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
@@ -35,6 +36,13 @@ public class ToppingExtrasController implements ToppingextrasApi {
 	@Autowired
 	private ToppingExtraService toppingExtraService;
 
+	private final HttpServletRequest request;
+
+	@Autowired
+	public ToppingExtrasController(HttpServletRequest httpServletRequest) {
+		this.request = httpServletRequest;
+	}
+
 	@Override
 	public ResponseEntity<ToppingExtra> getToppingExtra(Integer toppingextraId) {
 		final ToppingExtraEntity entity = toppingExtraService.findById(toppingextraId)
@@ -58,8 +66,8 @@ public class ToppingExtrasController implements ToppingextrasApi {
 
 		if (!existingEntity.getId().equals(toppingExtra.getId())) {
 			throw RestException.newBuilder()
-					.title(localeUtilsMessage.getErrorLocalizedMessage("toppingExtra.update.failed.title", null))
-					.detail(localeUtilsMessage.getErrorLocalizedMessage("idParamNotEquals", null))
+					.title(localeUtilsMessage.getMessage("toppingExtra.update.failed.title", null, request))
+					.detail(localeUtilsMessage.getMessage("idParamNotEquals", null, request))
 					.status(HttpStatus.BAD_REQUEST).build();
 		}
 

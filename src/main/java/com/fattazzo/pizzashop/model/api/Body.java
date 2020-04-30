@@ -6,15 +6,11 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.core.io.Resource;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
  * Body
  */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-28T14:20:54.148Z[GMT]")
+
 public class Body   {
   @JsonProperty("file")
   private Resource file = null;
@@ -29,8 +25,6 @@ public class Body   {
    * @return file
   **/
   @ApiModelProperty(value = "")
-  
-    @Valid
     public Resource getFile() {
     return file;
   }

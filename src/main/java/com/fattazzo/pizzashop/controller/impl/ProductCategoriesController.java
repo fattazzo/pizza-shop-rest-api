@@ -3,6 +3,7 @@ package com.fattazzo.pizzashop.controller.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.BooleanUtils;
@@ -37,15 +38,22 @@ public class ProductCategoriesController implements ProductcategoriesApi {
 	@Autowired
 	private ProductCategoryService productCategoryService;
 
+	private final HttpServletRequest request;
+
+	@Autowired
+	public ProductCategoriesController(HttpServletRequest httpServletRequest) {
+		this.request = httpServletRequest;
+	}
+
 	@Override
 	@PreAuthorize("@securityService.hasAnyPermission({'PRODUCTS'})")
 	public ResponseEntity<ProductCategoryDetails> createProductCategory(@Valid ProductCategoryDetails body) {
 		final ProductCategoryEntity existingEntity = productCategoryService.findByName(body.getName()).orElse(null);
 		if (existingEntity != null) {
 			throw RestException.newBuilder()
-					.title(localeUtilsMessage.getErrorLocalizedMessage("productCategory.insert.failed.title", null))
-					.detail(localeUtilsMessage.getErrorLocalizedMessage("productCategory.insert.failed.alreadyexist",
-							new Object[] { existingEntity.getName() }))
+					.title(localeUtilsMessage.getMessage("productCategory.insert.failed.title", null, request))
+					.detail(localeUtilsMessage.getMessage("productCategory.insert.failed.alreadyexist",
+							new Object[] { existingEntity.getName() }, request))
 					.status(HttpStatus.BAD_REQUEST).build();
 		}
 
@@ -90,8 +98,8 @@ public class ProductCategoriesController implements ProductcategoriesApi {
 
 		if (!existingEntity.getId().equals(body.getId())) {
 			throw RestException.newBuilder()
-					.title(localeUtilsMessage.getErrorLocalizedMessage("productCategory.update.failed.title", null))
-					.detail(localeUtilsMessage.getErrorLocalizedMessage("idParamNotEquals", null))
+					.title(localeUtilsMessage.getMessage("productCategory.update.failed.title", null, request))
+					.detail(localeUtilsMessage.getMessage("idParamNotEquals", null, request))
 					.status(HttpStatus.BAD_REQUEST).build();
 		}
 

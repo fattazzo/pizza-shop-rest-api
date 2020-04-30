@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.fattazzo.pizzashop.controller.api.CompanyApi;
+import com.fattazzo.pizzashop.controller.api.CompaniesApi;
 import com.fattazzo.pizzashop.entity.data.CompanyEntity;
 import com.fattazzo.pizzashop.entity.data.CompanyLogoEntity;
 import com.fattazzo.pizzashop.exception.security.NoSuchEntityException;
@@ -31,7 +32,7 @@ import io.swagger.annotations.Api;
 
 @RestController
 @Api(tags = { "companies" })
-public class CompaniesController implements CompanyApi {
+public class CompaniesController implements CompaniesApi {
 
 	@Autowired
 	private LocaleUtilsMessage localeUtilsMessage;
@@ -45,14 +46,20 @@ public class CompaniesController implements CompanyApi {
 	@Autowired
 	private ModelMapper mapper;
 
+	private final HttpServletRequest request;
+
+	@Autowired
+	public CompaniesController(HttpServletRequest httpServletRequest) {
+		this.request = httpServletRequest;
+	}
+
 	@Override
 	public ResponseEntity<Company> getCompany() {
 		final Optional<CompanyEntity> companyEntity = companyService.load();
 
 		if (!companyEntity.isPresent()) {
-			throw RestException.newBuilder()
-					.title(localeUtilsMessage.getErrorLocalizedMessage("company.load.failed", null))
-					.detail(localeUtilsMessage.getErrorLocalizedMessage("company.load.notfound", null))
+			throw RestException.newBuilder().title(localeUtilsMessage.getMessage("company.load.failed", null, request))
+					.detail(localeUtilsMessage.getMessage("company.load.notfound", null, request))
 					.status(HttpStatus.NOT_FOUND).build();
 		}
 
@@ -99,8 +106,8 @@ public class CompaniesController implements CompanyApi {
 			companyLogoService.update(file.getBytes());
 		} catch (final IOException e) {
 			throw RestException.newBuilder()
-					.title(localeUtilsMessage.getErrorLocalizedMessage("company.logo.update.failed.title", null))
-					.detail(localeUtilsMessage.getErrorLocalizedMessage("company.logo.update.failed.detail", null))
+					.title(localeUtilsMessage.getMessage("company.logo.update.failed.title", null, request))
+					.detail(localeUtilsMessage.getMessage("company.logo.update.failed.detail", null, request))
 					.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 

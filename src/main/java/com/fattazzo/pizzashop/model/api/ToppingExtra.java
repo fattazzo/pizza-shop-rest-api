@@ -3,22 +3,18 @@ package com.fattazzo.pizzashop.model.api;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fattazzo.pizzashop.model.api.Dough;
-import com.fattazzo.pizzashop.model.api.Size;
 import com.fattazzo.pizzashop.model.api.Topping;
+import com.fattazzo.pizzashop.model.api.VariationDough;
+import com.fattazzo.pizzashop.model.api.VariationSize;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
  * Price of the topping based on a dough and size
  */
 @ApiModel(description = "Price of the topping based on a dough and size")
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-28T14:20:54.148Z[GMT]")
+
 public class ToppingExtra   {
   @JsonProperty("id")
   private Integer id = null;
@@ -27,10 +23,10 @@ public class ToppingExtra   {
   private Topping topping = null;
 
   @JsonProperty("dough")
-  private Dough dough = null;
+  private VariationDough dough = null;
 
   @JsonProperty("size")
-  private Size size = null;
+  private VariationSize size = null;
 
   @JsonProperty("extra")
   private BigDecimal extra = null;
@@ -48,7 +44,6 @@ public class ToppingExtra   {
    * @return id
   **/
   @ApiModelProperty(value = "")
-  
     public Integer getId() {
     return id;
   }
@@ -67,9 +62,6 @@ public class ToppingExtra   {
    * @return topping
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
-
-    @Valid
     public Topping getTopping() {
     return topping;
   }
@@ -78,7 +70,7 @@ public class ToppingExtra   {
     this.topping = topping;
   }
 
-  public ToppingExtra dough(Dough dough) {
+  public ToppingExtra dough(VariationDough dough) {
     this.dough = dough;
     return this;
   }
@@ -88,18 +80,15 @@ public class ToppingExtra   {
    * @return dough
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
-
-    @Valid
-    public Dough getDough() {
+    public VariationDough getDough() {
     return dough;
   }
 
-  public void setDough(Dough dough) {
+  public void setDough(VariationDough dough) {
     this.dough = dough;
   }
 
-  public ToppingExtra size(Size size) {
+  public ToppingExtra size(VariationSize size) {
     this.size = size;
     return this;
   }
@@ -109,14 +98,11 @@ public class ToppingExtra   {
    * @return size
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
-
-    @Valid
-    public Size getSize() {
+    public VariationSize getSize() {
     return size;
   }
 
-  public void setSize(Size size) {
+  public void setSize(VariationSize size) {
     this.size = size;
   }
 
@@ -130,9 +116,6 @@ public class ToppingExtra   {
    * @return extra
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
-
-    @Valid
     public BigDecimal getExtra() {
     return extra;
   }
@@ -151,8 +134,6 @@ public class ToppingExtra   {
    * @return enabled
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
-
     public Boolean isEnabled() {
     return enabled;
   }

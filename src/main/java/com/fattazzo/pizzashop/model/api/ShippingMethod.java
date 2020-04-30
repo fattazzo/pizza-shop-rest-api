@@ -6,15 +6,11 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fattazzo.pizzashop.model.api.ShippingMethodType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
  * ShippingMethod
  */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-28T14:20:54.148Z[GMT]")
+
 public class ShippingMethod   {
   @JsonProperty("id")
   private Integer id = null;
@@ -41,7 +37,6 @@ public class ShippingMethod   {
    * @return id
   **/
   @ApiModelProperty(value = "Method ID")
-  
     public Integer getId() {
     return id;
   }
@@ -60,8 +55,6 @@ public class ShippingMethod   {
    * @return title
   **/
   @ApiModelProperty(required = true, value = "Shipping method title")
-      @NotNull
-
     public String getTitle() {
     return title;
   }
@@ -80,7 +73,6 @@ public class ShippingMethod   {
    * @return description
   **/
   @ApiModelProperty(value = "Shipping method description")
-  
     public String getDescription() {
     return description;
   }
@@ -99,9 +91,6 @@ public class ShippingMethod   {
    * @return type
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
-
-    @Valid
     public ShippingMethodType getType() {
     return type;
   }
@@ -120,8 +109,6 @@ public class ShippingMethod   {
    * @return enabled
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
-
     public Boolean isEnabled() {
     return enabled;
   }

@@ -11,8 +11,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
-import com.fattazzo.pizzashop.entity.data.DoughEntity;
-import com.fattazzo.pizzashop.entity.data.SizeEntity;
+import com.fattazzo.pizzashop.entity.data.VariationDoughEntity;
+import com.fattazzo.pizzashop.entity.data.VariationSizeEntity;
 import com.fattazzo.pizzashop.entity.data.ToppingEntity;
 import com.fattazzo.pizzashop.entity.data.ToppingExtraEntity;
 import com.fattazzo.pizzashop.exception.security.NoSuchEntityException;
@@ -54,8 +54,8 @@ public class ToppingExtraService {
 		final List<ToppingExtraEntity> entities = toppingExtraRepository
 				.findByDoughIdAndSizeIdOrderByToppingNameAsc(doughId, sizeId);
 
-		final DoughEntity dough = doughService.findById(doughId).orElseThrow(NoSuchEntityException::new);
-		final SizeEntity size = sizeService.findById(sizeId).orElseThrow(NoSuchEntityException::new);
+		final VariationDoughEntity dough = doughService.findById(doughId).orElseThrow(NoSuchEntityException::new);
+		final VariationSizeEntity size = sizeService.findById(sizeId).orElseThrow(NoSuchEntityException::new);
 		final List<ToppingEntity> toppings = toppingService.findAll();
 
 		for (final ToppingEntity topping : toppings) {

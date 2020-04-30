@@ -8,7 +8,6 @@ package com.fattazzo.pizzashop.controller.api;
 import com.fattazzo.pizzashop.model.api.ToppingExtra;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -19,16 +18,13 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.CookieValue;
 
-import javax.validation.Valid;
-import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-28T14:20:54.148Z[GMT]")
-@Api(value = "toppingextras", description = "the toppingextras API")
+@Api(value = "Toppingextras", description = "the Toppingextras API")
 public interface ToppingextrasApi {
 
     @ApiOperation(value = "Get a ToppingExtra", nickname = "getToppingExtra", notes = "Gets the details of a single instance of a `ToppingExtra`.", response = ToppingExtra.class, authorizations = {
-        @Authorization(value = "BearerAuth")    }, tags={ "variations", })
+        @Authorization(value = "BearerAuth")    }, tags={ "toppingextras", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Successful response - returns a single `ToppingExtra`.", response = ToppingExtra.class) })
     @RequestMapping(value = "/toppingextras/{toppingextraId}",
@@ -39,7 +35,7 @@ public interface ToppingextrasApi {
 
 
     @ApiOperation(value = "List All ToppingExtras", nickname = "getToppingExtras", notes = "Gets a list of all `ToppingExtra` entities.", response = ToppingExtra.class, responseContainer = "List", authorizations = {
-        @Authorization(value = "BearerAuth")    }, tags={ "variations", })
+        @Authorization(value = "BearerAuth")    }, tags={ "toppingextras", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Successful response - returns an array of `ToppingExtra` entities.", response = ToppingExtra.class, responseContainer = "List") })
     @RequestMapping(value = "/toppingextras",
@@ -51,27 +47,27 @@ public interface ToppingextrasApi {
 
 
     @ApiOperation(value = "Update a ToppingExtra", nickname = "updateToppingExtra", notes = "Updates an existing `ToppingExtra`.", response = ToppingExtra.class, authorizations = {
-        @Authorization(value = "BearerAuth")    }, tags={ "variations", })
+        @Authorization(value = "BearerAuth")    }, tags={ "toppingextras", })
     @ApiResponses(value = { 
         @ApiResponse(code = 202, message = "Successful response.", response = ToppingExtra.class) })
     @RequestMapping(value = "/toppingextras/{toppingextraId}",
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<ToppingExtra> updateToppingExtra(@ApiParam(value = "Updated `ToppingExtra` information." ,required=true )  @Valid @RequestBody ToppingExtra body
+    ResponseEntity<ToppingExtra> updateToppingExtra(@ApiParam(value = "Updated `ToppingExtra` information." ,required=true )   @RequestBody ToppingExtra body
 ,@ApiParam(value = "A unique identifier for a `ToppingExtra`.",required=true) @PathVariable("toppingextraId") Integer toppingextraId
 );
 
 
     @ApiOperation(value = "Update All ToppingExtras", nickname = "updateToppingExtras", notes = "Updates existing `ToppingExtra`.", response = ToppingExtra.class, responseContainer = "List", authorizations = {
-        @Authorization(value = "BearerAuth")    }, tags={ "variations", })
+        @Authorization(value = "BearerAuth")    }, tags={ "toppingextras", })
     @ApiResponses(value = { 
         @ApiResponse(code = 202, message = "Successful response.", response = ToppingExtra.class, responseContainer = "List") })
     @RequestMapping(value = "/toppingextras",
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<List<ToppingExtra>> updateToppingExtras(@ApiParam(value = "" ,required=true )  @Valid @RequestBody List<ToppingExtra> body
+    ResponseEntity<List<ToppingExtra>> updateToppingExtras(@ApiParam(value = "" ,required=true )   @RequestBody List<ToppingExtra> body
 );
 
 }

@@ -5,14 +5,14 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.fattazzo.pizzashop.entity.data.SizeEntity;
+import com.fattazzo.pizzashop.entity.data.VariationSizeEntity;
 
-public interface SizeRepository extends JpaRepository<SizeEntity, Integer> {
+public interface SizeRepository extends JpaRepository<VariationSizeEntity, Integer> {
 
-	List<SizeEntity> findAllByOrderByOrderAsc();
+	List<VariationSizeEntity> findAllByOrderByOrderAsc();
 
-	List<SizeEntity> findByEnabledTrueOrderByOrderAsc();
+	List<VariationSizeEntity> findByEnabledTrueOrderByOrderAsc();
 
-	Optional<SizeEntity> findByNameIgnoreCase(String name);
+	Optional<VariationSizeEntity> findByNameIgnoreCase(String name);
 
 }

@@ -3,6 +3,7 @@ package com.fattazzo.pizzashop.controller.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
@@ -36,15 +37,22 @@ public class GroupsController implements GroupsApi {
 	@Autowired
 	private LocaleUtilsMessage localeUtilsMessage;
 
+	private final HttpServletRequest request;
+
+	@Autowired
+	public GroupsController(HttpServletRequest httpServletRequest) {
+		this.request = httpServletRequest;
+	}
+
 	@Override
 	@PreAuthorize("@securityService.hasAnyPermission({'SECURITY'})")
 	public ResponseEntity<Group> createGroup(@Valid Group body) {
 		final GroupEntity existingGroup = groupService.findByName(body.getName()).orElse(null);
 		if (existingGroup != null) {
 			throw RestException.newBuilder()
-					.title(localeUtilsMessage.getErrorLocalizedMessage("group.insert.failed.title", null))
-					.detail(localeUtilsMessage.getErrorLocalizedMessage("group.insert.failed.alreadyexist",
-							new Object[] { existingGroup.getName() }))
+					.title(localeUtilsMessage.getMessage("group.insert.failed.title", null, request))
+					.detail(localeUtilsMessage.getMessage("group.insert.failed.alreadyexist",
+							new Object[] { existingGroup.getName() }, request))
 					.status(HttpStatus.BAD_REQUEST).build();
 		}
 
@@ -62,9 +70,9 @@ public class GroupsController implements GroupsApi {
 			groupService.deleteById(groupId);
 		} catch (final GroupReadonlyException e) {
 			throw RestException.newBuilder()
-					.title(localeUtilsMessage.getErrorLocalizedMessage("group.delete.failed.title", null))
-					.detail(localeUtilsMessage.getErrorLocalizedMessage("group.failed.readonly",
-							new Object[] { e.getMessage() }))
+					.title(localeUtilsMessage.getMessage("group.delete.failed.title", null, request))
+					.detail(localeUtilsMessage.getMessage("group.failed.readonly", new Object[] { e.getMessage() },
+							request))
 					.status(HttpStatus.BAD_REQUEST).build();
 		}
 		return ResponseEntity.noContent().build();
@@ -90,8 +98,8 @@ public class GroupsController implements GroupsApi {
 
 		if (!existingGroup.getId().equals(body.getId())) {
 			throw RestException.newBuilder()
-					.title(localeUtilsMessage.getErrorLocalizedMessage("group.update.failed.title", null))
-					.detail(localeUtilsMessage.getErrorLocalizedMessage("group.update.failed.idParamNotEquals", null))
+					.title(localeUtilsMessage.getMessage("group.update.failed.title", null, request))
+					.detail(localeUtilsMessage.getMessage("idParamNotEquals", null, request))
 					.status(HttpStatus.BAD_REQUEST).build();
 		}
 
@@ -100,9 +108,9 @@ public class GroupsController implements GroupsApi {
 			return ResponseEntity.ok(mapper.map(group, Group.class));
 		} catch (final GroupReadonlyException e) {
 			throw RestException.newBuilder()
-					.title(localeUtilsMessage.getErrorLocalizedMessage("group.delete.failed.title", null))
-					.detail(localeUtilsMessage.getErrorLocalizedMessage("group.failed.readonly",
-							new Object[] { e.getMessage() }))
+					.title(localeUtilsMessage.getMessage("group.delete.failed.title", null, request))
+					.detail(localeUtilsMessage.getMessage("group.failed.readonly", new Object[] { e.getMessage() },
+							request))
 					.status(HttpStatus.BAD_REQUEST).build();
 		}
 	}

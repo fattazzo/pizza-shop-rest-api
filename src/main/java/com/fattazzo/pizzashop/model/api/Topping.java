@@ -5,16 +5,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
  * Any ingredient that can be added extra to the standard pizza
  */
 @ApiModel(description = "Any ingredient that can be added extra to the standard pizza")
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-28T14:20:54.148Z[GMT]")
+
 public class Topping   {
   @JsonProperty("id")
   private Integer id = null;
@@ -38,7 +34,6 @@ public class Topping   {
    * @return id
   **/
   @ApiModelProperty(value = "")
-  
     public Integer getId() {
     return id;
   }
@@ -57,8 +52,6 @@ public class Topping   {
    * @return name
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
-
     public String getName() {
     return name;
   }
@@ -77,7 +70,6 @@ public class Topping   {
    * @return description
   **/
   @ApiModelProperty(value = "")
-  
     public String getDescription() {
     return description;
   }
@@ -96,8 +88,6 @@ public class Topping   {
    * @return enabled
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
-
     public Boolean isEnabled() {
     return enabled;
   }

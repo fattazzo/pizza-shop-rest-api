@@ -3,6 +3,7 @@ package com.fattazzo.pizzashop.controller.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.BooleanUtils;
@@ -14,14 +15,14 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fattazzo.pizzashop.controller.api.VariationsApi;
-import com.fattazzo.pizzashop.entity.data.DoughEntity;
-import com.fattazzo.pizzashop.entity.data.SizeEntity;
 import com.fattazzo.pizzashop.entity.data.ToppingEntity;
+import com.fattazzo.pizzashop.entity.data.VariationDoughEntity;
+import com.fattazzo.pizzashop.entity.data.VariationSizeEntity;
 import com.fattazzo.pizzashop.exception.security.NoSuchEntityException;
 import com.fattazzo.pizzashop.exception.security.RestException;
-import com.fattazzo.pizzashop.model.api.Dough;
-import com.fattazzo.pizzashop.model.api.Size;
 import com.fattazzo.pizzashop.model.api.Topping;
+import com.fattazzo.pizzashop.model.api.VariationDough;
+import com.fattazzo.pizzashop.model.api.VariationSize;
 import com.fattazzo.pizzashop.service.local.LocaleUtilsMessage;
 import com.fattazzo.pizzashop.service.variation.DoughService;
 import com.fattazzo.pizzashop.service.variation.SizeService;
@@ -48,42 +49,49 @@ public class VariationsController implements VariationsApi {
 	@Autowired
 	private ToppingService toppingService;
 
-	@Override
-	@PreAuthorize("@securityService.hasAnyPermission({'VARIATIONS'})")
-	public ResponseEntity<Dough> createDough(@Valid Dough body) {
-		final DoughEntity existingEntity = doughService.findByName(body.getName()).orElse(null);
-		if (existingEntity != null) {
-			throw RestException.newBuilder()
-					.title(localeUtilsMessage.getErrorLocalizedMessage("variation.insert.failed.title", null))
-					.detail(localeUtilsMessage.getErrorLocalizedMessage("variation.insert.failed.alreadyexist",
-							new Object[] { existingEntity.getName() }))
-					.status(HttpStatus.BAD_REQUEST).build();
-		}
+	private final HttpServletRequest request;
 
-		DoughEntity dough = mapper.map(body, DoughEntity.class);
-
-		dough = doughService.save(dough);
-
-		return new ResponseEntity<>(mapper.map(dough, Dough.class), HttpStatus.CREATED);
+	@Autowired
+	public VariationsController(HttpServletRequest httpServletRequest) {
+		this.request = httpServletRequest;
 	}
 
 	@Override
 	@PreAuthorize("@securityService.hasAnyPermission({'VARIATIONS'})")
-	public ResponseEntity<Size> createSize(@Valid Size body) {
-		final SizeEntity existingEntity = sizeService.findByName(body.getName()).orElse(null);
+	public ResponseEntity<VariationDough> createDough(@Valid VariationDough body) {
+		final VariationDoughEntity existingEntity = doughService.findByName(body.getName()).orElse(null);
 		if (existingEntity != null) {
 			throw RestException.newBuilder()
-					.title(localeUtilsMessage.getErrorLocalizedMessage("variation.insert.failed.title", null))
-					.detail(localeUtilsMessage.getErrorLocalizedMessage("variation.insert.failed.alreadyexist",
-							new Object[] { existingEntity.getName() }))
+					.title(localeUtilsMessage.getMessage("variation.insert.failed.title", null, request))
+					.detail(localeUtilsMessage.getMessage("variation.insert.failed.alreadyexist",
+							new Object[] { existingEntity.getName() }, request))
 					.status(HttpStatus.BAD_REQUEST).build();
 		}
 
-		SizeEntity size = mapper.map(body, SizeEntity.class);
+		VariationDoughEntity dough = mapper.map(body, VariationDoughEntity.class);
+
+		dough = doughService.save(dough);
+
+		return new ResponseEntity<>(mapper.map(dough, VariationDough.class), HttpStatus.CREATED);
+	}
+
+	@Override
+	@PreAuthorize("@securityService.hasAnyPermission({'VARIATIONS'})")
+	public ResponseEntity<VariationSize> createSize(@Valid VariationSize body) {
+		final VariationSizeEntity existingEntity = sizeService.findByName(body.getName()).orElse(null);
+		if (existingEntity != null) {
+			throw RestException.newBuilder()
+					.title(localeUtilsMessage.getMessage("variation.insert.failed.title", null, request))
+					.detail(localeUtilsMessage.getMessage("variation.insert.failed.alreadyexist",
+							new Object[] { existingEntity.getName() }, request))
+					.status(HttpStatus.BAD_REQUEST).build();
+		}
+
+		VariationSizeEntity size = mapper.map(body, VariationSizeEntity.class);
 
 		size = sizeService.save(size);
 
-		return new ResponseEntity<>(mapper.map(size, Size.class), HttpStatus.CREATED);
+		return new ResponseEntity<>(mapper.map(size, VariationSize.class), HttpStatus.CREATED);
 	}
 
 	@Override
@@ -92,9 +100,9 @@ public class VariationsController implements VariationsApi {
 		final ToppingEntity existingEntity = toppingService.findByName(body.getName()).orElse(null);
 		if (existingEntity != null) {
 			throw RestException.newBuilder()
-					.title(localeUtilsMessage.getErrorLocalizedMessage("variation.insert.failed.title", null))
-					.detail(localeUtilsMessage.getErrorLocalizedMessage("variation.insert.failed.alreadyexist",
-							new Object[] { existingEntity.getName() }))
+					.title(localeUtilsMessage.getMessage("variation.insert.failed.title", null, request))
+					.detail(localeUtilsMessage.getMessage("variation.insert.failed.alreadyexist",
+							new Object[] { existingEntity.getName() }, request))
 					.status(HttpStatus.BAD_REQUEST).build();
 		}
 
@@ -127,32 +135,34 @@ public class VariationsController implements VariationsApi {
 	}
 
 	@Override
-	public ResponseEntity<Dough> getDough(Integer doughId) {
-		final DoughEntity entity = doughService.findById(doughId).orElseThrow(NoSuchEntityException::new);
-		return ResponseEntity.ok(mapper.map(entity, Dough.class));
+	public ResponseEntity<VariationDough> getDough(Integer doughId) {
+		final VariationDoughEntity entity = doughService.findById(doughId).orElseThrow(NoSuchEntityException::new);
+		return ResponseEntity.ok(mapper.map(entity, VariationDough.class));
 	}
 
 	@Override
-	public ResponseEntity<List<Dough>> getDoughs(@Valid Boolean includeDisabled) {
-		final List<DoughEntity> entities = (BooleanUtils.isTrue(includeDisabled)) ? doughService.findAll()
+	public ResponseEntity<List<VariationDough>> getDoughs(@Valid Boolean includeDisabled) {
+		final List<VariationDoughEntity> entities = (BooleanUtils.isTrue(includeDisabled)) ? doughService.findAll()
 				: doughService.findAllEnabled();
 
-		final List<Dough> doughs = entities.stream().map(d -> mapper.map(d, Dough.class)).collect(Collectors.toList());
+		final List<VariationDough> doughs = entities.stream().map(d -> mapper.map(d, VariationDough.class))
+				.collect(Collectors.toList());
 		return ResponseEntity.ok(doughs);
 	}
 
 	@Override
-	public ResponseEntity<Size> getSize(Integer sizeId) {
-		final SizeEntity entity = sizeService.findById(sizeId).orElseThrow(NoSuchEntityException::new);
-		return ResponseEntity.ok(mapper.map(entity, Size.class));
+	public ResponseEntity<VariationSize> getSize(Integer sizeId) {
+		final VariationSizeEntity entity = sizeService.findById(sizeId).orElseThrow(NoSuchEntityException::new);
+		return ResponseEntity.ok(mapper.map(entity, VariationSize.class));
 	}
 
 	@Override
-	public ResponseEntity<List<Size>> getSizes(@Valid Boolean includeDisabled) {
-		final List<SizeEntity> entities = (BooleanUtils.isTrue(includeDisabled)) ? sizeService.findAll()
+	public ResponseEntity<List<VariationSize>> getSizes(@Valid Boolean includeDisabled) {
+		final List<VariationSizeEntity> entities = (BooleanUtils.isTrue(includeDisabled)) ? sizeService.findAll()
 				: sizeService.findAllEnabled();
 
-		final List<Size> sizes = entities.stream().map(s -> mapper.map(s, Size.class)).collect(Collectors.toList());
+		final List<VariationSize> sizes = entities.stream().map(s -> mapper.map(s, VariationSize.class))
+				.collect(Collectors.toList());
 		return ResponseEntity.ok(sizes);
 	}
 
@@ -174,36 +184,35 @@ public class VariationsController implements VariationsApi {
 
 	@Override
 	@PreAuthorize("@securityService.hasAnyPermission({'VARIATIONS'})")
-	public ResponseEntity<Dough> updateDough(@Valid Dough body, Integer doughId) {
-		final DoughEntity existingEntity = doughService.findById(doughId).orElseThrow(NoSuchEntityException::new);
+	public ResponseEntity<VariationDough> updateDough(@Valid VariationDough body, Integer doughId) {
+		final VariationDoughEntity existingEntity = doughService.findById(doughId)
+				.orElseThrow(NoSuchEntityException::new);
 
 		if (!existingEntity.getId().equals(body.getId())) {
 			throw RestException.newBuilder()
-					.title(localeUtilsMessage.getErrorLocalizedMessage("variation.update.failed.title", null))
-					.detail(localeUtilsMessage.getErrorLocalizedMessage("variation.update.failed.idParamNotEquals",
-							null))
+					.title(localeUtilsMessage.getMessage("variation.update.failed.title", null, request))
+					.detail(localeUtilsMessage.getMessage("idParamNotEquals", null, request))
 					.status(HttpStatus.BAD_REQUEST).build();
 		}
 
-		final DoughEntity dough = doughService.save(mapper.map(body, DoughEntity.class));
-		return ResponseEntity.ok(mapper.map(dough, Dough.class));
+		final VariationDoughEntity dough = doughService.save(mapper.map(body, VariationDoughEntity.class));
+		return ResponseEntity.ok(mapper.map(dough, VariationDough.class));
 	}
 
 	@Override
 	@PreAuthorize("@securityService.hasAnyPermission({'VARIATIONS'})")
-	public ResponseEntity<Size> updateSize(@Valid Size body, Integer sizeId) {
-		final SizeEntity existingEntity = sizeService.findById(sizeId).orElseThrow(NoSuchEntityException::new);
+	public ResponseEntity<VariationSize> updateSize(@Valid VariationSize body, Integer sizeId) {
+		final VariationSizeEntity existingEntity = sizeService.findById(sizeId).orElseThrow(NoSuchEntityException::new);
 
 		if (!existingEntity.getId().equals(body.getId())) {
 			throw RestException.newBuilder()
-					.title(localeUtilsMessage.getErrorLocalizedMessage("variation.update.failed.title", null))
-					.detail(localeUtilsMessage.getErrorLocalizedMessage("variation.update.failed.idParamNotEquals",
-							null))
+					.title(localeUtilsMessage.getMessage("variation.update.failed.title", null, request))
+					.detail(localeUtilsMessage.getMessage("idParamNotEquals", null, request))
 					.status(HttpStatus.BAD_REQUEST).build();
 		}
 
-		final SizeEntity size = sizeService.save(mapper.map(body, SizeEntity.class));
-		return ResponseEntity.ok(mapper.map(size, Size.class));
+		final VariationSizeEntity size = sizeService.save(mapper.map(body, VariationSizeEntity.class));
+		return ResponseEntity.ok(mapper.map(size, VariationSize.class));
 	}
 
 	@Override
@@ -213,9 +222,8 @@ public class VariationsController implements VariationsApi {
 
 		if (!existingEntity.getId().equals(body.getId())) {
 			throw RestException.newBuilder()
-					.title(localeUtilsMessage.getErrorLocalizedMessage("variation.update.failed.title", null))
-					.detail(localeUtilsMessage.getErrorLocalizedMessage("variation.update.failed.idParamNotEquals",
-							null))
+					.title(localeUtilsMessage.getMessage("variation.update.failed.title", null, request))
+					.detail(localeUtilsMessage.getMessage("idParamNotEquals", null, request))
 					.status(HttpStatus.BAD_REQUEST).build();
 		}
 
