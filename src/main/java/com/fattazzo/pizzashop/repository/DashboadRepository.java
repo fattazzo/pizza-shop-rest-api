@@ -19,8 +19,8 @@ public class DashboadRepository {
 	public DashboardCustomers loadCustomersStats() {
 
 		final String qlString = "Select count(ue.id) as total,"
-				+ "sum(case when ue.type = com.fattazzo.pizzashop.model.entity.UserType.CUSTOMER then 1 else 0 end) as toConfirm "
-				+ "from UserEntity ue";
+				+ "sum(case when ue.status = com.fattazzo.pizzashop.model.entity.UserEntity$UserStatus.TOCONFIRM then 1 else 0 end) as toConfirm "
+				+ "from UserEntity ue " + "where ue.type = com.fattazzo.pizzashop.model.entity.UserType.CUSTOMER";
 
 		final Object[] result = (Object[]) entityManager.createQuery(qlString).getSingleResult();
 
