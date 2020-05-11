@@ -11,9 +11,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fattazzo.pizzashop.controller.api.SettingsApi;
-import com.fattazzo.pizzashop.entity.security.SettingsEntity;
 import com.fattazzo.pizzashop.exception.security.NoSuchEntityException;
 import com.fattazzo.pizzashop.model.api.Settings;
+import com.fattazzo.pizzashop.model.entity.SettingsEntity;
 import com.fattazzo.pizzashop.service.settings.SettingsService;
 
 import io.swagger.annotations.Api;

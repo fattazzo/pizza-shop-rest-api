@@ -5,11 +5,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.springframework.validation.annotation.Validated;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * Company
  */
-
+@Validated
 public class Company   {
   @JsonProperty("id")
   private Integer id = null;
@@ -33,6 +36,7 @@ public class Company   {
    * @return id
   **/
   @ApiModelProperty(value = "Unique identifier")
+  
     public Integer getId() {
     return id;
   }
@@ -51,6 +55,8 @@ public class Company   {
    * @return name
   **/
   @ApiModelProperty(required = true, value = "Company name")
+      @NotNull
+
     public String getName() {
     return name;
   }
@@ -69,6 +75,7 @@ public class Company   {
    * @return webUrl
   **/
   @ApiModelProperty(value = "Company web url")
+  
     public String getWebUrl() {
     return webUrl;
   }
@@ -87,6 +94,7 @@ public class Company   {
    * @return logoUrl
   **/
   @ApiModelProperty(value = "Url of `Company` logo")
+  
     public String getLogoUrl() {
     return logoUrl;
   }

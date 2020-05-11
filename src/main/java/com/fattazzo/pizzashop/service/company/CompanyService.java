@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fattazzo.pizzashop.entity.data.CompanyEntity;
+import com.fattazzo.pizzashop.model.entity.CompanyEntity;
 import com.fattazzo.pizzashop.repository.CompanyRepository;
 
 @Service

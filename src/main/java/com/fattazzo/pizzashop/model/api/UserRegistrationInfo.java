@@ -5,11 +5,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.springframework.validation.annotation.Validated;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * UserRegistrationInfo
  */
-
+@Validated
 public class UserRegistrationInfo   {
   @JsonProperty("username")
   private String username = null;
@@ -36,6 +39,8 @@ public class UserRegistrationInfo   {
    * @return username
   **/
   @ApiModelProperty(required = true, value = "")
+      @NotNull
+
     public String getUsername() {
     return username;
   }
@@ -54,7 +59,8 @@ public class UserRegistrationInfo   {
    * @return password
   **/
   @ApiModelProperty(value = "")
-    public String getPassword() {
+  
+  @Size(min=5,max=30)   public String getPassword() {
     return password;
   }
 
@@ -72,6 +78,7 @@ public class UserRegistrationInfo   {
    * @return firstname
   **/
   @ApiModelProperty(value = "")
+  
     public String getFirstname() {
     return firstname;
   }
@@ -90,6 +97,7 @@ public class UserRegistrationInfo   {
    * @return lastname
   **/
   @ApiModelProperty(value = "")
+  
     public String getLastname() {
     return lastname;
   }
@@ -108,6 +116,8 @@ public class UserRegistrationInfo   {
    * @return email
   **/
   @ApiModelProperty(required = true, value = "")
+      @NotNull
+
     public String getEmail() {
     return email;
   }

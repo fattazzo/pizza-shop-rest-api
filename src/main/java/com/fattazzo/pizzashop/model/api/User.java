@@ -7,11 +7,14 @@ import com.fattazzo.pizzashop.model.api.UserStatus;
 import com.fattazzo.pizzashop.model.api.UserType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.springframework.validation.annotation.Validated;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * User
  */
-
+@Validated
 public class User   {
   @JsonProperty("username")
   private String username = null;
@@ -38,6 +41,8 @@ public class User   {
    * @return username
   **/
   @ApiModelProperty(required = true, value = "Login name")
+      @NotNull
+
     public String getUsername() {
     return username;
   }
@@ -56,6 +61,7 @@ public class User   {
    * @return email
   **/
   @ApiModelProperty(value = "The email address")
+  
     public String getEmail() {
     return email;
   }
@@ -74,6 +80,8 @@ public class User   {
    * @return readOnly
   **/
   @ApiModelProperty(required = true, value = "Read only users cannot be deleted")
+      @NotNull
+
     public Boolean isReadOnly() {
     return readOnly;
   }
@@ -92,6 +100,9 @@ public class User   {
    * @return type
   **/
   @ApiModelProperty(required = true, value = "")
+      @NotNull
+
+    @Valid
     public UserType getType() {
     return type;
   }
@@ -110,6 +121,9 @@ public class User   {
    * @return status
   **/
   @ApiModelProperty(required = true, value = "")
+      @NotNull
+
+    @Valid
     public UserStatus getStatus() {
     return status;
   }

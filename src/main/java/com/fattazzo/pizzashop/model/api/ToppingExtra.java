@@ -9,12 +9,15 @@ import com.fattazzo.pizzashop.model.api.VariationSize;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
+import org.springframework.validation.annotation.Validated;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * Price of the topping based on a dough and size
  */
 @ApiModel(description = "Price of the topping based on a dough and size")
-
+@Validated
 public class ToppingExtra   {
   @JsonProperty("id")
   private Integer id = null;
@@ -44,6 +47,7 @@ public class ToppingExtra   {
    * @return id
   **/
   @ApiModelProperty(value = "")
+  
     public Integer getId() {
     return id;
   }
@@ -62,6 +66,9 @@ public class ToppingExtra   {
    * @return topping
   **/
   @ApiModelProperty(required = true, value = "")
+      @NotNull
+
+    @Valid
     public Topping getTopping() {
     return topping;
   }
@@ -80,6 +87,9 @@ public class ToppingExtra   {
    * @return dough
   **/
   @ApiModelProperty(required = true, value = "")
+      @NotNull
+
+    @Valid
     public VariationDough getDough() {
     return dough;
   }
@@ -98,6 +108,9 @@ public class ToppingExtra   {
    * @return size
   **/
   @ApiModelProperty(required = true, value = "")
+      @NotNull
+
+    @Valid
     public VariationSize getSize() {
     return size;
   }
@@ -116,6 +129,9 @@ public class ToppingExtra   {
    * @return extra
   **/
   @ApiModelProperty(required = true, value = "")
+      @NotNull
+
+    @Valid
     public BigDecimal getExtra() {
     return extra;
   }
@@ -134,6 +150,8 @@ public class ToppingExtra   {
    * @return enabled
   **/
   @ApiModelProperty(required = true, value = "")
+      @NotNull
+
     public Boolean isEnabled() {
     return enabled;
   }

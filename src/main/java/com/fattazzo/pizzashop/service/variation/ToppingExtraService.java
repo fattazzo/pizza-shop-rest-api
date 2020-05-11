@@ -11,11 +11,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
-import com.fattazzo.pizzashop.entity.data.VariationDoughEntity;
-import com.fattazzo.pizzashop.entity.data.VariationSizeEntity;
-import com.fattazzo.pizzashop.entity.data.ToppingEntity;
-import com.fattazzo.pizzashop.entity.data.ToppingExtraEntity;
 import com.fattazzo.pizzashop.exception.security.NoSuchEntityException;
+import com.fattazzo.pizzashop.model.entity.ToppingEntity;
+import com.fattazzo.pizzashop.model.entity.ToppingExtraEntity;
+import com.fattazzo.pizzashop.model.entity.VariationDoughEntity;
+import com.fattazzo.pizzashop.model.entity.VariationSizeEntity;
 import com.fattazzo.pizzashop.repository.ToppingExtraRepository;
 
 @Service
@@ -37,9 +37,12 @@ public class ToppingExtraService {
 		final List<ToppingExtraEntity> entities = toppingExtraRepository
 				.findAll(Sort.by(Direction.ASC, "topping.name"));
 
+		final Comparator<Integer> nullSafeComparator = Comparator.nullsFirst(Integer::compareTo);
+
 		final Comparator<ToppingExtraEntity> comparator = Comparator
 				.<ToppingExtraEntity, String>comparing(te -> te.getTopping().getName())
-				.thenComparing(te -> te.getDough().getOrder()).thenComparing(te -> te.getSize().getOrder());
+				.thenComparing(te -> te.getDough().getOrder(), nullSafeComparator)
+				.thenComparing(te -> te.getSize().getOrder(), nullSafeComparator);
 
 		entities.sort(comparator);
 

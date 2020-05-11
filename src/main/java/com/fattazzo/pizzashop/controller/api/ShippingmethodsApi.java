@@ -8,6 +8,7 @@ package com.fattazzo.pizzashop.controller.api;
 import com.fattazzo.pizzashop.model.api.ShippingMethod;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.CookieValue;
 
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 @Api(value = "Shippingmethods", description = "the Shippingmethods API")
@@ -31,7 +34,7 @@ public interface ShippingmethodsApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<ShippingMethod> createShippingMethod(@ApiParam(value = "A new `ShippingMethod` to be created." ,required=true )   @RequestBody ShippingMethod body
+    ResponseEntity<ShippingMethod> createShippingMethod(@ApiParam(value = "A new `ShippingMethod` to be created." ,required=true )  @Valid @RequestBody ShippingMethod body
 );
 
 
@@ -74,7 +77,7 @@ public interface ShippingmethodsApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<ShippingMethod> updateShippingMethod(@ApiParam(value = "Updated `ShippingMethod` information." ,required=true )   @RequestBody ShippingMethod body
+    ResponseEntity<ShippingMethod> updateShippingMethod(@ApiParam(value = "Updated `ShippingMethod` information." ,required=true )  @Valid @RequestBody ShippingMethod body
 ,@ApiParam(value = "A unique identifier for a `ShippingMethod`.",required=true) @PathVariable("shippingmethodId") Integer shippingmethodId
 );
 

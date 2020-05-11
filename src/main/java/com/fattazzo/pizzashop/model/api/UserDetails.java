@@ -12,11 +12,14 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.validation.annotation.Validated;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * UserDetails
  */
-
+@Validated
 public class UserDetails extends User  {
   @JsonProperty("password")
   private String password = null;
@@ -28,11 +31,11 @@ public class UserDetails extends User  {
   private String lastName = null;
 
   @JsonProperty("groups")
-  
+  @Valid
   private List<Group> groups = new ArrayList<Group>();
 
   @JsonProperty("deliveryAddresses")
-  
+  @Valid
   private List<DeliveryAddress> deliveryAddresses = null;
 
   public UserDetails password(String password) {
@@ -45,6 +48,7 @@ public class UserDetails extends User  {
    * @return password
   **/
   @ApiModelProperty(value = "Login password")
+  
     public String getPassword() {
     return password;
   }
@@ -63,6 +67,7 @@ public class UserDetails extends User  {
    * @return firstName
   **/
   @ApiModelProperty(value = "First name")
+  
     public String getFirstName() {
     return firstName;
   }
@@ -81,6 +86,7 @@ public class UserDetails extends User  {
    * @return lastName
   **/
   @ApiModelProperty(value = "Last name")
+  
     public String getLastName() {
     return lastName;
   }
@@ -104,6 +110,8 @@ public class UserDetails extends User  {
    * @return groups
   **/
   @ApiModelProperty(required = true, value = "List of assigned `Group`")
+      @NotNull
+    @Valid
     public List<Group> getGroups() {
     return groups;
   }
@@ -130,6 +138,7 @@ public class UserDetails extends User  {
    * @return deliveryAddresses
   **/
   @ApiModelProperty(value = "List of delivery address")
+      @Valid
     public List<DeliveryAddress> getDeliveryAddresses() {
     return deliveryAddresses;
   }

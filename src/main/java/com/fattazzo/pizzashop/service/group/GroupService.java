@@ -8,8 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fattazzo.pizzashop.entity.security.GroupEntity;
 import com.fattazzo.pizzashop.exception.security.NoSuchEntityException;
+import com.fattazzo.pizzashop.model.entity.GroupEntity;
 import com.fattazzo.pizzashop.repository.GroupRepository;
 
 @Service

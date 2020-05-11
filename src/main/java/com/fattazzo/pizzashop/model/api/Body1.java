@@ -6,11 +6,14 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.core.io.Resource;
+import org.springframework.validation.annotation.Validated;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * Body1
  */
-
+@Validated
 public class Body1   {
   @JsonProperty("file")
   private Resource file = null;
@@ -25,6 +28,8 @@ public class Body1   {
    * @return file
   **/
   @ApiModelProperty(value = "")
+  
+    @Valid
     public Resource getFile() {
     return file;
   }

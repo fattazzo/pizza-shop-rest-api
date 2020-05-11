@@ -17,9 +17,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import com.fattazzo.pizzashop.entity.security.Role;
 import com.fattazzo.pizzashop.exception.security.ExpiredTokenException;
 import com.fattazzo.pizzashop.exception.security.RefreshTokenInBlackList;
+import com.fattazzo.pizzashop.model.entity.Role;
 import com.fattazzo.pizzashop.repository.BlackListRefreshTokenRepository;
 import com.fattazzo.pizzashop.security.JwtUser;
 

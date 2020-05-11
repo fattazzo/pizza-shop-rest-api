@@ -8,6 +8,7 @@ package com.fattazzo.pizzashop.controller.api;
 import com.fattazzo.pizzashop.model.api.ToppingExtra;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.CookieValue;
 
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 @Api(value = "Toppingextras", description = "the Toppingextras API")
@@ -54,7 +57,7 @@ public interface ToppingextrasApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<ToppingExtra> updateToppingExtra(@ApiParam(value = "Updated `ToppingExtra` information." ,required=true )   @RequestBody ToppingExtra body
+    ResponseEntity<ToppingExtra> updateToppingExtra(@ApiParam(value = "Updated `ToppingExtra` information." ,required=true )  @Valid @RequestBody ToppingExtra body
 ,@ApiParam(value = "A unique identifier for a `ToppingExtra`.",required=true) @PathVariable("toppingextraId") Integer toppingextraId
 );
 
@@ -67,7 +70,7 @@ public interface ToppingextrasApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<List<ToppingExtra>> updateToppingExtras(@ApiParam(value = "" ,required=true )   @RequestBody List<ToppingExtra> body
+    ResponseEntity<List<ToppingExtra>> updateToppingExtras(@ApiParam(value = "" ,required=true )  @Valid @RequestBody List<ToppingExtra> body
 );
 
 }

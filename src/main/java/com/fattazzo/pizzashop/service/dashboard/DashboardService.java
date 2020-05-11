@@ -15,7 +15,7 @@ public class DashboardService {
 	public Dashboard load() {
 
 		final Dashboard dashboard = new Dashboard().customers(dashboadRepository.loadCustomersStats())
-				.products(dashboadRepository.loadProductsStats());
+				.pizzas(dashboadRepository.loadPizzasStats());
 
 		return dashboard;
 	}

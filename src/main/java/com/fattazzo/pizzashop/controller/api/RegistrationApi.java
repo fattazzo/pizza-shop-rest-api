@@ -9,6 +9,7 @@ import com.fattazzo.pizzashop.model.api.ErrorResponse;
 import com.fattazzo.pizzashop.model.api.UserRegistrationInfo;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.CookieValue;
 
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 @Api(value = "Registration", description = "the Registration API")
@@ -33,7 +36,7 @@ public interface RegistrationApi {
         produces = { "text/xml", "application/json" }, 
         method = RequestMethod.POST)
     ResponseEntity<String> confirmRegistration(@ApiParam(value = "Username of `User` entity",required=true) @PathVariable("username") String username
-,@ApiParam(value = "Valid token required to confirm registration", required = true)  @RequestParam(value = "registrationToken", required = true) String registrationToken
+,@NotNull @ApiParam(value = "Valid token required to confirm registration", required = true) @Valid @RequestParam(value = "registrationToken", required = true) String registrationToken
 );
 
 
@@ -46,7 +49,7 @@ public interface RegistrationApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Void> createCustomer(@ApiParam(value = "" ,required=true )   @RequestBody UserRegistrationInfo body
+    ResponseEntity<Void> createCustomer(@ApiParam(value = "" ,required=true )  @Valid @RequestBody UserRegistrationInfo body
 );
 
 
@@ -58,7 +61,7 @@ public interface RegistrationApi {
     @RequestMapping(value = "/public/resend-confirm-registration-mail",
         produces = { "application/json" }, 
         method = RequestMethod.POST)
-    ResponseEntity<Void> resendConfirmRegistrationMail(@ApiParam(value = "username of `User`", required = true)  @RequestParam(value = "username", required = true) String username
+    ResponseEntity<Void> resendConfirmRegistrationMail(@NotNull @ApiParam(value = "username of `User`", required = true) @Valid @RequestParam(value = "username", required = true) String username
 );
 
 }

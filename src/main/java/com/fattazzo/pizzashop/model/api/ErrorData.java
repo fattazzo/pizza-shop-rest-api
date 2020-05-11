@@ -9,11 +9,14 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.validation.annotation.Validated;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * ErrorData
  */
-
+@Validated
 public class ErrorData   {
   @JsonProperty("userTitle")
   private String userTitle = null;
@@ -25,7 +28,7 @@ public class ErrorData   {
   private ErrorInternal internal = null;
 
   @JsonProperty("constraintErrors")
-  
+  @Valid
   private List<ConstraintError> constraintErrors = null;
 
   public ErrorData userTitle(String userTitle) {
@@ -38,6 +41,8 @@ public class ErrorData   {
    * @return userTitle
   **/
   @ApiModelProperty(required = true, value = "")
+      @NotNull
+
     public String getUserTitle() {
     return userTitle;
   }
@@ -56,6 +61,8 @@ public class ErrorData   {
    * @return userMessage
   **/
   @ApiModelProperty(required = true, value = "")
+      @NotNull
+
     public String getUserMessage() {
     return userMessage;
   }
@@ -74,6 +81,8 @@ public class ErrorData   {
    * @return internal
   **/
   @ApiModelProperty(value = "")
+  
+    @Valid
     public ErrorInternal getInternal() {
     return internal;
   }
@@ -100,6 +109,7 @@ public class ErrorData   {
    * @return constraintErrors
   **/
   @ApiModelProperty(value = "")
+      @Valid
     public List<ConstraintError> getConstraintErrors() {
     return constraintErrors;
   }

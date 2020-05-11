@@ -14,12 +14,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fattazzo.pizzashop.controller.api.BranchesApi;
-import com.fattazzo.pizzashop.entity.data.BranchEntity;
 import com.fattazzo.pizzashop.exception.security.NoSuchEntityException;
 import com.fattazzo.pizzashop.exception.security.RestException;
 import com.fattazzo.pizzashop.model.api.Branch;
 import com.fattazzo.pizzashop.model.api.BranchDetails;
 import com.fattazzo.pizzashop.model.api.ShippingZone;
+import com.fattazzo.pizzashop.model.entity.BranchEntity;
 import com.fattazzo.pizzashop.service.branch.BranchService;
 import com.fattazzo.pizzashop.service.branch.BranchService.BranchPrimaryCheckException;
 import com.fattazzo.pizzashop.service.branch.ShippingZoneService;

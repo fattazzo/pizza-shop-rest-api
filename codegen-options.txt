@@ -6,3 +6,4 @@ invokerPackage=com.fattazzo.pizzashop
 swaggerDocketConfig=true
 modelPackage=com.fattazzo.pizzashop.model.api
 hideGenerationTimestamp=true
+useBeanValidation=true

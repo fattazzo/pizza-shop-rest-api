@@ -8,11 +8,14 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.validation.annotation.Validated;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * Group
  */
-
+@Validated
 public class Group   {
   @JsonProperty("id")
   private Integer id = null;
@@ -21,7 +24,7 @@ public class Group   {
   private String name = null;
 
   @JsonProperty("roles")
-  
+  @Valid
   private List<Role> roles = null;
 
   @JsonProperty("readOnly")
@@ -37,6 +40,7 @@ public class Group   {
    * @return id
   **/
   @ApiModelProperty(value = "Unique identifier")
+  
     public Integer getId() {
     return id;
   }
@@ -55,6 +59,8 @@ public class Group   {
    * @return name
   **/
   @ApiModelProperty(required = true, value = "")
+      @NotNull
+
     public String getName() {
     return name;
   }
@@ -81,6 +87,7 @@ public class Group   {
    * @return roles
   **/
   @ApiModelProperty(value = "List of assigned `Role'")
+      @Valid
     public List<Role> getRoles() {
     return roles;
   }
@@ -99,6 +106,8 @@ public class Group   {
    * @return readOnly
   **/
   @ApiModelProperty(required = true, value = "Read only groups cannot be deleted")
+      @NotNull
+
     public Boolean isReadOnly() {
     return readOnly;
   }

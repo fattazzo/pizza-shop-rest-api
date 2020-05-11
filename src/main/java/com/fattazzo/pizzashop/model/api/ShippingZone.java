@@ -5,11 +5,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.springframework.validation.annotation.Validated;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * ShippingZone
  */
-
+@Validated
 public class ShippingZone   {
   @JsonProperty("id")
   private Integer id = null;
@@ -27,6 +30,7 @@ public class ShippingZone   {
    * @return id
   **/
   @ApiModelProperty(value = "Unique identifier for the resource")
+  
     public Integer getId() {
     return id;
   }
@@ -45,6 +49,8 @@ public class ShippingZone   {
    * @return name
   **/
   @ApiModelProperty(required = true, value = "Shipping zone name")
+      @NotNull
+
     public String getName() {
     return name;
   }

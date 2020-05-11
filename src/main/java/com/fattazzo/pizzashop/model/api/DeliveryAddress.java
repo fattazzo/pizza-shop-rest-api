@@ -7,11 +7,14 @@ import com.fattazzo.pizzashop.model.api.Address;
 import com.fattazzo.pizzashop.model.api.ShippingMethod;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.springframework.validation.annotation.Validated;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * DeliveryAddress
  */
-
+@Validated
 public class DeliveryAddress   {
   @JsonProperty("id")
   private Integer id = null;
@@ -32,6 +35,7 @@ public class DeliveryAddress   {
    * @return id
   **/
   @ApiModelProperty(value = "")
+  
     public Integer getId() {
     return id;
   }
@@ -50,6 +54,8 @@ public class DeliveryAddress   {
    * @return address
   **/
   @ApiModelProperty(value = "")
+  
+    @Valid
     public Address getAddress() {
     return address;
   }
@@ -68,6 +74,8 @@ public class DeliveryAddress   {
    * @return shippingMethod
   **/
   @ApiModelProperty(value = "")
+  
+    @Valid
     public ShippingMethod getShippingMethod() {
     return shippingMethod;
   }

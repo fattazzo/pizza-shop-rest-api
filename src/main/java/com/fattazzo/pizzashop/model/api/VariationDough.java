@@ -6,11 +6,14 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
+import org.springframework.validation.annotation.Validated;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * VariationDough
  */
-
+@Validated
 public class VariationDough   {
   @JsonProperty("id")
   private Integer id = null;
@@ -40,6 +43,7 @@ public class VariationDough   {
    * @return id
   **/
   @ApiModelProperty(value = "Unique identifier")
+  
     public Integer getId() {
     return id;
   }
@@ -58,6 +62,8 @@ public class VariationDough   {
    * @return name
   **/
   @ApiModelProperty(required = true, value = "")
+      @NotNull
+
     public String getName() {
     return name;
   }
@@ -76,6 +82,7 @@ public class VariationDough   {
    * @return description
   **/
   @ApiModelProperty(value = "")
+  
     public String getDescription() {
     return description;
   }
@@ -94,6 +101,9 @@ public class VariationDough   {
    * @return extra
   **/
   @ApiModelProperty(required = true, value = "")
+      @NotNull
+
+    @Valid
     public BigDecimal getExtra() {
     return extra;
   }
@@ -112,6 +122,8 @@ public class VariationDough   {
    * @return enabled
   **/
   @ApiModelProperty(required = true, value = "")
+      @NotNull
+
     public Boolean isEnabled() {
     return enabled;
   }
@@ -130,6 +142,7 @@ public class VariationDough   {
    * @return order
   **/
   @ApiModelProperty(value = "")
+  
     public Integer getOrder() {
     return order;
   }

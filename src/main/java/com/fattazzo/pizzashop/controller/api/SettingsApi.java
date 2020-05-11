@@ -8,6 +8,7 @@ package com.fattazzo.pizzashop.controller.api;
 import com.fattazzo.pizzashop.model.api.Settings;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.CookieValue;
 
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 @Api(value = "Settings", description = "the Settings API")
@@ -41,7 +44,7 @@ public interface SettingsApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<Settings> updateSettings(@ApiParam(value = "Updated `Settings` information." ,required=true )   @RequestBody Settings body
+    ResponseEntity<Settings> updateSettings(@ApiParam(value = "Updated `Settings` information." ,required=true )  @Valid @RequestBody Settings body
 );
 
 }

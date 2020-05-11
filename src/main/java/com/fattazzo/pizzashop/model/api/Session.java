@@ -6,11 +6,14 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fattazzo.pizzashop.model.api.User;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.springframework.validation.annotation.Validated;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * Session
  */
-
+@Validated
 public class Session   {
   @JsonProperty("userInfo")
   private User userInfo = null;
@@ -37,6 +40,9 @@ public class Session   {
    * @return userInfo
   **/
   @ApiModelProperty(required = true, value = "")
+      @NotNull
+
+    @Valid
     public User getUserInfo() {
     return userInfo;
   }
@@ -55,6 +61,7 @@ public class Session   {
    * @return locale
   **/
   @ApiModelProperty(value = "")
+  
     public String getLocale() {
     return locale;
   }
@@ -73,6 +80,7 @@ public class Session   {
    * @return enviroment
   **/
   @ApiModelProperty(value = "")
+  
     public String getEnviroment() {
     return enviroment;
   }
@@ -91,6 +99,7 @@ public class Session   {
    * @return accessToken
   **/
   @ApiModelProperty(value = "")
+  
     public String getAccessToken() {
     return accessToken;
   }
@@ -109,6 +118,7 @@ public class Session   {
    * @return refreshToken
   **/
   @ApiModelProperty(value = "")
+  
     public String getRefreshToken() {
     return refreshToken;
   }

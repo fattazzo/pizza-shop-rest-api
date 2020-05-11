@@ -10,6 +10,7 @@ import com.fattazzo.pizzashop.model.api.Session;
 import com.fattazzo.pizzashop.model.api.UserLogin;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.CookieValue;
 
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 @Api(value = "Session", description = "the Session API")
@@ -28,12 +31,14 @@ public interface SessionApi {
     @ApiOperation(value = "Create a session", nickname = "login", notes = "Create a `Session` information", response = Session.class, authorizations = {
         @Authorization(value = "BearerAuth")    }, tags={ "session", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Login successfull", response = Session.class) })
+        @ApiResponse(code = 200, message = "Login successfull", response = Session.class),
+        @ApiResponse(code = 401, message = "Username or password not valid"),
+        @ApiResponse(code = 403, message = "User not active", response = ErrorResponse.class) })
     @RequestMapping(value = "/public/session",
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Session> login(@ApiParam(value = "Login user information" ,required=true )   @RequestBody UserLogin body
+    ResponseEntity<Session> login(@ApiParam(value = "Login user information" ,required=true )  @Valid @RequestBody UserLogin body
 );
 
 

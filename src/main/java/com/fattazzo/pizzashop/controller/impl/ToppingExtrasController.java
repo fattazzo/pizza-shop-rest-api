@@ -14,10 +14,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fattazzo.pizzashop.controller.api.ToppingextrasApi;
-import com.fattazzo.pizzashop.entity.data.ToppingExtraEntity;
 import com.fattazzo.pizzashop.exception.security.NoSuchEntityException;
 import com.fattazzo.pizzashop.exception.security.RestException;
 import com.fattazzo.pizzashop.model.api.ToppingExtra;
+import com.fattazzo.pizzashop.model.entity.ToppingExtraEntity;
 import com.fattazzo.pizzashop.service.local.LocaleUtilsMessage;
 import com.fattazzo.pizzashop.service.variation.ToppingExtraService;
 

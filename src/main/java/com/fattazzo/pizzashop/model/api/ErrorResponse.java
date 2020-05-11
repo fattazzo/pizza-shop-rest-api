@@ -6,11 +6,14 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fattazzo.pizzashop.model.api.ErrorData;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.springframework.validation.annotation.Validated;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * ErrorResponse
  */
-
+@Validated
 public class ErrorResponse   {
   @JsonProperty("error")
   private ErrorData error = null;
@@ -25,6 +28,9 @@ public class ErrorResponse   {
    * @return error
   **/
   @ApiModelProperty(required = true, value = "")
+      @NotNull
+
+    @Valid
     public ErrorData getError() {
     return error;
   }

@@ -8,8 +8,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.fattazzo.pizzashop.entity.security.Role;
-import com.fattazzo.pizzashop.entity.security.UserEntity;
+import com.fattazzo.pizzashop.model.entity.Role;
+import com.fattazzo.pizzashop.model.entity.UserEntity;
 
 import lombok.Builder;
 import lombok.Getter;

@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fattazzo.pizzashop.config.LocaleResolver;
 import com.fattazzo.pizzashop.controller.api.RegistrationApi;
-import com.fattazzo.pizzashop.entity.security.UserEntity;
 import com.fattazzo.pizzashop.exception.security.ExpiredTokenException;
 import com.fattazzo.pizzashop.exception.security.MailNotSentException;
 import com.fattazzo.pizzashop.exception.security.NoSuchEntityException;
 import com.fattazzo.pizzashop.exception.security.RestException;
 import com.fattazzo.pizzashop.model.api.UserRegistrationInfo;
+import com.fattazzo.pizzashop.model.entity.UserEntity;
 import com.fattazzo.pizzashop.service.local.LocaleUtilsMessage;
 import com.fattazzo.pizzashop.service.user.UserService;
 

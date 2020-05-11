@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.fattazzo.pizzashop.entity.data.VariationDoughEntity;
+import com.fattazzo.pizzashop.model.entity.VariationDoughEntity;
 
 public interface DoughRepository extends JpaRepository<VariationDoughEntity, Integer> {
 

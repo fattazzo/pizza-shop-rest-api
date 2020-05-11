@@ -5,11 +5,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.springframework.validation.annotation.Validated;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * Address
  */
-
+@Validated
 public class Address   {
   @JsonProperty("streetAddress")
   private String streetAddress = null;
@@ -33,6 +36,8 @@ public class Address   {
    * @return streetAddress
   **/
   @ApiModelProperty(required = true, value = "")
+      @NotNull
+
     public String getStreetAddress() {
     return streetAddress;
   }
@@ -51,6 +56,7 @@ public class Address   {
    * @return number
   **/
   @ApiModelProperty(value = "")
+  
     public String getNumber() {
     return number;
   }
@@ -69,6 +75,8 @@ public class Address   {
    * @return place
   **/
   @ApiModelProperty(required = true, value = "")
+      @NotNull
+
     public String getPlace() {
     return place;
   }
@@ -87,6 +95,7 @@ public class Address   {
    * @return postalCode
   **/
   @ApiModelProperty(value = "")
+  
     public String getPostalCode() {
     return postalCode;
   }

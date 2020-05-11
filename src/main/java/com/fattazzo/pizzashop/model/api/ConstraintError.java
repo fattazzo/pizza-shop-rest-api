@@ -7,17 +7,20 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.validation.annotation.Validated;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * ConstraintError
  */
-
+@Validated
 public class ConstraintError   {
   @JsonProperty("fieldName")
   private String fieldName = null;
 
   @JsonProperty("constraintsNotRespected")
-  
+  @Valid
   private List<String> constraintsNotRespected = null;
 
   public ConstraintError fieldName(String fieldName) {
@@ -30,6 +33,7 @@ public class ConstraintError   {
    * @return fieldName
   **/
   @ApiModelProperty(value = "")
+  
     public String getFieldName() {
     return fieldName;
   }
@@ -56,6 +60,7 @@ public class ConstraintError   {
    * @return constraintsNotRespected
   **/
   @ApiModelProperty(value = "")
+  
     public List<String> getConstraintsNotRespected() {
     return constraintsNotRespected;
   }

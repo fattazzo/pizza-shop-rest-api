@@ -15,13 +15,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fattazzo.pizzashop.controller.api.UsersApi;
-import com.fattazzo.pizzashop.entity.security.UserEntity;
-import com.fattazzo.pizzashop.entity.security.UserEntity.UserStatus;
-import com.fattazzo.pizzashop.entity.security.UserType;
 import com.fattazzo.pizzashop.exception.security.NoSuchEntityException;
 import com.fattazzo.pizzashop.exception.security.RestException;
 import com.fattazzo.pizzashop.model.api.User;
 import com.fattazzo.pizzashop.model.api.UserDetails;
+import com.fattazzo.pizzashop.model.entity.UserEntity;
+import com.fattazzo.pizzashop.model.entity.UserType;
+import com.fattazzo.pizzashop.model.entity.UserEntity.UserStatus;
 import com.fattazzo.pizzashop.service.local.LocaleUtilsMessage;
 import com.fattazzo.pizzashop.service.user.UserService;
 import com.fattazzo.pizzashop.service.user.UserService.UserReadonlyException;

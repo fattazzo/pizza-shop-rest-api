@@ -11,9 +11,12 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -56,6 +59,29 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 		final ErrorResponse errorResponse = new ErrorResponse().error(errorData);
 
 		return new ResponseEntity<>(errorResponse, null, HttpStatus.FORBIDDEN);
+	}
+
+	@ExceptionHandler(DataIntegrityViolationException.class)
+	public ResponseEntity<?> handleDataIntegrityViolationException(DataIntegrityViolationException exception,
+			HttpServletRequest request) {
+
+		final ErrorInternal internal = new ErrorInternal().exception(exception.getClass().getName())
+				.stack(exception.getMessage());
+
+		ErrorData errorData = null;
+		if (exception.getCause() instanceof ConstraintViolationException) {
+			errorData = new ErrorData().internal(internal)
+					.userMessage(localeUtilsMessage.getMessage("ConstraintViolationException.detail", null, request))
+					.userTitle(localeUtilsMessage.getMessage("ConstraintViolationException.title", null, request));
+		} else {
+			errorData = new ErrorData().internal(internal)
+					.userMessage(localeUtilsMessage.getMessage("GenericFail.detail", null, request))
+					.userTitle(localeUtilsMessage.getMessage("GenericFail.title", null, request));
+		}
+
+		final ErrorResponse errorResponse = new ErrorResponse().error(errorData);
+
+		return new ResponseEntity<>(errorResponse, null, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@ExceptionHandler(ExpiredTokenException.class)
@@ -111,9 +137,16 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 			final Map<String, List<FieldError>> errorsMap = fieldErrors.stream()
 					.collect(groupingBy(FieldError::getField));
 			constraintsViolated = errorsMap.keySet().stream().map((k) -> {
-				return new ConstraintError().fieldName(k).constraintsNotRespected(errorsMap.get(k).stream().map((v) -> {
-					return v.getDefaultMessage();
-				}).collect(Collectors.toList()));
+
+				// In case of array property ( es: property[1].name) the substring after last
+				// char '.' rappresent the field name
+				final int index = StringUtils.lastIndexOf(k, ".");
+
+				final String fieldName = (index != -1) ? StringUtils.substring(k, index + 1) : k;
+				return new ConstraintError().fieldName(fieldName)
+						.constraintsNotRespected(errorsMap.get(k).stream().map((v) -> {
+							return v.getDefaultMessage();
+						}).collect(Collectors.toList()));
 			}).collect(Collectors.toList());
 		}
 

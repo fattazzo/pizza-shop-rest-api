@@ -5,11 +5,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.springframework.validation.annotation.Validated;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * Settings
  */
-
+@Validated
 public class Settings   {
   @JsonProperty("id")
   private Integer id = null;
@@ -30,6 +33,7 @@ public class Settings   {
    * @return id
   **/
   @ApiModelProperty(value = "Unique identifier")
+  
     public Integer getId() {
     return id;
   }
@@ -48,7 +52,9 @@ public class Settings   {
    * @return currencySymbol
   **/
   @ApiModelProperty(required = true, value = "Currency symbol")
-    public String getCurrencySymbol() {
+      @NotNull
+
+  @Size(min=1,max=5)   public String getCurrencySymbol() {
     return currencySymbol;
   }
 
@@ -68,7 +74,9 @@ public class Settings   {
    * @return currencyDecimals
   **/
   @ApiModelProperty(required = true, value = "Number of decimals used for currency")
-    public Integer getCurrencyDecimals() {
+      @NotNull
+
+  @Min(0) @Max(5)   public Integer getCurrencyDecimals() {
     return currencyDecimals;
   }
 

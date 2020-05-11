@@ -11,18 +11,21 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.validation.annotation.Validated;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * BranchDetails
  */
-
+@Validated
 public class BranchDetails extends Branch  {
   @JsonProperty("shippingMethods")
-  
+  @Valid
   private List<ShippingMethod> shippingMethods = new ArrayList<ShippingMethod>();
 
   @JsonProperty("shippingZones")
-  
+  @Valid
   private List<ShippingZone> shippingZones = null;
 
   public BranchDetails shippingMethods(List<ShippingMethod> shippingMethods) {
@@ -40,6 +43,8 @@ public class BranchDetails extends Branch  {
    * @return shippingMethods
   **/
   @ApiModelProperty(required = true, value = "List of available `ShippingMethod`")
+      @NotNull
+    @Valid
     public List<ShippingMethod> getShippingMethods() {
     return shippingMethods;
   }
@@ -66,6 +71,7 @@ public class BranchDetails extends Branch  {
    * @return shippingZones
   **/
   @ApiModelProperty(value = "List of available `ShippingZone`")
+      @Valid
     public List<ShippingZone> getShippingZones() {
     return shippingZones;
   }

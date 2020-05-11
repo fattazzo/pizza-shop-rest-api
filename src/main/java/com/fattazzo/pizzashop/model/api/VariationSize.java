@@ -5,12 +5,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.math.BigDecimal;
+import org.springframework.validation.annotation.Validated;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * VariationSize
  */
-
+@Validated
 public class VariationSize   {
   @JsonProperty("id")
   private Integer id = null;
@@ -20,9 +22,6 @@ public class VariationSize   {
 
   @JsonProperty("description")
   private String description = null;
-
-  @JsonProperty("extra")
-  private BigDecimal extra = null;
 
   @JsonProperty("enabled")
   private Boolean enabled = null;
@@ -40,6 +39,7 @@ public class VariationSize   {
    * @return id
   **/
   @ApiModelProperty(value = "")
+  
     public Integer getId() {
     return id;
   }
@@ -58,6 +58,8 @@ public class VariationSize   {
    * @return name
   **/
   @ApiModelProperty(required = true, value = "")
+      @NotNull
+
     public String getName() {
     return name;
   }
@@ -76,30 +78,13 @@ public class VariationSize   {
    * @return description
   **/
   @ApiModelProperty(value = "")
+  
     public String getDescription() {
     return description;
   }
 
   public void setDescription(String description) {
     this.description = description;
-  }
-
-  public VariationSize extra(BigDecimal extra) {
-    this.extra = extra;
-    return this;
-  }
-
-  /**
-   * Get extra
-   * @return extra
-  **/
-  @ApiModelProperty(required = true, value = "")
-    public BigDecimal getExtra() {
-    return extra;
-  }
-
-  public void setExtra(BigDecimal extra) {
-    this.extra = extra;
   }
 
   public VariationSize enabled(Boolean enabled) {
@@ -112,6 +97,8 @@ public class VariationSize   {
    * @return enabled
   **/
   @ApiModelProperty(required = true, value = "")
+      @NotNull
+
     public Boolean isEnabled() {
     return enabled;
   }
@@ -130,6 +117,7 @@ public class VariationSize   {
    * @return order
   **/
   @ApiModelProperty(value = "")
+  
     public Integer getOrder() {
     return order;
   }
@@ -151,14 +139,13 @@ public class VariationSize   {
     return Objects.equals(this.id, variationSize.id) &&
         Objects.equals(this.name, variationSize.name) &&
         Objects.equals(this.description, variationSize.description) &&
-        Objects.equals(this.extra, variationSize.extra) &&
         Objects.equals(this.enabled, variationSize.enabled) &&
         Objects.equals(this.order, variationSize.order);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, description, extra, enabled, order);
+    return Objects.hash(id, name, description, enabled, order);
   }
 
   @Override
@@ -169,7 +156,6 @@ public class VariationSize   {
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
-    sb.append("    extra: ").append(toIndentedString(extra)).append("\n");
     sb.append("    enabled: ").append(toIndentedString(enabled)).append("\n");
     sb.append("    order: ").append(toIndentedString(order)).append("\n");
     sb.append("}");
