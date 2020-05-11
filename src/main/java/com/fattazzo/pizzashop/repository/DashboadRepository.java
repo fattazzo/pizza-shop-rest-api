@@ -1,7 +1,5 @@
 package com.fattazzo.pizzashop.repository;
 
-import java.util.List;
-
 import javax.persistence.EntityManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,19 +22,23 @@ public class DashboadRepository {
 
 		final Object[] result = (Object[]) entityManager.createQuery(qlString).getSingleResult();
 
-		return new DashboardCustomers().total(((Long) result[0]).intValue()).toConfirm(((Long) result[1]).intValue());
+		final Long total = result[0] == null ? 0 : (Long) result[0];
+		final Long toConfirm = result[1] == null ? 0 : (Long) result[1];
+
+		return new DashboardCustomers().total(total.intValue()).toConfirm(toConfirm.intValue());
 	}
 
 	public DashBoardPizzas loadPizzasStats() {
 
 		String qlString = "Select count(pe.id) as total from ItemPizzaEntity pe where pe.enabled = true";
-		final Object totalProducts = entityManager.createQuery(qlString).getSingleResult();
+		final Object totalPizzas = entityManager.createQuery(qlString).getSingleResult();
 
 		qlString = "Select count(cat.id) as total from CategoryEntity cat where cat.enabled = true and cat.type = com.fattazzo.pizzashop.model.entity.ItemType.PIZZA";
-		@SuppressWarnings("unchecked")
-		final List<Object> totalCategories = entityManager.createQuery(qlString).getResultList();
+		final Object totalCategories = entityManager.createQuery(qlString).getSingleResult();
 
-		return new DashBoardPizzas().totalEnable(((Long) totalProducts).intValue())
-				.totalCategoriesEnable(totalCategories.size());
+		final Long pizzas = totalPizzas == null ? 0 : (Long) totalPizzas;
+		final Long categories = totalCategories == null ? 0 : (Long) totalCategories;
+
+		return new DashBoardPizzas().totalEnable(pizzas.intValue()).totalCategoriesEnable(categories.intValue());
 	}
 }
