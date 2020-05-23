@@ -22,7 +22,7 @@ import javax.validation.constraints.*;
 public class BranchDetails extends Branch  {
   @JsonProperty("shippingMethods")
   @Valid
-  private List<ShippingMethod> shippingMethods = new ArrayList<ShippingMethod>();
+  private List<ShippingMethod> shippingMethods = new ArrayList<>();
 
   @JsonProperty("shippingZones")
   @Valid
@@ -60,7 +60,7 @@ public class BranchDetails extends Branch  {
 
   public BranchDetails addShippingZonesItem(ShippingZone shippingZonesItem) {
     if (this.shippingZones == null) {
-      this.shippingZones = new ArrayList<ShippingZone>();
+      this.shippingZones = new ArrayList<>();
     }
     this.shippingZones.add(shippingZonesItem);
     return this;

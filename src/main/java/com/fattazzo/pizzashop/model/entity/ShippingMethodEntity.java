@@ -1,15 +1,19 @@
 package com.fattazzo.pizzashop.model.entity;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.FetchType;
 import javax.persistence.Table;
+
+import com.fattazzo.pizzashop.model.api.ShippingType;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,15 +28,9 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@ToString(callSuper = true)
 @Builder
-@EqualsAndHashCode
-public class ShippingMethodEntity {
-
-	@Id
-	@Column(unique = true)
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+public class ShippingMethodEntity extends EntityBase {
 
 	@Column(nullable = false)
 	private String title;
@@ -44,5 +42,10 @@ public class ShippingMethodEntity {
 
 	@Builder.Default
 	private boolean enabled = Boolean.TRUE;
+
+	@Builder.Default
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "data_shipping_methods_shipping_types")
+	Collection<ShippingType> shippingTypes = new ArrayList();
 
 }

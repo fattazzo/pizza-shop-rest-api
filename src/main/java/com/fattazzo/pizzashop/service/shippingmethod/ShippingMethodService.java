@@ -30,6 +30,10 @@ public class ShippingMethodService {
 		return shippingMethodRepository.findAll();
 	}
 
+	public List<ShippingMethodEntity> findAllEnabled() {
+		return shippingMethodRepository.findByEnabledTrue();
+	}
+
 	public Optional<ShippingMethodEntity> findById(Integer id) {
 		return shippingMethodRepository.findById(id);
 	}

@@ -1,13 +1,11 @@
 package com.fattazzo.pizzashop.model.entity;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -16,7 +14,6 @@ import org.apache.commons.lang3.builder.ToStringExclude;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,22 +25,14 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@ToString(callSuper = true)
 @Builder
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class ItemProductPriceEntity {
-
-	@EqualsAndHashCode.Include
-	@Id
-	@Column(unique = true)
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+public class ItemProductPriceEntity extends EntityBase {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "product_id")
 	private ItemProductEntity parent;
 
-	@EqualsAndHashCode.Include
 	@ToStringExclude
 	@ManyToOne(optional = false)
 	private VariationProductEntity variation;
@@ -51,5 +40,25 @@ public class ItemProductPriceEntity {
 	@Builder.Default
 	@Column(nullable = false)
 	private BigDecimal price = BigDecimal.ZERO;
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final ItemProductPriceEntity other = (ItemProductPriceEntity) obj;
+		return Objects.equals(getId(), other.getId()) && Objects.equals(variation, other.variation);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(getId(), variation);
+	}
 
 }

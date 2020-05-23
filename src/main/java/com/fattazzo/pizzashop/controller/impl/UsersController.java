@@ -6,22 +6,28 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fattazzo.pizzashop.controller.api.UsersApi;
 import com.fattazzo.pizzashop.exception.security.NoSuchEntityException;
 import com.fattazzo.pizzashop.exception.security.RestException;
+import com.fattazzo.pizzashop.model.api.DeliveryAddress;
 import com.fattazzo.pizzashop.model.api.User;
 import com.fattazzo.pizzashop.model.api.UserDetails;
+import com.fattazzo.pizzashop.model.entity.UserDeliveryAddressEntity;
 import com.fattazzo.pizzashop.model.entity.UserEntity;
-import com.fattazzo.pizzashop.model.entity.UserType;
 import com.fattazzo.pizzashop.model.entity.UserEntity.UserStatus;
+import com.fattazzo.pizzashop.model.entity.UserType;
+import com.fattazzo.pizzashop.security.JwtUser;
 import com.fattazzo.pizzashop.service.local.LocaleUtilsMessage;
 import com.fattazzo.pizzashop.service.user.UserService;
 import com.fattazzo.pizzashop.service.user.UserService.UserReadonlyException;
@@ -114,17 +120,35 @@ public class UsersController implements UsersApi {
 	public ResponseEntity<UserDetails> updateUser(@Valid UserDetails body, String userName) {
 		final UserEntity existingUser = userService.findByUsername(userName).orElseThrow(NoSuchEntityException::new);
 
+		final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		final UserEntity loggedUser = userService.findByUsername(((JwtUser) auth.getPrincipal()).getUsername())
+				.orElseThrow(NoSuchEntityException::new);
+		if (loggedUser.getType() != UserType.ADMIN && !existingUser.getUsername().equals(loggedUser.getUsername())) {
+			throw RestException.newBuilder()
+					.title(localeUtilsMessage.getMessage("user.update.failed.title", null, request))
+					.detail(localeUtilsMessage.getMessage("user.update.failed.noUpdateOtherUsers", null, request))
+					.status(HttpStatus.BAD_REQUEST).build();
+		}
+
 		if (!existingUser.getUsername().equals(body.getUsername())) {
 			throw RestException.newBuilder()
 					.title(localeUtilsMessage.getMessage("user.update.failed.title", null, request))
 					.detail(localeUtilsMessage.getMessage("user.update.failed.usernamecannotchange", null, request))
 					.status(HttpStatus.BAD_REQUEST).build();
-
 		}
 
 		UserEntity user = mapper.map(body, UserEntity.class);
-		user.setPassword(passwordEncoder.encode(user.getPassword()));
-		user.setType(UserType.WORKER);
+		if (loggedUser.getType() == UserType.ADMIN) {
+			user.setPassword(passwordEncoder.encode(user.getPassword()));
+		} else {
+			user.setPassword(existingUser.getPassword());
+		}
+		user.setType(existingUser.getType());
+		for (final DeliveryAddress address : CollectionUtils.emptyIfNull(body.getDeliveryAddresses())) {
+			final UserDeliveryAddressEntity addressEntity = mapper.map(address, UserDeliveryAddressEntity.class);
+			addressEntity.setParent(user);
+			user.getDeliveryAddresses().add(addressEntity);
+		}
 		user = userService.save(user);
 
 		final UserDetails userDetails = mapper.map(user, UserDetails.class);

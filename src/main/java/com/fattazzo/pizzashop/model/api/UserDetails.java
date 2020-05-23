@@ -32,7 +32,7 @@ public class UserDetails extends User  {
 
   @JsonProperty("groups")
   @Valid
-  private List<Group> groups = new ArrayList<Group>();
+  private List<Group> groups = new ArrayList<>();
 
   @JsonProperty("deliveryAddresses")
   @Valid
@@ -127,7 +127,7 @@ public class UserDetails extends User  {
 
   public UserDetails addDeliveryAddressesItem(DeliveryAddress deliveryAddressesItem) {
     if (this.deliveryAddresses == null) {
-      this.deliveryAddresses = new ArrayList<DeliveryAddress>();
+      this.deliveryAddresses = new ArrayList<>();
     }
     this.deliveryAddresses.add(deliveryAddressesItem);
     return this;

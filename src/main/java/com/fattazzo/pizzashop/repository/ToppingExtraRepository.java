@@ -8,5 +8,5 @@ import com.fattazzo.pizzashop.model.entity.ToppingExtraEntity;
 
 public interface ToppingExtraRepository extends JpaRepository<ToppingExtraEntity, Integer> {
 
-	List<ToppingExtraEntity> findByDoughIdAndSizeIdOrderByToppingNameAsc(Integer doughId, Integer sizeId);
+	List<ToppingExtraEntity> findByDoughIdAndVariationSizeIdOrderByToppingNameAsc(Integer doughId, Integer sizeId);
 }

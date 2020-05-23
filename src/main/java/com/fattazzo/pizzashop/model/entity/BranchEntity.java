@@ -8,9 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -31,15 +29,9 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@ToString(callSuper = true)
 @Builder
-@EqualsAndHashCode
-public class BranchEntity {
-
-	@Id
-	@Column(unique = true)
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+public class BranchEntity extends EntityBase {
 
 	private String phone;
 
@@ -57,7 +49,7 @@ public class BranchEntity {
 
 	@EqualsAndHashCode.Exclude
 	@Builder.Default
-	@OneToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER)
 	private Set<ShippingMethodEntity> shippingMethods = new TreeSet<ShippingMethodEntity>();
 
 	@EqualsAndHashCode.Exclude

@@ -19,11 +19,11 @@ public class ItemPizzaPrice   {
   @JsonProperty("id")
   private Integer id = null;
 
-  @JsonProperty("size")
-  private VariationSize size = null;
-
   @JsonProperty("price")
   private BigDecimal price = null;
+
+  @JsonProperty("variationSize")
+  private VariationSize variationSize = null;
 
   public ItemPizzaPrice id(Integer id) {
     this.id = id;
@@ -42,27 +42,6 @@ public class ItemPizzaPrice   {
 
   public void setId(Integer id) {
     this.id = id;
-  }
-
-  public ItemPizzaPrice size(VariationSize size) {
-    this.size = size;
-    return this;
-  }
-
-  /**
-   * Get size
-   * @return size
-  **/
-  @ApiModelProperty(required = true, value = "")
-      @NotNull
-
-    @Valid
-    public VariationSize getSize() {
-    return size;
-  }
-
-  public void setSize(VariationSize size) {
-    this.size = size;
   }
 
   public ItemPizzaPrice price(BigDecimal price) {
@@ -86,6 +65,27 @@ public class ItemPizzaPrice   {
     this.price = price;
   }
 
+  public ItemPizzaPrice variationSize(VariationSize variationSize) {
+    this.variationSize = variationSize;
+    return this;
+  }
+
+  /**
+   * Get variationSize
+   * @return variationSize
+  **/
+  @ApiModelProperty(required = true, value = "")
+      @NotNull
+
+    @Valid
+    public VariationSize getVariationSize() {
+    return variationSize;
+  }
+
+  public void setVariationSize(VariationSize variationSize) {
+    this.variationSize = variationSize;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -97,13 +97,13 @@ public class ItemPizzaPrice   {
     }
     ItemPizzaPrice itemPizzaPrice = (ItemPizzaPrice) o;
     return Objects.equals(this.id, itemPizzaPrice.id) &&
-        Objects.equals(this.size, itemPizzaPrice.size) &&
-        Objects.equals(this.price, itemPizzaPrice.price);
+        Objects.equals(this.price, itemPizzaPrice.price) &&
+        Objects.equals(this.variationSize, itemPizzaPrice.variationSize);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, size, price);
+    return Objects.hash(id, price, variationSize);
   }
 
   @Override
@@ -112,8 +112,8 @@ public class ItemPizzaPrice   {
     sb.append("class ItemPizzaPrice {\n");
     
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    size: ").append(toIndentedString(size)).append("\n");
     sb.append("    price: ").append(toIndentedString(price)).append("\n");
+    sb.append("    variationSize: ").append(toIndentedString(variationSize)).append("\n");
     sb.append("}");
     return sb.toString();
   }

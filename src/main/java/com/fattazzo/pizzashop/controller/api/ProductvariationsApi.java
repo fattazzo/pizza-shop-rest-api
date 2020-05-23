@@ -6,7 +6,11 @@
 package com.fattazzo.pizzashop.controller.api;
 
 import com.fattazzo.pizzashop.model.api.VariationProduct;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,12 +23,29 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.CookieValue;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 @Api(value = "Productvariations", description = "the Productvariations API")
 public interface ProductvariationsApi {
+
+    Logger log = LoggerFactory.getLogger(ProductvariationsApi.class);
+
+    default Optional<ObjectMapper> getObjectMapper(){
+        return Optional.empty();
+    }
+
+    default Optional<HttpServletRequest> getRequest(){
+        return Optional.empty();
+    }
+
+    default Optional<String> getAcceptHeader() {
+        return getRequest().map(r -> r.getHeader("Accept"));
+    }
 
     @ApiOperation(value = "Create a VariationProduct", nickname = "createVariationProduct", notes = "Creates a new instance of a `VariationProduct`.", response = VariationProduct.class, authorizations = {
         @Authorization(value = "BearerAuth")    }, tags={ "productvariations", })
@@ -34,8 +55,22 @@ public interface ProductvariationsApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<VariationProduct> createVariationProduct(@ApiParam(value = "A new `VariationProduct` to be created." ,required=true )  @Valid @RequestBody VariationProduct body
-);
+    default ResponseEntity<VariationProduct> createVariationProduct(@ApiParam(value = "A new `VariationProduct` to be created." ,required=true )  @Valid @RequestBody VariationProduct body
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("{\n  \"name\" : \"name\",\n  \"description\" : \"description\",\n  \"id\" : 0,\n  \"enabled\" : true,\n  \"order\" : 6\n}", VariationProduct.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default ProductvariationsApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Delete a VariationProduct", nickname = "deleteVariationProduct", notes = "Deletes an existing `VariationProduct`.", authorizations = {
@@ -44,8 +79,14 @@ public interface ProductvariationsApi {
         @ApiResponse(code = 204, message = "Successful response.") })
     @RequestMapping(value = "/product/variations/{variationId}",
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteVariationProduct(@ApiParam(value = "A unique identifier for a `VariationProduct`.",required=true) @PathVariable("variationId") Integer variationId
-);
+    default ResponseEntity<Void> deleteVariationProduct(@ApiParam(value = "A unique identifier for a `VariationProduct`.",required=true) @PathVariable("variationId") Integer variationId
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default ProductvariationsApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Get a VariationProduct", nickname = "getVariationProduct", notes = "Gets the details of a single instance of a `VariationProduct`.", response = VariationProduct.class, authorizations = {
@@ -55,8 +96,22 @@ public interface ProductvariationsApi {
     @RequestMapping(value = "/product/variations/{variationId}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<VariationProduct> getVariationProduct(@ApiParam(value = "A unique identifier for a `VariationProduct`.",required=true) @PathVariable("variationId") Integer variationId
-);
+    default ResponseEntity<VariationProduct> getVariationProduct(@ApiParam(value = "A unique identifier for a `VariationProduct`.",required=true) @PathVariable("variationId") Integer variationId
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("{\n  \"name\" : \"name\",\n  \"description\" : \"description\",\n  \"id\" : 0,\n  \"enabled\" : true,\n  \"order\" : 6\n}", VariationProduct.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default ProductvariationsApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "List All VariationProducts", nickname = "getVariationProducts", notes = "Gets a list of all `VariationProduct` entities.", response = VariationProduct.class, responseContainer = "List", authorizations = {
@@ -66,8 +121,22 @@ public interface ProductvariationsApi {
     @RequestMapping(value = "/product/variations",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<List<VariationProduct>> getVariationProducts(@ApiParam(value = "If true, the list of all entities include enabled and disabled `VariationProduct`") @Valid @RequestParam(value = "includeDisabled", required = false) Boolean includeDisabled
-);
+    default ResponseEntity<List<VariationProduct>> getVariationProducts(@ApiParam(value = "If true, the list of all entities include enabled and disabled `VariationProduct`") @Valid @RequestParam(value = "includeDisabled", required = false) Boolean includeDisabled
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("[ {\n  \"name\" : \"name\",\n  \"description\" : \"description\",\n  \"id\" : 0,\n  \"enabled\" : true,\n  \"order\" : 6\n}, {\n  \"name\" : \"name\",\n  \"description\" : \"description\",\n  \"id\" : 0,\n  \"enabled\" : true,\n  \"order\" : 6\n} ]", List.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default ProductvariationsApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Update a VariationProduct", nickname = "updateVariationProduct", notes = "Updates an existing `VariationProduct`.", response = VariationProduct.class, authorizations = {
@@ -78,8 +147,22 @@ public interface ProductvariationsApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<VariationProduct> updateVariationProduct(@ApiParam(value = "Updated `VariationProduct` information." ,required=true )  @Valid @RequestBody VariationProduct body
+    default ResponseEntity<VariationProduct> updateVariationProduct(@ApiParam(value = "Updated `VariationProduct` information." ,required=true )  @Valid @RequestBody VariationProduct body
 ,@ApiParam(value = "A unique identifier for a `VariationProduct`.",required=true) @PathVariable("variationId") Integer variationId
-);
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("{\n  \"name\" : \"name\",\n  \"description\" : \"description\",\n  \"id\" : 0,\n  \"enabled\" : true,\n  \"order\" : 6\n}", VariationProduct.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default ProductvariationsApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 }

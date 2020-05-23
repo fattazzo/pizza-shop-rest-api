@@ -8,7 +8,11 @@ package com.fattazzo.pizzashop.controller.api;
 import com.fattazzo.pizzashop.model.api.Item;
 import com.fattazzo.pizzashop.model.api.ItemProduct;
 import org.springframework.core.io.Resource;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,12 +25,29 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.CookieValue;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 @Api(value = "Products", description = "the Products API")
 public interface ProductsApi {
+
+    Logger log = LoggerFactory.getLogger(ProductsApi.class);
+
+    default Optional<ObjectMapper> getObjectMapper(){
+        return Optional.empty();
+    }
+
+    default Optional<HttpServletRequest> getRequest(){
+        return Optional.empty();
+    }
+
+    default Optional<String> getAcceptHeader() {
+        return getRequest().map(r -> r.getHeader("Accept"));
+    }
 
     @ApiOperation(value = "Create a ItemProduct", nickname = "createItemProduct", notes = "Creates a new instance of a `ItemProduct`.", response = ItemProduct.class, authorizations = {
         @Authorization(value = "BearerAuth")    }, tags={ "products", })
@@ -36,8 +57,22 @@ public interface ProductsApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<ItemProduct> createItemProduct(@ApiParam(value = "A new `ItemProduct` to be created." ,required=true )  @Valid @RequestBody ItemProduct body
-);
+    default ResponseEntity<ItemProduct> createItemProduct(@ApiParam(value = "A new `ItemProduct` to be created." ,required=true )  @Valid @RequestBody ItemProduct body
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("{\n  \"prices\" : [ {\n    \"price\" : 6.027456183070403,\n    \"id\" : 0,\n    \"variation\" : {\n      \"name\" : \"name\",\n      \"description\" : \"description\",\n      \"id\" : 0,\n      \"enabled\" : true,\n      \"order\" : 6\n    }\n  }, {\n    \"price\" : 6.027456183070403,\n    \"id\" : 0,\n    \"variation\" : {\n      \"name\" : \"name\",\n      \"description\" : \"description\",\n      \"id\" : 0,\n      \"enabled\" : true,\n      \"order\" : 6\n    }\n  } ]\n}", ItemProduct.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default ProductsApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Delete a ItemProduct", nickname = "deleteItemProduct", notes = "Deletes an existing `ItemProduct`.", authorizations = {
@@ -46,8 +81,14 @@ public interface ProductsApi {
         @ApiResponse(code = 204, message = "Successful response.") })
     @RequestMapping(value = "/product/items/{itemId}",
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteItemProduct(@ApiParam(value = "A unique identifier for a `ItemProduct`.",required=true) @PathVariable("itemId") Integer itemId
-);
+    default ResponseEntity<Void> deleteItemProduct(@ApiParam(value = "A unique identifier for a `ItemProduct`.",required=true) @PathVariable("itemId") Integer itemId
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default ProductsApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Delete a ItemProduct image", nickname = "deleteItemProductImage", notes = "Deletes an existing `ItemProduct` image.", authorizations = {
@@ -56,8 +97,14 @@ public interface ProductsApi {
         @ApiResponse(code = 204, message = "Successful response.") })
     @RequestMapping(value = "/product/items/{itemId}/image",
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteItemProductImage(@ApiParam(value = "A unique identifier for a `ItemProduct`.",required=true) @PathVariable("itemId") Integer itemId
-);
+    default ResponseEntity<Void> deleteItemProductImage(@ApiParam(value = "A unique identifier for a `ItemProduct`.",required=true) @PathVariable("itemId") Integer itemId
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default ProductsApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Get a ItemProduct", nickname = "getItemProduct", notes = "Gets the details of a single instance of a `ItemProduct`.", response = ItemProduct.class, authorizations = {
@@ -67,9 +114,23 @@ public interface ProductsApi {
     @RequestMapping(value = "/product/items/{itemId}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<ItemProduct> getItemProduct(@ApiParam(value = "A unique identifier for a `ItemProduct`.",required=true) @PathVariable("itemId") Integer itemId
+    default ResponseEntity<ItemProduct> getItemProduct(@ApiParam(value = "A unique identifier for a `ItemProduct`.",required=true) @PathVariable("itemId") Integer itemId
 ,@ApiParam(value = "Include prices from disabled categories and prices equal to zero", defaultValue = "false") @Valid @RequestParam(value = "includeInvalidPrices", required = false, defaultValue="false") Boolean includeInvalidPrices
-);
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("{\n  \"prices\" : [ {\n    \"price\" : 6.027456183070403,\n    \"id\" : 0,\n    \"variation\" : {\n      \"name\" : \"name\",\n      \"description\" : \"description\",\n      \"id\" : 0,\n      \"enabled\" : true,\n      \"order\" : 6\n    }\n  }, {\n    \"price\" : 6.027456183070403,\n    \"id\" : 0,\n    \"variation\" : {\n      \"name\" : \"name\",\n      \"description\" : \"description\",\n      \"id\" : 0,\n      \"enabled\" : true,\n      \"order\" : 6\n    }\n  } ]\n}", ItemProduct.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default ProductsApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Get a ItemProduct image", nickname = "getItemProductImage", notes = "Gets a `ItemProduct` image.", response = Resource.class, authorizations = {
@@ -80,8 +141,22 @@ public interface ProductsApi {
     @RequestMapping(value = "/product/items/{itemId}/image",
         produces = { "image/png" }, 
         method = RequestMethod.GET)
-    ResponseEntity<Resource> getItemProductImage(@ApiParam(value = "A unique identifier for a `ItemProduct`.",required=true) @PathVariable("itemId") Integer itemId
-);
+    default ResponseEntity<Resource> getItemProductImage(@ApiParam(value = "A unique identifier for a `ItemProduct`.",required=true) @PathVariable("itemId") Integer itemId
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("\"\"", Resource.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default ProductsApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "List All ItemProduct", nickname = "getItemProducts", notes = "Gets a list of all `ItemProduct` entities.", response = Item.class, responseContainer = "List", authorizations = {
@@ -91,9 +166,23 @@ public interface ProductsApi {
     @RequestMapping(value = "/product/items",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<List<Item>> getItemProducts(@ApiParam(value = "If true, the list of all entities include enabled and disabled `Product`" ) @RequestHeader(value="includeDisabled", required=false) Boolean includeDisabled
+    default ResponseEntity<List<Item>> getItemProducts(@ApiParam(value = "If true, the list of all entities include enabled and disabled `Product`" ) @RequestHeader(value="includeDisabled", required=false) Boolean includeDisabled
 ,@ApiParam(value = "Filter all products by the category if present" ) @RequestHeader(value="categoryId", required=false) Integer categoryId
-);
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("[ {\n  \"availablePrices\" : [ 6.027456183070403, 6.027456183070403 ],\n  \"imageUrl\" : \"imageUrl\",\n  \"name\" : \"name\",\n  \"description\" : \"description\",\n  \"id\" : 0,\n  \"category\" : {\n    \"name\" : \"name\",\n    \"description\" : \"description\",\n    \"id\" : 0,\n    \"type\" : \"PIZZA\",\n    \"enabled\" : true,\n    \"order\" : 6\n  },\n  \"enabled\" : true\n}, {\n  \"availablePrices\" : [ 6.027456183070403, 6.027456183070403 ],\n  \"imageUrl\" : \"imageUrl\",\n  \"name\" : \"name\",\n  \"description\" : \"description\",\n  \"id\" : 0,\n  \"category\" : {\n    \"name\" : \"name\",\n    \"description\" : \"description\",\n    \"id\" : 0,\n    \"type\" : \"PIZZA\",\n    \"enabled\" : true,\n    \"order\" : 6\n  },\n  \"enabled\" : true\n} ]", List.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default ProductsApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Update a ItemProduct", nickname = "updateItemProduct", notes = "Updates an existing `ItemProduct`.", response = ItemProduct.class, authorizations = {
@@ -104,9 +193,23 @@ public interface ProductsApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<ItemProduct> updateItemProduct(@ApiParam(value = "Updated `ItemProduct` information." ,required=true )  @Valid @RequestBody ItemProduct body
+    default ResponseEntity<ItemProduct> updateItemProduct(@ApiParam(value = "Updated `ItemProduct` information." ,required=true )  @Valid @RequestBody ItemProduct body
 ,@ApiParam(value = "A unique identifier for a `ItemProduct`.",required=true) @PathVariable("itemId") Integer itemId
-);
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("{\n  \"prices\" : [ {\n    \"price\" : 6.027456183070403,\n    \"id\" : 0,\n    \"variation\" : {\n      \"name\" : \"name\",\n      \"description\" : \"description\",\n      \"id\" : 0,\n      \"enabled\" : true,\n      \"order\" : 6\n    }\n  }, {\n    \"price\" : 6.027456183070403,\n    \"id\" : 0,\n    \"variation\" : {\n      \"name\" : \"name\",\n      \"description\" : \"description\",\n      \"id\" : 0,\n      \"enabled\" : true,\n      \"order\" : 6\n    }\n  } ]\n}", ItemProduct.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default ProductsApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Update a ItemProduct image", nickname = "updateItemProductImage", notes = "Updates an existing `ItemProduct` image.", authorizations = {
@@ -116,8 +219,14 @@ public interface ProductsApi {
     @RequestMapping(value = "/product/items/{itemId}/image",
         consumes = { "multipart/form-data" },
         method = RequestMethod.PUT)
-    ResponseEntity<Void> updateItemProductImage(@ApiParam(value = "file detail") @Valid @RequestPart("file") MultipartFile file
+    default ResponseEntity<Void> updateItemProductImage(@ApiParam(value = "file detail") @Valid @RequestPart("file") MultipartFile file
 ,@ApiParam(value = "A unique identifier for a `ItemProduct`.",required=true) @PathVariable("itemId") Integer itemId
-);
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default ProductsApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 }

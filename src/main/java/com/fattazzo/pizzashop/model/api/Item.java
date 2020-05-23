@@ -165,7 +165,7 @@ public class Item   {
 
   public Item addAvailablePricesItem(BigDecimal availablePricesItem) {
     if (this.availablePrices == null) {
-      this.availablePrices = new ArrayList<BigDecimal>();
+      this.availablePrices = new ArrayList<>();
     }
     this.availablePrices.add(availablePricesItem);
     return this;

@@ -8,9 +8,6 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -27,18 +24,13 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@ToString(callSuper = true)
 @Builder
-public class GroupEntity {
+public class GroupEntity extends EntityBase {
 
 	public static final String NAME_ADMIN = "admin";
 	public static final String NAME_WORKER = "worker";
 	public static final String NAME_CUSTOMER = "customer";
-
-	@Id
-	@Column(unique = true)
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
 
 	@Column(length = 200, unique = true)
 	@NotNull

@@ -31,7 +31,7 @@ public class ItemProduct extends Item  {
 
   public ItemProduct addPricesItem(ItemProductPrice pricesItem) {
     if (this.prices == null) {
-      this.prices = new ArrayList<ItemProductPrice>();
+      this.prices = new ArrayList<>();
     }
     this.prices.add(pricesItem);
     return this;

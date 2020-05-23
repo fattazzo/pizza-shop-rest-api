@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -69,9 +70,13 @@ public class ShippingmethodsController implements ShippingmethodsApi {
 	}
 
 	@Override
-	public ResponseEntity<List<ShippingMethod>> getShippingMethods() {
-		final List<ShippingMethod> shippingMethods = shippingMethodService.findAll().stream()
-				.map(sm -> mapper.map(sm, ShippingMethod.class)).collect(Collectors.toList());
+	public ResponseEntity<List<ShippingMethod>> getShippingMethods(@Valid Boolean includeDisabled) {
+		final List<ShippingMethodEntity> entities = (BooleanUtils.isTrue(includeDisabled))
+				? shippingMethodService.findAll()
+				: shippingMethodService.findAllEnabled();
+
+		final List<ShippingMethod> shippingMethods = entities.stream().map(s -> mapper.map(s, ShippingMethod.class))
+				.collect(Collectors.toList());
 		return ResponseEntity.ok(shippingMethods);
 	}
 

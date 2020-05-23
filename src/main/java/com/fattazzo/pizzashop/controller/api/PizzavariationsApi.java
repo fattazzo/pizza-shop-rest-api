@@ -8,7 +8,11 @@ package com.fattazzo.pizzashop.controller.api;
 import com.fattazzo.pizzashop.model.api.Topping;
 import com.fattazzo.pizzashop.model.api.VariationDough;
 import com.fattazzo.pizzashop.model.api.VariationSize;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,12 +25,29 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.CookieValue;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 @Api(value = "Pizzavariations", description = "the Pizzavariations API")
 public interface PizzavariationsApi {
+
+    Logger log = LoggerFactory.getLogger(PizzavariationsApi.class);
+
+    default Optional<ObjectMapper> getObjectMapper(){
+        return Optional.empty();
+    }
+
+    default Optional<HttpServletRequest> getRequest(){
+        return Optional.empty();
+    }
+
+    default Optional<String> getAcceptHeader() {
+        return getRequest().map(r -> r.getHeader("Accept"));
+    }
 
     @ApiOperation(value = "Create a Dough", nickname = "createDough", notes = "Creates a new instance of a `Dough`.", response = VariationDough.class, authorizations = {
         @Authorization(value = "BearerAuth")    }, tags={ "pizzavariations", })
@@ -36,8 +57,22 @@ public interface PizzavariationsApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<VariationDough> createDough(@ApiParam(value = "A new `Dough` to be created." ,required=true )  @Valid @RequestBody VariationDough body
-);
+    default ResponseEntity<VariationDough> createDough(@ApiParam(value = "A new `Dough` to be created." ,required=true )  @Valid @RequestBody VariationDough body
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("{\n  \"extra\" : 5.962133916683182,\n  \"name\" : \"name\",\n  \"description\" : \"description\",\n  \"id\" : 1,\n  \"enabled\" : true,\n  \"order\" : 5\n}", VariationDough.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default PizzavariationsApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Create a Size", nickname = "createSize", notes = "Creates a new instance of a `Size`.", response = VariationSize.class, authorizations = {
@@ -48,8 +83,22 @@ public interface PizzavariationsApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<VariationSize> createSize(@ApiParam(value = "A new `Size` to be created." ,required=true )  @Valid @RequestBody VariationSize body
-);
+    default ResponseEntity<VariationSize> createSize(@ApiParam(value = "A new `Size` to be created." ,required=true )  @Valid @RequestBody VariationSize body
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("{\n  \"name\" : \"name\",\n  \"description\" : \"description\",\n  \"id\" : 7,\n  \"enabled\" : true,\n  \"order\" : 9\n}", VariationSize.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default PizzavariationsApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Create a Topping", nickname = "createTopping", notes = "Creates a new instance of a `Topping`.", response = Topping.class, authorizations = {
@@ -60,8 +109,22 @@ public interface PizzavariationsApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Topping> createTopping(@ApiParam(value = "A new `Topping` to be created." ,required=true )  @Valid @RequestBody Topping body
-);
+    default ResponseEntity<Topping> createTopping(@ApiParam(value = "A new `Topping` to be created." ,required=true )  @Valid @RequestBody Topping body
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("{\n  \"name\" : \"name\",\n  \"description\" : \"description\",\n  \"id\" : 6,\n  \"enabled\" : true\n}", Topping.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default PizzavariationsApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Delete a Dough", nickname = "deleteDough", notes = "Deletes an existing `Dough`.", authorizations = {
@@ -70,8 +133,14 @@ public interface PizzavariationsApi {
         @ApiResponse(code = 204, message = "Successful response.") })
     @RequestMapping(value = "/pizza/variations/doughs/{doughId}",
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteDough(@ApiParam(value = "A unique identifier for a `Dough`.",required=true) @PathVariable("doughId") Integer doughId
-);
+    default ResponseEntity<Void> deleteDough(@ApiParam(value = "A unique identifier for a `Dough`.",required=true) @PathVariable("doughId") Integer doughId
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default PizzavariationsApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Delete a Size", nickname = "deleteSize", notes = "Deletes an existing `Size`.", authorizations = {
@@ -80,8 +149,14 @@ public interface PizzavariationsApi {
         @ApiResponse(code = 204, message = "Successful response.") })
     @RequestMapping(value = "/pizza/variations/sizes/{sizeId}",
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteSize(@ApiParam(value = "A unique identifier for a `Size`.",required=true) @PathVariable("sizeId") Integer sizeId
-);
+    default ResponseEntity<Void> deleteSize(@ApiParam(value = "A unique identifier for a `Size`.",required=true) @PathVariable("sizeId") Integer sizeId
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default PizzavariationsApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Delete a Topping", nickname = "deleteTopping", notes = "Deletes an existing `Topping`.", authorizations = {
@@ -90,8 +165,14 @@ public interface PizzavariationsApi {
         @ApiResponse(code = 204, message = "Successful response.") })
     @RequestMapping(value = "/pizza/variations/toppings/{toppingId}",
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteTopping(@ApiParam(value = "A unique identifier for a `Topping`.",required=true) @PathVariable("toppingId") Integer toppingId
-);
+    default ResponseEntity<Void> deleteTopping(@ApiParam(value = "A unique identifier for a `Topping`.",required=true) @PathVariable("toppingId") Integer toppingId
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default PizzavariationsApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Get a Dough", nickname = "getDough", notes = "Gets the details of a single instance of a `Dough`.", response = VariationDough.class, authorizations = {
@@ -101,8 +182,22 @@ public interface PizzavariationsApi {
     @RequestMapping(value = "/pizza/variations/doughs/{doughId}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<VariationDough> getDough(@ApiParam(value = "A unique identifier for a `Dough`.",required=true) @PathVariable("doughId") Integer doughId
-);
+    default ResponseEntity<VariationDough> getDough(@ApiParam(value = "A unique identifier for a `Dough`.",required=true) @PathVariable("doughId") Integer doughId
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("{\n  \"extra\" : 5.962133916683182,\n  \"name\" : \"name\",\n  \"description\" : \"description\",\n  \"id\" : 1,\n  \"enabled\" : true,\n  \"order\" : 5\n}", VariationDough.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default PizzavariationsApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "List All doughs", nickname = "getDoughs", notes = "Gets a list of all `Dough` entities.", response = VariationDough.class, responseContainer = "List", authorizations = {
@@ -112,8 +207,22 @@ public interface PizzavariationsApi {
     @RequestMapping(value = "/pizza/variations/doughs",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<List<VariationDough>> getDoughs(@ApiParam(value = "If true, the list of all entities include enabled and disabled `Dough`") @Valid @RequestParam(value = "includeDisabled", required = false) Boolean includeDisabled
-);
+    default ResponseEntity<List<VariationDough>> getDoughs(@ApiParam(value = "If true, the list of all entities include enabled and disabled `Dough`") @Valid @RequestParam(value = "includeDisabled", required = false) Boolean includeDisabled
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("[ {\n  \"extra\" : 5.962133916683182,\n  \"name\" : \"name\",\n  \"description\" : \"description\",\n  \"id\" : 1,\n  \"enabled\" : true,\n  \"order\" : 5\n}, {\n  \"extra\" : 5.962133916683182,\n  \"name\" : \"name\",\n  \"description\" : \"description\",\n  \"id\" : 1,\n  \"enabled\" : true,\n  \"order\" : 5\n} ]", List.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default PizzavariationsApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Get a Size", nickname = "getSize", notes = "Gets the details of a single instance of a `Size`.", response = VariationSize.class, authorizations = {
@@ -123,8 +232,22 @@ public interface PizzavariationsApi {
     @RequestMapping(value = "/pizza/variations/sizes/{sizeId}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<VariationSize> getSize(@ApiParam(value = "A unique identifier for a `Size`.",required=true) @PathVariable("sizeId") Integer sizeId
-);
+    default ResponseEntity<VariationSize> getSize(@ApiParam(value = "A unique identifier for a `Size`.",required=true) @PathVariable("sizeId") Integer sizeId
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("{\n  \"name\" : \"name\",\n  \"description\" : \"description\",\n  \"id\" : 7,\n  \"enabled\" : true,\n  \"order\" : 9\n}", VariationSize.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default PizzavariationsApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "List All sizes", nickname = "getSizes", notes = "Gets a list of all `Size` entities.", response = VariationSize.class, responseContainer = "List", authorizations = {
@@ -134,8 +257,22 @@ public interface PizzavariationsApi {
     @RequestMapping(value = "/pizza/variations/sizes",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<List<VariationSize>> getSizes(@ApiParam(value = "If true, the list of all entities include enabled and disabled `Size`") @Valid @RequestParam(value = "includeDisabled", required = false) Boolean includeDisabled
-);
+    default ResponseEntity<List<VariationSize>> getSizes(@ApiParam(value = "If true, the list of all entities include enabled and disabled `Size`") @Valid @RequestParam(value = "includeDisabled", required = false) Boolean includeDisabled
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("[ {\n  \"name\" : \"name\",\n  \"description\" : \"description\",\n  \"id\" : 7,\n  \"enabled\" : true,\n  \"order\" : 9\n}, {\n  \"name\" : \"name\",\n  \"description\" : \"description\",\n  \"id\" : 7,\n  \"enabled\" : true,\n  \"order\" : 9\n} ]", List.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default PizzavariationsApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Get a Topping", nickname = "getTopping", notes = "Gets the details of a single instance of a `Topping`.", response = Topping.class, authorizations = {
@@ -145,8 +282,22 @@ public interface PizzavariationsApi {
     @RequestMapping(value = "/pizza/variations/toppings/{toppingId}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<Topping> getTopping(@ApiParam(value = "A unique identifier for a `Topping`.",required=true) @PathVariable("toppingId") Integer toppingId
-);
+    default ResponseEntity<Topping> getTopping(@ApiParam(value = "A unique identifier for a `Topping`.",required=true) @PathVariable("toppingId") Integer toppingId
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("{\n  \"name\" : \"name\",\n  \"description\" : \"description\",\n  \"id\" : 6,\n  \"enabled\" : true\n}", Topping.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default PizzavariationsApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "List All toppings", nickname = "getToppings", notes = "Gets a list of all `Topping` entities.", response = Topping.class, responseContainer = "List", authorizations = {
@@ -156,8 +307,22 @@ public interface PizzavariationsApi {
     @RequestMapping(value = "/pizza/variations/toppings",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<List<Topping>> getToppings(@ApiParam(value = "If true, the list of all entities include enabled and disabled `Topping`") @Valid @RequestParam(value = "includeDisabled", required = false) Boolean includeDisabled
-);
+    default ResponseEntity<List<Topping>> getToppings(@ApiParam(value = "If true, the list of all entities include enabled and disabled `Topping`") @Valid @RequestParam(value = "includeDisabled", required = false) Boolean includeDisabled
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("[ {\n  \"name\" : \"name\",\n  \"description\" : \"description\",\n  \"id\" : 6,\n  \"enabled\" : true\n}, {\n  \"name\" : \"name\",\n  \"description\" : \"description\",\n  \"id\" : 6,\n  \"enabled\" : true\n} ]", List.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default PizzavariationsApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Update a Dough", nickname = "updateDough", notes = "Updates an existing `Dough`.", response = VariationDough.class, authorizations = {
@@ -168,9 +333,23 @@ public interface PizzavariationsApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<VariationDough> updateDough(@ApiParam(value = "Updated `Dough` information." ,required=true )  @Valid @RequestBody VariationDough body
+    default ResponseEntity<VariationDough> updateDough(@ApiParam(value = "Updated `Dough` information." ,required=true )  @Valid @RequestBody VariationDough body
 ,@ApiParam(value = "A unique identifier for a `Dough`.",required=true) @PathVariable("doughId") Integer doughId
-);
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("{\n  \"extra\" : 5.962133916683182,\n  \"name\" : \"name\",\n  \"description\" : \"description\",\n  \"id\" : 1,\n  \"enabled\" : true,\n  \"order\" : 5\n}", VariationDough.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default PizzavariationsApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Update a Size", nickname = "updateSize", notes = "Updates an existing `Size`.", response = VariationSize.class, authorizations = {
@@ -181,9 +360,23 @@ public interface PizzavariationsApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<VariationSize> updateSize(@ApiParam(value = "Updated `Size` information." ,required=true )  @Valid @RequestBody VariationSize body
+    default ResponseEntity<VariationSize> updateSize(@ApiParam(value = "Updated `Size` information." ,required=true )  @Valid @RequestBody VariationSize body
 ,@ApiParam(value = "A unique identifier for a `Size`.",required=true) @PathVariable("sizeId") Integer sizeId
-);
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("{\n  \"name\" : \"name\",\n  \"description\" : \"description\",\n  \"id\" : 7,\n  \"enabled\" : true,\n  \"order\" : 9\n}", VariationSize.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default PizzavariationsApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Update a Topping", nickname = "updateTopping", notes = "Updates an existing `Topping`.", response = Topping.class, authorizations = {
@@ -194,8 +387,22 @@ public interface PizzavariationsApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<Topping> updateTopping(@ApiParam(value = "Updated `Topping` information." ,required=true )  @Valid @RequestBody Topping body
+    default ResponseEntity<Topping> updateTopping(@ApiParam(value = "Updated `Topping` information." ,required=true )  @Valid @RequestBody Topping body
 ,@ApiParam(value = "A unique identifier for a `Topping`.",required=true) @PathVariable("toppingId") Integer toppingId
-);
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("{\n  \"name\" : \"name\",\n  \"description\" : \"description\",\n  \"id\" : 6,\n  \"enabled\" : true\n}", Topping.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default PizzavariationsApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 }

@@ -24,7 +24,7 @@ import com.fattazzo.pizzashop.service.variation.ToppingExtraService;
 import io.swagger.annotations.Api;
 
 @RestController
-@Api(tags = { "variations" })
+@Api(tags = { "toppingextras" })
 public class ToppingExtrasController implements ToppingextrasApi {
 
 	@Autowired

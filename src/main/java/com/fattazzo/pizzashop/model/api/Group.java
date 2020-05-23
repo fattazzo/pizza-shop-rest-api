@@ -76,7 +76,7 @@ public class Group   {
 
   public Group addRolesItem(Role rolesItem) {
     if (this.roles == null) {
-      this.roles = new ArrayList<Role>();
+      this.roles = new ArrayList<>();
     }
     this.roles.add(rolesItem);
     return this;

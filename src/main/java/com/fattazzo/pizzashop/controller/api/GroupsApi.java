@@ -6,7 +6,11 @@
 package com.fattazzo.pizzashop.controller.api;
 
 import com.fattazzo.pizzashop.model.api.Group;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,12 +23,29 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.CookieValue;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 @Api(value = "Groups", description = "the Groups API")
 public interface GroupsApi {
+
+    Logger log = LoggerFactory.getLogger(GroupsApi.class);
+
+    default Optional<ObjectMapper> getObjectMapper(){
+        return Optional.empty();
+    }
+
+    default Optional<HttpServletRequest> getRequest(){
+        return Optional.empty();
+    }
+
+    default Optional<String> getAcceptHeader() {
+        return getRequest().map(r -> r.getHeader("Accept"));
+    }
 
     @ApiOperation(value = "Create a Group", nickname = "createGroup", notes = "Creates a new instance of a `Group`.", response = Group.class, authorizations = {
         @Authorization(value = "BearerAuth")    }, tags={ "groups", })
@@ -34,8 +55,22 @@ public interface GroupsApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Group> createGroup(@ApiParam(value = "A new `Group` to be created." ,required=true )  @Valid @RequestBody Group body
-);
+    default ResponseEntity<Group> createGroup(@ApiParam(value = "A new `Group` to be created." ,required=true )  @Valid @RequestBody Group body
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("{\n  \"id\" : 1,\n  \"name\" : \"Admin\",\n  \"readOnly\" : true,\n  \"roles\" : [ \"WEB_ACCESS\", \"SECURITY_EDIT\", \"SECURITY_VIEW\" ]\n}", Group.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default GroupsApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Delete a Group", nickname = "deleteGroup", notes = "Deletes an existing `Group`.", authorizations = {
@@ -44,8 +79,14 @@ public interface GroupsApi {
         @ApiResponse(code = 204, message = "Successful response.") })
     @RequestMapping(value = "/groups/{groupId}",
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteGroup(@ApiParam(value = "A unique identifier for a `Company`.",required=true) @PathVariable("groupId") Integer groupId
-);
+    default ResponseEntity<Void> deleteGroup(@ApiParam(value = "A unique identifier for a `Company`.",required=true) @PathVariable("groupId") Integer groupId
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default GroupsApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Get a Group", nickname = "getGroup", notes = "Gets the details of a single instance of a `Group`.", response = Group.class, authorizations = {
@@ -55,8 +96,22 @@ public interface GroupsApi {
     @RequestMapping(value = "/groups/{groupId}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<Group> getGroup(@ApiParam(value = "A unique identifier for a `Company`.",required=true) @PathVariable("groupId") Integer groupId
-);
+    default ResponseEntity<Group> getGroup(@ApiParam(value = "A unique identifier for a `Company`.",required=true) @PathVariable("groupId") Integer groupId
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("{\n  \"id\" : 1,\n  \"name\" : \"Admin\",\n  \"readOnly\" : true,\n  \"roles\" : [ \"WEB_ACCESS\", \"SECURITY_EDIT\", \"SECURITY_VIEW\" ]\n}", Group.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default GroupsApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "List All groups", nickname = "getGroups", notes = "Gets a list of all `Group` entities.", response = Group.class, responseContainer = "List", authorizations = {
@@ -66,7 +121,21 @@ public interface GroupsApi {
     @RequestMapping(value = "/groups",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<List<Group>> getGroups();
+    default ResponseEntity<List<Group>> getGroups() {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("[ {\n  \"id\" : 1,\n  \"name\" : \"Admin\",\n  \"readOnly\" : true,\n  \"roles\" : [ \"WEB_ACCESS\", \"SECURITY_EDIT\", \"SECURITY_VIEW\" ]\n}, {\n  \"id\" : 1,\n  \"name\" : \"Admin\",\n  \"readOnly\" : true,\n  \"roles\" : [ \"WEB_ACCESS\", \"SECURITY_EDIT\", \"SECURITY_VIEW\" ]\n} ]", List.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default GroupsApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Update a Group", nickname = "updateGroup", notes = "Updates an existing `Group`.", response = Group.class, authorizations = {
@@ -77,8 +146,22 @@ public interface GroupsApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<Group> updateGroup(@ApiParam(value = "Updated `Group` information." ,required=true )  @Valid @RequestBody Group body
+    default ResponseEntity<Group> updateGroup(@ApiParam(value = "Updated `Group` information." ,required=true )  @Valid @RequestBody Group body
 ,@ApiParam(value = "A unique identifier for a `Company`.",required=true) @PathVariable("groupId") Integer groupId
-);
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("{\n  \"id\" : 1,\n  \"name\" : \"Admin\",\n  \"readOnly\" : true,\n  \"roles\" : [ \"WEB_ACCESS\", \"SECURITY_EDIT\", \"SECURITY_VIEW\" ]\n}", Group.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default GroupsApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 }

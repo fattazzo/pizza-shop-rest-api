@@ -49,7 +49,7 @@ public class ConstraintError   {
 
   public ConstraintError addConstraintsNotRespectedItem(String constraintsNotRespectedItem) {
     if (this.constraintsNotRespected == null) {
-      this.constraintsNotRespected = new ArrayList<String>();
+      this.constraintsNotRespected = new ArrayList<>();
     }
     this.constraintsNotRespected.add(constraintsNotRespectedItem);
     return this;

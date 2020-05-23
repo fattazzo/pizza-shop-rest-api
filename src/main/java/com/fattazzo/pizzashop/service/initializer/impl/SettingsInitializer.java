@@ -22,7 +22,8 @@ public class SettingsInitializer implements Initializer {
 		final Optional<SettingsEntity> optional = settingsService.load();
 
 		if (!optional.isPresent()) {
-			final SettingsEntity settings = SettingsEntity.builder().currencyDecimals(2).currencySymbol("€").build();
+			final SettingsEntity settings = SettingsEntity.builder().currencyDecimals(2).currencySymbol("€")
+					.minOrderRequestMinutes(45).build();
 			settingsService.save(settings);
 		}
 	}

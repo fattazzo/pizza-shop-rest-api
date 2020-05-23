@@ -1,13 +1,11 @@
 package com.fattazzo.pizzashop.model.entity;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -16,7 +14,6 @@ import org.apache.commons.lang3.builder.ToStringExclude;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,28 +25,44 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@ToString(callSuper = true)
 @Builder
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class ItemPizzaPriceEntity {
-
-	@EqualsAndHashCode.Include
-	@Id
-	@Column(unique = true)
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+public class ItemPizzaPriceEntity extends EntityBase {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "pizza_id")
 	private ItemPizzaEntity parent;
 
-	@EqualsAndHashCode.Include
 	@ToStringExclude
 	@ManyToOne(optional = false)
-	private VariationSizeEntity size;
+	@JoinColumn(name = "size_id")
+	private VariationSizeEntity variationSize;
 
 	@Builder.Default
 	@Column(nullable = false)
 	private BigDecimal price = BigDecimal.ZERO;
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!super.equals(obj)) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final ItemPizzaPriceEntity other = (ItemPizzaPriceEntity) obj;
+		return Objects.equals(getId(), other.getId()) && Objects.equals(variationSize, other.variationSize);
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(getId(), variationSize);
+		return result;
+	}
 
 }

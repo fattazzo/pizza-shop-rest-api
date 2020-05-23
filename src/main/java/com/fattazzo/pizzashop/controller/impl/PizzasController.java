@@ -84,8 +84,8 @@ public class PizzasController implements PizzasApi {
 		final List<ItemPizzaPriceEntity> pricesToAdd = new ArrayList<ItemPizzaPriceEntity>();
 		final List<VariationSizeEntity> sizesEntities = sizeService.findAll();
 		for (final VariationSizeEntity size : sizesEntities) {
-			if (pizzaEntity.getPrices().stream().noneMatch(ip -> ip.getSize().getId().equals(size.getId()))) {
-				pricesToAdd.add(new ItemPizzaPriceEntity(null, pizzaEntity, size, BigDecimal.ZERO));
+			if (pizzaEntity.getPrices().stream().noneMatch(ip -> ip.getVariationSize().getId().equals(size.getId()))) {
+				pricesToAdd.add(new ItemPizzaPriceEntity(pizzaEntity, size, BigDecimal.ZERO));
 			}
 		}
 
@@ -196,22 +196,22 @@ public class PizzasController implements PizzasApi {
 
 		// prices order
 		Collections.sort(itemPizza.getPrices(), (o1, o2) -> {
-			if (o1.getSize().getOrder() == null && o2.getSize().getOrder() != null) {
+			if (o1.getVariationSize().getOrder() == null && o2.getVariationSize().getOrder() != null) {
 				return 1;
 			}
-			if (o1.getSize().getOrder() == null && o2.getSize().getOrder() == null) {
+			if (o1.getVariationSize().getOrder() == null && o2.getVariationSize().getOrder() == null) {
 				return 0;
 			}
-			if (o1.getSize().getOrder() != null && o2.getSize().getOrder() == null) {
+			if (o1.getVariationSize().getOrder() != null && o2.getVariationSize().getOrder() == null) {
 				return -1;
 			}
-			return o1.getSize().getOrder().compareTo(o2.getSize().getOrder());
+			return o1.getVariationSize().getOrder().compareTo(o2.getVariationSize().getOrder());
 		});
 
 		// price list
 		List<ItemPizzaPrice> prices = itemPizza.getPrices();
 		if (!includeInvalidPrices) {
-			prices = prices.stream().filter(p -> p.getSize().isEnabled()).collect(Collectors.toList());
+			prices = prices.stream().filter(p -> p.getVariationSize().isEnabled()).collect(Collectors.toList());
 		}
 		final List<BigDecimal> priceList = CollectionUtils.emptyIfNull(pizzaEntity.getPrices()).stream()
 				.filter(p -> p.getPrice() != null && BigDecimal.ZERO.compareTo(p.getPrice()) != 0)
@@ -235,7 +235,7 @@ public class PizzasController implements PizzasApi {
 		List<ToppingExtra> extras = CollectionUtils.emptyIfNull(extrasEntities).stream()
 				.map(e -> mapper.map(e, ToppingExtra.class)).collect(Collectors.toList());
 
-		extras = extras.stream().filter(p -> doughs.contains(p.getDough()) && sizes.contains(p.getSize()))
+		extras = extras.stream().filter(p -> doughs.contains(p.getDough()) && sizes.contains(p.getVariationSize()))
 				.collect(Collectors.toList());
 		if (!includeInvalidPrices) {
 			extras = extras.stream().filter(te -> BigDecimal.ZERO.compareTo(te.getExtra()) != 0)
@@ -264,13 +264,7 @@ public class PizzasController implements PizzasApi {
 					.status(HttpStatus.BAD_REQUEST).build();
 		}
 
-//		existingEntity.getPrices().clear();
-//		mapper.map(body, existingEntity);
-//		for (final ItemPizzaPriceEntity itemPizzaPriceEntity : SetUtils.emptyIfNull(existingEntity.getPrices())) {
-//			itemPizzaPriceEntity.setParent(existingEntity);
-//		}
-
-		// modelmapper briks jpa OneToMany relation
+		// modelmapper breaks jpa OneToMany relation
 		existingEntity.setDescription(body.getDescription());
 		existingEntity.setEnabled(body.isEnabled());
 		existingEntity.setCategory(mapper.map(body.getCategory(), CategoryEntity.class));

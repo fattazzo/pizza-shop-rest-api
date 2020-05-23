@@ -1,10 +1,17 @@
 package com.fattazzo.pizzashop.repository;
 
-import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.fattazzo.pizzashop.model.entity.ItemPizzaEntity;
 
-@Transactional
-public interface ItemPizzaRepository extends ItemRepository<ItemPizzaEntity> {
+public interface ItemPizzaRepository extends JpaRepository<ItemPizzaEntity, Integer> {
+
+	List<ItemPizzaEntity> findAllByOrderByNameAsc();
+
+	List<ItemPizzaEntity> findByCategoryIdOrderByNameAsc(Integer categoryId);
+
+	List<ItemPizzaEntity> findByEnabledTrueOrderByNameAsc();
 
 }

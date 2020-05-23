@@ -47,6 +47,10 @@ public class BranchService {
 		return branchRepository.findById(id);
 	}
 
+	public List<BranchEntity> findByShippingZonesName(String shippingZoneName) {
+		return branchRepository.findByShippingZonesName(shippingZoneName);
+	}
+
 	public Optional<BranchEntity> loadPrimary() {
 		return branchRepository.findOneByPrimary(true);
 	}

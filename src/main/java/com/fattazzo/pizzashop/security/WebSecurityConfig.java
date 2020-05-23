@@ -31,6 +31,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private static final String[] permitAllGetMatchers = new String[] { "/company/logo", "/**/items/**/image" };
 
+	private static final String[] permitAllWebSocketMatchers = new String[] { "/ws/**", "/topic/**" };
+
 	@Autowired
 	private JwtAuthenticationEntryPoint unauthorizedHandler;
 	@Autowired
@@ -55,8 +57,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.authorizeRequests().antMatchers(
 						// HttpMethod.GET,
 						"/", "/*.html", "/favicon.ico", "/**/*.html", "/**/*.css", "/**/*.js")
-				.permitAll().antMatchers(permitAllMatchers).permitAll()
-				.antMatchers(HttpMethod.GET, permitAllGetMatchers).permitAll().anyRequest().authenticated();
+				.permitAll().antMatchers(permitAllMatchers).permitAll().antMatchers(permitAllWebSocketMatchers)
+				.permitAll().antMatchers(HttpMethod.GET, permitAllGetMatchers).permitAll().anyRequest().authenticated();
 
 		// Filtro Custom JWT
 		httpSecurity.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);

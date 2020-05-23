@@ -42,7 +42,7 @@ public class ToppingExtraService {
 		final Comparator<ToppingExtraEntity> comparator = Comparator
 				.<ToppingExtraEntity, String>comparing(te -> te.getTopping().getName())
 				.thenComparing(te -> te.getDough().getOrder(), nullSafeComparator)
-				.thenComparing(te -> te.getSize().getOrder(), nullSafeComparator);
+				.thenComparing(te -> te.getVariationSize().getOrder(), nullSafeComparator);
 
 		entities.sort(comparator);
 
@@ -55,20 +55,21 @@ public class ToppingExtraService {
 		}
 
 		final List<ToppingExtraEntity> entities = toppingExtraRepository
-				.findByDoughIdAndSizeIdOrderByToppingNameAsc(doughId, sizeId);
+				.findByDoughIdAndVariationSizeIdOrderByToppingNameAsc(doughId, sizeId);
 
 		final VariationDoughEntity dough = doughService.findById(doughId).orElseThrow(NoSuchEntityException::new);
 		final VariationSizeEntity size = sizeService.findById(sizeId).orElseThrow(NoSuchEntityException::new);
 		final List<ToppingEntity> toppings = toppingService.findAll();
 
 		for (final ToppingEntity topping : toppings) {
-			final Optional<ToppingExtraEntity> existingEntity = entities.stream().filter(
-					te -> te.getTopping().equals(topping) && te.getDough().equals(dough) && te.getSize().equals(size))
+			final Optional<ToppingExtraEntity> existingEntity = entities.stream()
+					.filter(te -> te.getTopping().equals(topping) && te.getDough().equals(dough)
+							&& te.getVariationSize().equals(size))
 					.findFirst();
 
 			if (!existingEntity.isPresent()) {
 				ToppingExtraEntity entityCreated = ToppingExtraEntity.builder().dough(dough).enabled(true)
-						.extra(BigDecimal.ZERO).size(size).topping(topping).build();
+						.extra(BigDecimal.ZERO).variationSize(size).topping(topping).build();
 
 				entityCreated = toppingExtraRepository.save(entityCreated);
 				entities.add(entityCreated);
@@ -77,7 +78,7 @@ public class ToppingExtraService {
 
 		final Comparator<ToppingExtraEntity> comparator = Comparator
 				.<ToppingExtraEntity, String>comparing(te -> te.getTopping().getName())
-				.thenComparing(te -> te.getDough().getOrder()).thenComparing(te -> te.getSize().getOrder());
+				.thenComparing(te -> te.getDough().getOrder()).thenComparing(te -> te.getVariationSize().getOrder());
 
 		entities.sort(comparator);
 

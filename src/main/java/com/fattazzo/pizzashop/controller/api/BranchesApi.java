@@ -8,7 +8,11 @@ package com.fattazzo.pizzashop.controller.api;
 import com.fattazzo.pizzashop.model.api.Branch;
 import com.fattazzo.pizzashop.model.api.BranchDetails;
 import com.fattazzo.pizzashop.model.api.ShippingZone;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,12 +25,29 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.CookieValue;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 @Api(value = "Branches", description = "the Branches API")
 public interface BranchesApi {
+
+    Logger log = LoggerFactory.getLogger(BranchesApi.class);
+
+    default Optional<ObjectMapper> getObjectMapper(){
+        return Optional.empty();
+    }
+
+    default Optional<HttpServletRequest> getRequest(){
+        return Optional.empty();
+    }
+
+    default Optional<String> getAcceptHeader() {
+        return getRequest().map(r -> r.getHeader("Accept"));
+    }
 
     @ApiOperation(value = "Create a Branch for company", nickname = "createBranch", notes = "Creates a new instance of a `Branch`.", response = BranchDetails.class, authorizations = {
         @Authorization(value = "BearerAuth")    }, tags={ "branches", })
@@ -37,8 +58,22 @@ public interface BranchesApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<BranchDetails> createBranch(@ApiParam(value = "A new `Branch` to be created." ,required=true )  @Valid @RequestBody BranchDetails body
-);
+    default ResponseEntity<BranchDetails> createBranch(@ApiParam(value = "A new `Branch` to be created." ,required=true )  @Valid @RequestBody BranchDetails body
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("{\n  \"id\" : 1,\n  \"phone\" : \"XXX XXXXXXX\",\n  \"webUrl\" : \"www.pizzashop.example/branch1\",\n  \"shippingMethods\" : [ {\n    \"id\" : \"flat_rate\",\n    \"title\" : \"Flat rate\",\n    \"description\" : \"Lets you charge a fixed rate for shipping.\"\n  } ],\n  \"shippingZones\" : [ {\n    \"id\" : 0,\n    \"name\" : \"Zone 1\"\n  }, {\n    \"id\" : 0,\n    \"name\" : \"Zone 2\"\n  } ],\n  \"primary\" : true\n}", BranchDetails.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default BranchesApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Delete a Branch", nickname = "deleteBranch", notes = "Deletes an existing `Branch`.", authorizations = {
@@ -47,8 +82,14 @@ public interface BranchesApi {
         @ApiResponse(code = 204, message = "Successful response.") })
     @RequestMapping(value = "/branches/{branchId}",
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteBranch(@ApiParam(value = "A unique identifier for a `Branch`.",required=true) @PathVariable("branchId") Integer branchId
-);
+    default ResponseEntity<Void> deleteBranch(@ApiParam(value = "A unique identifier for a `Branch`.",required=true) @PathVariable("branchId") Integer branchId
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default BranchesApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Get a Branch", nickname = "getBranch", notes = "Gets the details of a single instance of a `Branch`.", response = BranchDetails.class, authorizations = {
@@ -58,8 +99,22 @@ public interface BranchesApi {
     @RequestMapping(value = "/branches/{branchId}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<BranchDetails> getBranch(@ApiParam(value = "A unique identifier for a `Branch`.",required=true) @PathVariable("branchId") Integer branchId
-);
+    default ResponseEntity<BranchDetails> getBranch(@ApiParam(value = "A unique identifier for a `Branch`.",required=true) @PathVariable("branchId") Integer branchId
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("{\n  \"id\" : 1,\n  \"phone\" : \"XXX XXXXXXX\",\n  \"webUrl\" : \"www.pizzashop.example/branch1\",\n  \"shippingMethods\" : [ {\n    \"id\" : \"flat_rate\",\n    \"title\" : \"Flat rate\",\n    \"description\" : \"Lets you charge a fixed rate for shipping.\"\n  } ],\n  \"shippingZones\" : [ {\n    \"id\" : 0,\n    \"name\" : \"Zone 1\"\n  }, {\n    \"id\" : 0,\n    \"name\" : \"Zone 2\"\n  } ],\n  \"primary\" : true\n}", BranchDetails.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default BranchesApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "List All branches of company", nickname = "getBranches", notes = "Gets a list of all `Branch` entities.", response = Branch.class, responseContainer = "List", authorizations = {
@@ -69,7 +124,21 @@ public interface BranchesApi {
     @RequestMapping(value = "/branches",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<List<Branch>> getBranches();
+    default ResponseEntity<List<Branch>> getBranches() {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("[ {\n  \"id\" : 1,\n  \"phone\" : \"XXX XXXXXXX\",\n  \"webUrl\" : \"www.pizzashop.example/branch1\",\n  \"primary\" : true,\n  \"enabled\" : true,\n  \"address\" : {\n    \"streetAddress\" : \"some text\",\n    \"number\" : \"some text\",\n    \"place\" : \"some text\",\n    \"postalCode\" : \"some text\"\n  }\n}, {\n  \"id\" : 1,\n  \"phone\" : \"XXX XXXXXXX\",\n  \"webUrl\" : \"www.pizzashop.example/branch1\",\n  \"primary\" : true,\n  \"enabled\" : true,\n  \"address\" : {\n    \"streetAddress\" : \"some text\",\n    \"number\" : \"some text\",\n    \"place\" : \"some text\",\n    \"postalCode\" : \"some text\"\n  }\n} ]", List.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default BranchesApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "List All shippingzones", nickname = "getShippingZones", notes = "Gets a list of all `ShippingZone` entities.", response = ShippingZone.class, responseContainer = "List", authorizations = {
@@ -79,8 +148,22 @@ public interface BranchesApi {
     @RequestMapping(value = "/branches/{branchId}/shippingzones",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<List<ShippingZone>> getShippingZones(@ApiParam(value = "A unique identifier for a `Branch`.",required=true) @PathVariable("branchId") Integer branchId
-);
+    default ResponseEntity<List<ShippingZone>> getShippingZones(@ApiParam(value = "A unique identifier for a `Branch`.",required=true) @PathVariable("branchId") Integer branchId
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("[ {\n  \"id\" : 0,\n  \"name\" : \"Zone 1\"\n}, {\n  \"id\" : 0,\n  \"name\" : \"Zone 1\"\n} ]", List.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default BranchesApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Update a Branch", nickname = "updateBranch", notes = "Updates an existing `Branch`.", response = BranchDetails.class, authorizations = {
@@ -92,8 +175,22 @@ public interface BranchesApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<BranchDetails> updateBranch(@ApiParam(value = "Updated `Branch` information." ,required=true )  @Valid @RequestBody BranchDetails body
+    default ResponseEntity<BranchDetails> updateBranch(@ApiParam(value = "Updated `Branch` information." ,required=true )  @Valid @RequestBody BranchDetails body
 ,@ApiParam(value = "A unique identifier for a `Branch`.",required=true) @PathVariable("branchId") Integer branchId
-);
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("{\n  \"id\" : 1,\n  \"phone\" : \"XXX XXXXXXX\",\n  \"webUrl\" : \"www.pizzashop.example/branch1\",\n  \"shippingMethods\" : [ {\n    \"id\" : \"flat_rate\",\n    \"title\" : \"Flat rate\",\n    \"description\" : \"Lets you charge a fixed rate for shipping.\"\n  } ],\n  \"shippingZones\" : [ {\n    \"id\" : 0,\n    \"name\" : \"Zone 1\"\n  }, {\n    \"id\" : 0,\n    \"name\" : \"Zone 2\"\n  } ],\n  \"primary\" : true\n}", BranchDetails.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default BranchesApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 }

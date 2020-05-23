@@ -6,15 +6,11 @@ import java.util.TreeSet;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,15 +22,9 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@ToString(callSuper = true)
 @Builder
-@EqualsAndHashCode
-public class CategoryEntity {
-
-	@Id
-	@Column(unique = true)
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+public class CategoryEntity extends EntityBase {
 
 	@Column(nullable = false, length = 100)
 	private String name;
@@ -48,12 +38,10 @@ public class CategoryEntity {
 
 	private ItemType type;
 
-	@EqualsAndHashCode.Exclude
 	@Builder.Default
 	@ManyToMany(fetch = FetchType.EAGER)
 	private Set<VariationDoughEntity> doughs = new TreeSet<>();
 
-	@EqualsAndHashCode.Exclude
 	@Builder.Default
 	@ManyToMany(fetch = FetchType.EAGER)
 	private Set<VariationSizeEntity> sizes = new TreeSet<>();

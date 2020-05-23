@@ -7,7 +7,11 @@ package com.fattazzo.pizzashop.controller.api;
 
 import com.fattazzo.pizzashop.model.api.User;
 import com.fattazzo.pizzashop.model.api.UserDetails;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,12 +24,29 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.CookieValue;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 @Api(value = "Users", description = "the Users API")
 public interface UsersApi {
+
+    Logger log = LoggerFactory.getLogger(UsersApi.class);
+
+    default Optional<ObjectMapper> getObjectMapper(){
+        return Optional.empty();
+    }
+
+    default Optional<HttpServletRequest> getRequest(){
+        return Optional.empty();
+    }
+
+    default Optional<String> getAcceptHeader() {
+        return getRequest().map(r -> r.getHeader("Accept"));
+    }
 
     @ApiOperation(value = "Create a User", nickname = "createUser", notes = "Creates a new instance of a `User`. Only 'WORKER' type can be created", response = UserDetails.class, authorizations = {
         @Authorization(value = "BearerAuth")    }, tags={ "users", })
@@ -35,8 +56,22 @@ public interface UsersApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<UserDetails> createUser(@ApiParam(value = "A new `User` to be created." ,required=true )  @Valid @RequestBody UserDetails body
-);
+    default ResponseEntity<UserDetails> createUser(@ApiParam(value = "A new `User` to be created." ,required=true )  @Valid @RequestBody UserDetails body
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("{\n  \"username\" : \"some text\",\n  \"password\" : \"**********\",\n  \"email\" : \"some text\",\n  \"firstName\" : \"some text\",\n  \"lastName\" : \"some text\",\n  \"type\" : \"WORKER\",\n  \"deliveryAddresses\" : [ {\n    \"id\" : 17,\n    \"address\" : {\n      \"streetAddress\" : \"via Di Bugno\",\n      \"number\" : \"12\",\n      \"place\" : \"Baselga di Pinè\",\n      \"postalCode\" : \"38042\"\n    },\n    \"shippingMethod\" : {\n      \"id\" : 1,\n      \"title\" : \"Flat rate\",\n      \"description\" : \"Lets you charge a fixed rate for shipping.\"\n    }\n  }, {\n    \"id\" : 92,\n    \"address\" : {\n      \"streetAddress\" : \"via Galilei\",\n      \"number\" : \"4/A\",\n      \"place\" : \"Milano\",\n      \"postalCode\" : \"11111\"\n    },\n    \"shippingMethod\" : {\n      \"id\" : 2,\n      \"title\" : \"Air mail\",\n      \"description\" : \"Fast and Furious!\"\n    }\n  } ],\n  \"groups\" : [ {\n    \"id\" : 1,\n    \"name\" : \"Admin\",\n    \"roles\" : [ \"SECURITY_VIEW\", \"SECURITY_EDIT\", \"WEB_ADMIN\" ]\n  } ]\n}", UserDetails.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default UsersApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Delete a User", nickname = "deleteUser", notes = "Deletes an existing `User`.", authorizations = {
@@ -45,8 +80,14 @@ public interface UsersApi {
         @ApiResponse(code = 204, message = "Successful response.") })
     @RequestMapping(value = "/users/{userName}",
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteUser(@ApiParam(value = "A unique identifier for a `User`.",required=true) @PathVariable("userName") String userName
-);
+    default ResponseEntity<Void> deleteUser(@ApiParam(value = "A unique identifier for a `User`.",required=true) @PathVariable("userName") String userName
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default UsersApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Get a User", nickname = "getUser", notes = "Gets the details of a single instance of a `User`.", response = UserDetails.class, authorizations = {
@@ -56,8 +97,22 @@ public interface UsersApi {
     @RequestMapping(value = "/users/{userName}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<UserDetails> getUser(@ApiParam(value = "A unique identifier for a `User`.",required=true) @PathVariable("userName") String userName
-);
+    default ResponseEntity<UserDetails> getUser(@ApiParam(value = "A unique identifier for a `User`.",required=true) @PathVariable("userName") String userName
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("{\n  \"username\" : \"some text\",\n  \"password\" : \"**********\",\n  \"email\" : \"some text\",\n  \"firstName\" : \"some text\",\n  \"lastName\" : \"some text\",\n  \"type\" : \"WORKER\",\n  \"deliveryAddresses\" : [ {\n    \"id\" : 17,\n    \"address\" : {\n      \"streetAddress\" : \"via Di Bugno\",\n      \"number\" : \"12\",\n      \"place\" : \"Baselga di Pinè\",\n      \"postalCode\" : \"38042\"\n    },\n    \"shippingMethod\" : {\n      \"id\" : 1,\n      \"title\" : \"Flat rate\",\n      \"description\" : \"Lets you charge a fixed rate for shipping.\"\n    }\n  }, {\n    \"id\" : 92,\n    \"address\" : {\n      \"streetAddress\" : \"via Galilei\",\n      \"number\" : \"4/A\",\n      \"place\" : \"Milano\",\n      \"postalCode\" : \"11111\"\n    },\n    \"shippingMethod\" : {\n      \"id\" : 2,\n      \"title\" : \"Air mail\",\n      \"description\" : \"Fast and Furious!\"\n    }\n  } ],\n  \"groups\" : [ {\n    \"id\" : 1,\n    \"name\" : \"Admin\",\n    \"roles\" : [ \"SECURITY_VIEW\", \"SECURITY_EDIT\", \"WEB_ADMIN\" ]\n  } ]\n}", UserDetails.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default UsersApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "List All users", nickname = "getUsers", notes = "Gets a list of all `User` entities.", response = User.class, responseContainer = "List", authorizations = {
@@ -67,7 +122,21 @@ public interface UsersApi {
     @RequestMapping(value = "/users",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<List<User>> getUsers();
+    default ResponseEntity<List<User>> getUsers() {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("[ {\n  \"username\" : \"some text\",\n  \"email\" : \"some text\",\n  \"readOnly\" : true,\n  \"type\" : \"WORKER\"\n}, {\n  \"username\" : \"some text\",\n  \"email\" : \"some text\",\n  \"readOnly\" : true,\n  \"type\" : \"WORKER\"\n} ]", List.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default UsersApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Update a User", nickname = "updateUser", notes = "Updates an existing `User`.", response = UserDetails.class, authorizations = {
@@ -79,8 +148,22 @@ public interface UsersApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<UserDetails> updateUser(@ApiParam(value = "Updated `User` information." ,required=true )  @Valid @RequestBody UserDetails body
+    default ResponseEntity<UserDetails> updateUser(@ApiParam(value = "Updated `User` information." ,required=true )  @Valid @RequestBody UserDetails body
 ,@ApiParam(value = "A unique identifier for a `User`.",required=true) @PathVariable("userName") String userName
-);
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("{\n  \"username\" : \"some text\",\n  \"password\" : \"**********\",\n  \"email\" : \"some text\",\n  \"firstName\" : \"some text\",\n  \"lastName\" : \"some text\",\n  \"type\" : \"WORKER\",\n  \"deliveryAddresses\" : [ {\n    \"id\" : 17,\n    \"address\" : {\n      \"streetAddress\" : \"via Di Bugno\",\n      \"number\" : \"12\",\n      \"place\" : \"Baselga di Pinè\",\n      \"postalCode\" : \"38042\"\n    },\n    \"shippingMethod\" : {\n      \"id\" : 1,\n      \"title\" : \"Flat rate\",\n      \"description\" : \"Lets you charge a fixed rate for shipping.\"\n    }\n  }, {\n    \"id\" : 92,\n    \"address\" : {\n      \"streetAddress\" : \"via Galilei\",\n      \"number\" : \"4/A\",\n      \"place\" : \"Milano\",\n      \"postalCode\" : \"11111\"\n    },\n    \"shippingMethod\" : {\n      \"id\" : 2,\n      \"title\" : \"Air mail\",\n      \"description\" : \"Fast and Furious!\"\n    }\n  } ],\n  \"groups\" : [ {\n    \"id\" : 1,\n    \"name\" : \"Admin\",\n    \"roles\" : [ \"SECURITY_VIEW\", \"SECURITY_EDIT\", \"WEB_ADMIN\" ]\n  } ]\n}", UserDetails.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default UsersApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 }

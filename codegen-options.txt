@@ -7,3 +7,5 @@ swaggerDocketConfig=true
 modelPackage=com.fattazzo.pizzashop.model.api
 hideGenerationTimestamp=true
 useBeanValidation=true
+dateLibrary=java 8 native jsr310
+java8=true

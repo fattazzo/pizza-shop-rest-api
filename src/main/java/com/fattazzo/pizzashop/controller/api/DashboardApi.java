@@ -6,7 +6,11 @@
 package com.fattazzo.pizzashop.controller.api;
 
 import com.fattazzo.pizzashop.model.api.Dashboard;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,12 +23,29 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.CookieValue;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 @Api(value = "Dashboard", description = "the Dashboard API")
 public interface DashboardApi {
+
+    Logger log = LoggerFactory.getLogger(DashboardApi.class);
+
+    default Optional<ObjectMapper> getObjectMapper(){
+        return Optional.empty();
+    }
+
+    default Optional<HttpServletRequest> getRequest(){
+        return Optional.empty();
+    }
+
+    default Optional<String> getAcceptHeader() {
+        return getRequest().map(r -> r.getHeader("Accept"));
+    }
 
     @ApiOperation(value = "Get a Dashboard", nickname = "getDashboard", notes = "Gets a `Dashboard`.", response = Dashboard.class, authorizations = {
         @Authorization(value = "BearerAuth")    }, tags={ "dashboard", })
@@ -33,6 +54,20 @@ public interface DashboardApi {
     @RequestMapping(value = "/dashboard",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<Dashboard> getDashboard();
+    default ResponseEntity<Dashboard> getDashboard() {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("{\n  \"pizzas\" : {\n    \"totalCategoriesEnable\" : 5,\n    \"totalEnable\" : 1\n  },\n  \"customers\" : {\n    \"total\" : 0,\n    \"toConfirm\" : 6\n  }\n}", Dashboard.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default DashboardApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 }

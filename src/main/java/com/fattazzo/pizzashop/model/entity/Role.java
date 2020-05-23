@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum Role {
 
 	WEB_ADMIN("WEB_ADMIN"), SECURITY("SECURITY"), SHIPPING_METHODS("SHIPPING_METHODS"), COMPANY("COMPANY"),
-	EDIT_ACCOUNT("EDIT_ACCOUNT"), VARIATIONS("VARIATIONS"), PRODUCTS("PRODUCTS");
+	EDIT_ACCOUNT("EDIT_ACCOUNT"), VARIATIONS("VARIATIONS"), PRODUCTS("PRODUCTS"), ORDERS("ORDERS"),
+	CREATE_ORDER("CREATE_ORDER"), PROCESS_ORDER("PROCESS_ORDER");
 
 	@JsonCreator
 	public static Role fromValue(String text) {
@@ -29,11 +30,11 @@ public enum Role {
 	}
 
 	public static List<Role> getDefaultCustomerRole() {
-		return Arrays.asList(Role.EDIT_ACCOUNT);
+		return Arrays.asList(Role.EDIT_ACCOUNT, Role.CREATE_ORDER);
 	}
 
 	public static List<Role> getDefaultWorkerRole() {
-		return Arrays.asList(Role.WEB_ADMIN, Role.EDIT_ACCOUNT);
+		return Arrays.asList(Role.WEB_ADMIN, Role.EDIT_ACCOUNT, Role.PROCESS_ORDER);
 	}
 
 	private String value;

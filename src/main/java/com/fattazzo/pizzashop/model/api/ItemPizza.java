@@ -46,7 +46,7 @@ public class ItemPizza extends Item  {
 
   public ItemPizza addPricesItem(ItemPizzaPrice pricesItem) {
     if (this.prices == null) {
-      this.prices = new ArrayList<ItemPizzaPrice>();
+      this.prices = new ArrayList<>();
     }
     this.prices.add(pricesItem);
     return this;
@@ -73,7 +73,7 @@ public class ItemPizza extends Item  {
 
   public ItemPizza addDoughsItem(VariationDough doughsItem) {
     if (this.doughs == null) {
-      this.doughs = new ArrayList<VariationDough>();
+      this.doughs = new ArrayList<>();
     }
     this.doughs.add(doughsItem);
     return this;
@@ -100,7 +100,7 @@ public class ItemPizza extends Item  {
 
   public ItemPizza addSizesItem(VariationSize sizesItem) {
     if (this.sizes == null) {
-      this.sizes = new ArrayList<VariationSize>();
+      this.sizes = new ArrayList<>();
     }
     this.sizes.add(sizesItem);
     return this;
@@ -127,7 +127,7 @@ public class ItemPizza extends Item  {
 
   public ItemPizza addToppingExtrasItem(ToppingExtra toppingExtrasItem) {
     if (this.toppingExtras == null) {
-      this.toppingExtras = new ArrayList<ToppingExtra>();
+      this.toppingExtras = new ArrayList<>();
     }
     this.toppingExtras.add(toppingExtrasItem);
     return this;

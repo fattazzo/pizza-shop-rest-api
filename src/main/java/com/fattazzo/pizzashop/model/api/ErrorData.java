@@ -98,7 +98,7 @@ public class ErrorData   {
 
   public ErrorData addConstraintErrorsItem(ConstraintError constraintErrorsItem) {
     if (this.constraintErrors == null) {
-      this.constraintErrors = new ArrayList<ConstraintError>();
+      this.constraintErrors = new ArrayList<>();
     }
     this.constraintErrors.add(constraintErrorsItem);
     return this;

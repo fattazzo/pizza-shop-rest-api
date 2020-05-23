@@ -150,7 +150,7 @@ public class ProductsController implements ProductsApi {
 			}
 			// price list
 			final List<BigDecimal> priceList = CollectionUtils.emptyIfNull(p.getPrices()).stream()
-					.map(ItemProductPriceEntity::getPrice).collect(Collectors.toList());
+					.map(ItemProductPriceEntity::getPrice).sorted().collect(Collectors.toList());
 			item.setAvailablePrices(priceList);
 			return item;
 		}).collect(Collectors.toList());
@@ -194,7 +194,7 @@ public class ProductsController implements ProductsApi {
 					.status(HttpStatus.BAD_REQUEST).build();
 		}
 
-		// modelmapper briks jpa OneToMany relation
+		// modelmapper breaks jpa OneToMany relation
 		existingEntity.setDescription(body.getDescription());
 		existingEntity.setEnabled(body.isEnabled());
 		existingEntity.setCategory(mapper.map(body.getCategory(), CategoryEntity.class));

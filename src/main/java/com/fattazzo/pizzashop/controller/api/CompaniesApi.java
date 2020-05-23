@@ -7,7 +7,11 @@ package com.fattazzo.pizzashop.controller.api;
 
 import com.fattazzo.pizzashop.model.api.Company;
 import org.springframework.core.io.Resource;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,12 +24,29 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.CookieValue;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 @Api(value = "Companies", description = "the Companies API")
 public interface CompaniesApi {
+
+    Logger log = LoggerFactory.getLogger(CompaniesApi.class);
+
+    default Optional<ObjectMapper> getObjectMapper(){
+        return Optional.empty();
+    }
+
+    default Optional<HttpServletRequest> getRequest(){
+        return Optional.empty();
+    }
+
+    default Optional<String> getAcceptHeader() {
+        return getRequest().map(r -> r.getHeader("Accept"));
+    }
 
     @ApiOperation(value = "Get a Company", nickname = "getCompany", notes = "Gets the details of a single instance of a `Company`.", response = Company.class, authorizations = {
         @Authorization(value = "BearerAuth")    }, tags={ "companies", })
@@ -34,7 +55,21 @@ public interface CompaniesApi {
     @RequestMapping(value = "/company",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<Company> getCompany();
+    default ResponseEntity<Company> getCompany() {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("{\n  \"id\" : 1,\n  \"name\" : \"PizzaShop\",\n  \"webUrl\" : \"wwww.pizzashop.example\",\n  \"enabled\" : true\n}", Company.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default CompaniesApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Company logo", nickname = "getLogo", notes = "Get a `Company` logo image", response = Resource.class, authorizations = {
@@ -44,7 +79,21 @@ public interface CompaniesApi {
     @RequestMapping(value = "/company/logo",
         produces = { "image/png" }, 
         method = RequestMethod.GET)
-    ResponseEntity<Resource> getLogo();
+    default ResponseEntity<Resource> getLogo() {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("\"\"", Resource.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default CompaniesApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Update a Company", nickname = "updateCompany", notes = "Updates an existing `Company`.", response = Company.class, authorizations = {
@@ -55,8 +104,22 @@ public interface CompaniesApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<Company> updateCompany(@ApiParam(value = "Updated `Company` information." ,required=true )  @Valid @RequestBody Company body
-);
+    default ResponseEntity<Company> updateCompany(@ApiParam(value = "Updated `Company` information." ,required=true )  @Valid @RequestBody Company body
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("{\n  \"id\" : 1,\n  \"name\" : \"PizzaShop\",\n  \"webUrl\" : \"wwww.pizzashop.example\",\n  \"enabled\" : true\n}", Company.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default CompaniesApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 
     @ApiOperation(value = "Update a Company logo", nickname = "updateLogo", notes = "Updates an existing `Company` logo.", authorizations = {
@@ -66,7 +129,13 @@ public interface CompaniesApi {
     @RequestMapping(value = "/company/logo",
         consumes = { "multipart/form-data" },
         method = RequestMethod.PUT)
-    ResponseEntity<Void> updateLogo(@ApiParam(value = "file detail") @Valid @RequestPart("file") MultipartFile file
-);
+    default ResponseEntity<Void> updateLogo(@ApiParam(value = "file detail") @Valid @RequestPart("file") MultipartFile file
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default CompaniesApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
 
 }
