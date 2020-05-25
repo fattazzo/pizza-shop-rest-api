@@ -34,7 +34,7 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	
 	implementation 'org.apache.commons:commons-lang3'
-	//implementation 'org.apache.tomcat.embed:tomcat-embed-websocket'
+	implementation 'org.apache.tomcat.embed:tomcat-embed-websocket'
 	
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'

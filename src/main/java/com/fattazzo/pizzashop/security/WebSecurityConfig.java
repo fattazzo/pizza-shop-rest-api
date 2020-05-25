@@ -65,7 +65,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		httpSecurity.headers().cacheControl();
 
-		httpSecurity.requiresChannel().requestMatchers(r -> r.getHeader("X-Forwarded-Proto") != null).requiresSecure();
+		// httpSecurity.requiresChannel().requestMatchers(r ->
+		// r.getHeader("X-Forwarded-Proto") != null).requiresSecure();
 	}
 
 	@Autowired
