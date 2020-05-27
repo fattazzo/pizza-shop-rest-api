@@ -15,7 +15,7 @@ import com.fattazzo.pizzashop.model.entity.UserEntity;
 @Configuration
 public class ModelMapperConfig {
 
-	private PropertyMap<ItemPizzaPrice, ItemPizzaPriceEntity> getItemPizzaPriceMappig() {
+	private PropertyMap<ItemPizzaPrice, ItemPizzaPriceEntity> getItemPizzaPriceMapping() {
 		return new PropertyMap<ItemPizzaPrice, ItemPizzaPriceEntity>() {
 			@Override
 			protected void configure() {
@@ -46,7 +46,7 @@ public class ModelMapperConfig {
 	public ModelMapper modelMapper() {
 		final ModelMapper modelMapper = new ModelMapper();
 		modelMapper.addMappings(getOrderMapping());
-		modelMapper.addMappings(getItemPizzaPriceMappig());
+		modelMapper.addMappings(getItemPizzaPriceMapping());
 		modelMapper.addMappings(getUserDetailsMapping());
 		return modelMapper;
 	}

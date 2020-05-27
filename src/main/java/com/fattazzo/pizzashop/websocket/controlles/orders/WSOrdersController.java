@@ -22,8 +22,16 @@ public class WSOrdersController {
 
 	@MessageMapping("/orders")
 	// @SendTo("/topic/orders")
-	public void sendOrderCreated(Integer orderId) {
-		final OrderMessage message = new OrderMessage(OrderMessageEvent.CREATED, new OrderDetails().id(orderId));
+	public void send(OrderMessageEvent event, Integer orderId) {
+		final OrderMessage message = new OrderMessage(event, new OrderDetails().id(orderId));
 		this.template.convertAndSend("/topic/orders", message);
+	}
+
+	public void sendOrderCreated(Integer orderId) {
+		send(OrderMessageEvent.CREATED, orderId);
+	}
+
+	public void sendOrderUpdated(Integer orderId) {
+		send(OrderMessageEvent.UPDATED, orderId);
 	}
 }

@@ -1,7 +1,5 @@
 package com.fattazzo.pizzashop.model.entity;
 
-import java.math.BigDecimal;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -27,9 +25,6 @@ public class VariationSizeEntity extends EntityBase {
 	private String name;
 
 	private String description;
-
-	@Builder.Default
-	private BigDecimal extra = BigDecimal.ZERO;
 
 	@Builder.Default
 	private boolean enabled = Boolean.FALSE;

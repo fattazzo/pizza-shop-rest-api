@@ -3,6 +3,8 @@ package com.fattazzo.pizzashop.controller.impl.orders;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -68,6 +70,9 @@ public class OrdersController implements OrdersApi {
 	@Autowired
 	private WSOrdersController wsOrdersController;
 
+	@PersistenceContext
+	private EntityManager entityManager;
+
 	private final HttpServletRequest request;
 
 	@Autowired
@@ -100,6 +105,8 @@ public class OrdersController implements OrdersApi {
 			orderEntity.getLines().add(lineEntity);
 		}
 		orderEntity = orderService.save(orderEntity);
+
+		entityManager.flush();
 		wsOrdersController.sendOrderCreated(orderEntity.getId());
 
 		return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -132,7 +139,7 @@ public class OrdersController implements OrdersApi {
 		return ResponseEntity.ok(orders);
 	}
 
-	@org.springframework.transaction.annotation.Transactional
+	// @org.springframework.transaction.annotation.Transactional
 	@Override
 	@PreAuthorize("@securityService.hasAnyPermission({'ORDERS'})")
 	public ResponseEntity<OrderDetails> updateOrder(@Valid OrderDetails body, Integer orderId) {
@@ -162,6 +169,9 @@ public class OrdersController implements OrdersApi {
 		});
 		newEntity.getLines().forEach(line -> line.setParent(newEntity));
 		final OrderEntity orderEntity = orderService.save(newEntity);
+
+		// entityManager.flush();
+		wsOrdersController.sendOrderUpdated(orderEntity.getId());
 
 		return ResponseEntity.ok(mapper.map(orderEntity, OrderDetails.class));
 	}
