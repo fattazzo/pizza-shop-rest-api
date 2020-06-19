@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.fattazzo.pizzashop.controller.impl.orders.validators.exceptions.ValidatorException;
 import com.fattazzo.pizzashop.model.api.OrderDetails;
+import com.fattazzo.pizzashop.model.entity.Role;
 import com.fattazzo.pizzashop.model.entity.UserEntity;
 import com.fattazzo.pizzashop.security.JwtUser;
 import com.fattazzo.pizzashop.service.user.UserService;
@@ -29,9 +30,14 @@ public class OrderUserValidator implements Validator {
 				.orElseThrow(() -> new ValidatorException("user.notFound",
 						new Object[] { order.getCustomer().getUsername() }, HttpStatus.BAD_REQUEST));
 
-		// check if logged user is order user
 		final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if (!Objects.equals(((JwtUser) auth.getPrincipal()).getUsername(), user.getUsername())) {
+		final UserEntity loggedUser = userService.findByUsername(((JwtUser) auth.getPrincipal()).getUsername())
+				.orElseThrow(() -> new ValidatorException("user.notFound",
+						new Object[] { order.getCustomer().getUsername() }, HttpStatus.BAD_REQUEST));
+
+		// check if logged user is order user or logged user can edit
+		if (!Objects.equals(((JwtUser) auth.getPrincipal()).getUsername(), user.getUsername())
+				&& !loggedUser.getRoles().contains(Role.PROCESS_ORDER)) {
 			throw new ValidatorException("order.insert.failed.wrongUser",
 					new Object[] { ((JwtUser) auth.getPrincipal()).getUsername() }, HttpStatus.BAD_REQUEST);
 		}

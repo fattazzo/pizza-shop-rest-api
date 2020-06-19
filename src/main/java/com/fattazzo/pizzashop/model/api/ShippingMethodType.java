@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
  */
 public enum ShippingMethodType {
   PAY_PAL("PAY_PAL"),
-    CASH_ON_DELIVERY("CASH_ON_DELIVERY");
+    CASH("CASH");
 
   private String value;
 

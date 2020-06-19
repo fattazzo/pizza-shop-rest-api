@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Table;
 
+import com.fattazzo.pizzashop.model.api.ShippingMethodType;
 import com.fattazzo.pizzashop.model.api.ShippingType;
 
 import lombok.AllArgsConstructor;

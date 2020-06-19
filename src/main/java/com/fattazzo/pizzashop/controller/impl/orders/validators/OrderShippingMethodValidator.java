@@ -11,7 +11,6 @@ import com.fattazzo.pizzashop.controller.impl.orders.validators.exceptions.Valid
 import com.fattazzo.pizzashop.model.api.OrderDetails;
 import com.fattazzo.pizzashop.model.entity.BranchEntity;
 import com.fattazzo.pizzashop.model.entity.ShippingMethodEntity;
-import com.fattazzo.pizzashop.model.entity.ShippingMethodType;
 import com.fattazzo.pizzashop.service.branch.BranchService;
 import com.fattazzo.pizzashop.service.shippingmethod.ShippingMethodService;
 
@@ -45,7 +44,8 @@ public class OrderShippingMethodValidator implements Validator {
 		}
 
 		// check transactionID on type PayPal
-		if (method.getType() == ShippingMethodType.PAY_PAL && StringUtils.isBlank(order.getTransactionId())) {
+		if (method.getType() == com.fattazzo.pizzashop.model.api.ShippingMethodType.PAY_PAL
+				&& StringUtils.isBlank(order.getTransactionId())) {
 			throw new ValidatorException("shippingMethod.transactionIdRequired", new Object[] { method.getTitle() },
 					HttpStatus.BAD_REQUEST);
 		}
