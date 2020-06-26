@@ -8,6 +8,7 @@ package com.fattazzo.pizzashop.controller.api;
 import com.fattazzo.pizzashop.model.api.ErrorResponse;
 import com.fattazzo.pizzashop.model.api.Session;
 import com.fattazzo.pizzashop.model.api.UserLogin;
+import com.fattazzo.pizzashop.model.api.UserSocialLogin;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
@@ -60,6 +61,33 @@ public interface SessionApi {
         consumes = { "application/json" },
         method = RequestMethod.POST)
     default ResponseEntity<Session> login(@ApiParam(value = "Login user information" ,required=true )  @Valid @RequestBody UserLogin body
+) {
+        if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
+            if (getAcceptHeader().get().contains("application/json")) {
+                try {
+                    return new ResponseEntity<>(getObjectMapper().get().readValue("{\n  \"userInfo\" : {\n    \"username\" : \"some text\",\n    \"email\" : \"some text\",\n    \"readOnly\" : true,\n    \"type\" : \"WORKER\"\n  },\n  \"enviroment\" : \"enviroment\",\n  \"locale\" : \"locale\",\n  \"accessToken\" : \"accessToken\",\n  \"refreshToken\" : \"refreshToken\"\n}", Session.class), HttpStatus.NOT_IMPLEMENTED);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+        } else {
+            log.warn("ObjectMapper or HttpServletRequest not configured in default SessionApi interface so no example is generated");
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
+
+
+    @ApiOperation(value = "Create a session", nickname = "loginSocial", notes = "Create a `Session` information", response = Session.class, authorizations = {
+        @Authorization(value = "BearerAuth")    }, tags={ "session", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "Login successfull", response = Session.class),
+        @ApiResponse(code = 401, message = "Login data not valid") })
+    @RequestMapping(value = "/public/session/social",
+        produces = { "application/json" }, 
+        consumes = { "application/json" },
+        method = RequestMethod.POST)
+    default ResponseEntity<Session> loginSocial(@ApiParam(value = "Login user information" ,required=true )  @Valid @RequestBody UserSocialLogin body
 ) {
         if(getObjectMapper().isPresent() && getAcceptHeader().isPresent()) {
             if (getAcceptHeader().get().contains("application/json")) {

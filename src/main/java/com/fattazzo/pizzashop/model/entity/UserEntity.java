@@ -17,6 +17,8 @@ import javax.validation.constraints.NotNull;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.builder.ToStringExclude;
 
+import com.fattazzo.pizzashop.model.api.SocialTypeEnum;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -67,6 +69,9 @@ public class UserEntity {
 	private List<GroupEntity> groups = new ArrayList();
 
 	private UserStatus status;
+
+	@Builder.Default
+	private SocialTypeEnum socialType = SocialTypeEnum.NONE;
 
 	@ToStringExclude
 	@Builder.Default

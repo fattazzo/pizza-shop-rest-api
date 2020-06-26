@@ -27,13 +27,14 @@ import com.fattazzo.pizzashop.exception.security.MailNotSentException;
 import com.fattazzo.pizzashop.exception.security.NoSuchEntityException;
 import com.fattazzo.pizzashop.exception.security.RestException;
 import com.fattazzo.pizzashop.exception.security.UserNotActiveException;
+import com.fattazzo.pizzashop.model.api.SocialTypeEnum;
 import com.fattazzo.pizzashop.model.api.UserRegistrationInfo;
 import com.fattazzo.pizzashop.model.entity.CompanyEntity;
 import com.fattazzo.pizzashop.model.entity.GroupEntity;
 import com.fattazzo.pizzashop.model.entity.RegistrationToken;
 import com.fattazzo.pizzashop.model.entity.UserEntity;
-import com.fattazzo.pizzashop.model.entity.UserType;
 import com.fattazzo.pizzashop.model.entity.UserEntity.UserStatus;
+import com.fattazzo.pizzashop.model.entity.UserType;
 import com.fattazzo.pizzashop.repository.RegistrationTokenRepository;
 import com.fattazzo.pizzashop.repository.UserRepository;
 import com.fattazzo.pizzashop.service.company.CompanyService;
@@ -135,6 +136,11 @@ public class UserService {
 
 	public Optional<UserEntity> findByUsername(String username) {
 		final UserEntity user = userRepository.findByUsernameIgnoreCase(username);
+		return Optional.ofNullable(user);
+	}
+
+	public Optional<UserEntity> findByUsernameAndSocialType(String username, SocialTypeEnum socialType) {
+		final UserEntity user = userRepository.findByUsernameIgnoreCaseAndSocialType(username, socialType);
 		return Optional.ofNullable(user);
 	}
 

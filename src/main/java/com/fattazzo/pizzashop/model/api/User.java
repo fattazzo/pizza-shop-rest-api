@@ -3,6 +3,7 @@ package com.fattazzo.pizzashop.model.api;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fattazzo.pizzashop.model.api.SocialTypeEnum;
 import com.fattazzo.pizzashop.model.api.UserStatus;
 import com.fattazzo.pizzashop.model.api.UserType;
 import io.swagger.annotations.ApiModel;
@@ -30,6 +31,9 @@ public class User   {
 
   @JsonProperty("status")
   private UserStatus status = null;
+
+  @JsonProperty("socialType")
+  private SocialTypeEnum socialType = null;
 
   public User username(String username) {
     this.username = username;
@@ -132,6 +136,27 @@ public class User   {
     this.status = status;
   }
 
+  public User socialType(SocialTypeEnum socialType) {
+    this.socialType = socialType;
+    return this;
+  }
+
+  /**
+   * Get socialType
+   * @return socialType
+  **/
+  @ApiModelProperty(required = true, value = "")
+      @NotNull
+
+    @Valid
+    public SocialTypeEnum getSocialType() {
+    return socialType;
+  }
+
+  public void setSocialType(SocialTypeEnum socialType) {
+    this.socialType = socialType;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -146,12 +171,13 @@ public class User   {
         Objects.equals(this.email, user.email) &&
         Objects.equals(this.readOnly, user.readOnly) &&
         Objects.equals(this.type, user.type) &&
-        Objects.equals(this.status, user.status);
+        Objects.equals(this.status, user.status) &&
+        Objects.equals(this.socialType, user.socialType);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(username, email, readOnly, type, status);
+    return Objects.hash(username, email, readOnly, type, status, socialType);
   }
 
   @Override
@@ -164,6 +190,7 @@ public class User   {
     sb.append("    readOnly: ").append(toIndentedString(readOnly)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
+    sb.append("    socialType: ").append(toIndentedString(socialType)).append("\n");
     sb.append("}");
     return sb.toString();
   }

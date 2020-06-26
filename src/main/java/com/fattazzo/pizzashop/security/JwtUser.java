@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fattazzo.pizzashop.model.api.SocialTypeEnum;
 import com.fattazzo.pizzashop.model.entity.Role;
 import com.fattazzo.pizzashop.model.entity.UserEntity;
 
@@ -25,7 +26,7 @@ public class JwtUser implements UserDetails {
 	public static JwtUser createIstance(UserEntity user) {
 
 		return JwtUser.builder().username(user.getUsername()).email(user.getEmail()).password(user.getPassword())
-				.roles(user.getRoles()).build();
+				.roles(user.getRoles()).socialType(user.getSocialType()).build();
 	}
 
 	private static List<GrantedAuthority> mapToGrantedAuthorities(List<Role> authorities) {
@@ -40,6 +41,8 @@ public class JwtUser implements UserDetails {
 	private String email;
 
 	private List<Role> roles;
+
+	private SocialTypeEnum socialType;
 
 //	@Builder(builderMethodName = "newBuilderExt")
 //	public JwtUser(String username, String email, List<Role> roles, String password) {

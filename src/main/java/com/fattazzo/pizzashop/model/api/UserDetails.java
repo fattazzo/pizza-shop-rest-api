@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fattazzo.pizzashop.model.api.DeliveryAddress;
 import com.fattazzo.pizzashop.model.api.Group;
+import com.fattazzo.pizzashop.model.api.SocialTypeEnum;
 import com.fattazzo.pizzashop.model.api.User;
 import com.fattazzo.pizzashop.model.api.UserStatus;
 import com.fattazzo.pizzashop.model.api.UserType;
