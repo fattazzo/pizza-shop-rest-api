@@ -77,13 +77,13 @@ public class SessionController implements SessionApi {
 		if (user.getSocialType() != SocialTypeEnum.NONE) {
 			throw new UsernameNotFoundException(String.format("No user found with username '%s'.", body.getUsername()));
 		}
+		userService.validateUser(userEntity.getUsername());
 
 		final Authentication authentication = authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(body.getUsername(), body.getPassword()));
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		final Locale locale = LocaleContextHolder.getLocale();
 
-		userService.validateUser(body.getUsername());
 		final UserDetails userDetails = JwtUser.createIstance(userEntity);
 		final String accessToken = jwtTokenManager.generateAccessToken(userDetails);
 		final String refreshToken = jwtTokenManager.generateRefreshToken(userDetails);
@@ -102,13 +102,13 @@ public class SessionController implements SessionApi {
 		if (user.getSocialType() == SocialTypeEnum.NONE) {
 			throw new NoSuchEntityException();
 		}
+		userService.validateUser(userEntity.getUsername());
 
 		final Authentication authentication = authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), "*"));
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		final Locale locale = LocaleContextHolder.getLocale();
 
-		userService.validateUser(user.getUsername());
 		final UserDetails userDetails = JwtUser.createIstance(userEntity);
 		final String accessToken = jwtTokenManager.generateAccessToken(userDetails);
 		final String refreshToken = jwtTokenManager.generateRefreshToken(userDetails);

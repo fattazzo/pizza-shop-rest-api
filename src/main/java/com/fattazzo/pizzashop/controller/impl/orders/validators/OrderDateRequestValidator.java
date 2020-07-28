@@ -1,6 +1,7 @@
 package com.fattazzo.pizzashop.controller.impl.orders.validators;
 
 import java.time.Duration;
+import java.time.OffsetDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -20,11 +21,16 @@ public class OrderDateRequestValidator implements Validator {
 
 	@Override
 	public OrderDetails execute(OrderDetails order) throws ValidatorException {
-		// check date request range
-		final long minutes = Duration.between(order.getDateCreation(), order.getDateRequest()).toMinutes();
 		final Integer minMinutes = settingsService.load().orElseThrow(
 				() -> new ValidatorException("settings.failed.notFound", null, HttpStatus.INTERNAL_SERVER_ERROR))
 				.getMinOrderRequestMinutes();
+
+		if (order.getDateRequest() == null) {
+			order.dateRequest(OffsetDateTime.now().plus(Duration.ofMinutes(minMinutes)));
+		}
+
+		// check date request range
+		final long minutes = Duration.between(order.getDateCreation(), order.getDateRequest()).toMinutes();
 		if (minutes < minMinutes.intValue()) {
 			throw new ValidatorException("order.insert.failed.minOrderRequestMinutes", new Object[] { minMinutes },
 					HttpStatus.BAD_REQUEST);

@@ -35,6 +35,12 @@ public class User   {
   @JsonProperty("socialType")
   private SocialTypeEnum socialType = null;
 
+  @JsonProperty("firstName")
+  private String firstName = null;
+
+  @JsonProperty("lastName")
+  private String lastName = null;
+
   public User username(String username) {
     this.username = username;
     return this;
@@ -157,6 +163,44 @@ public class User   {
     this.socialType = socialType;
   }
 
+  public User firstName(String firstName) {
+    this.firstName = firstName;
+    return this;
+  }
+
+  /**
+   * First name
+   * @return firstName
+  **/
+  @ApiModelProperty(value = "First name")
+  
+    public String getFirstName() {
+    return firstName;
+  }
+
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
+
+  public User lastName(String lastName) {
+    this.lastName = lastName;
+    return this;
+  }
+
+  /**
+   * Last name
+   * @return lastName
+  **/
+  @ApiModelProperty(value = "Last name")
+  
+    public String getLastName() {
+    return lastName;
+  }
+
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -172,12 +216,14 @@ public class User   {
         Objects.equals(this.readOnly, user.readOnly) &&
         Objects.equals(this.type, user.type) &&
         Objects.equals(this.status, user.status) &&
-        Objects.equals(this.socialType, user.socialType);
+        Objects.equals(this.socialType, user.socialType) &&
+        Objects.equals(this.firstName, user.firstName) &&
+        Objects.equals(this.lastName, user.lastName);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(username, email, readOnly, type, status, socialType);
+    return Objects.hash(username, email, readOnly, type, status, socialType, firstName, lastName);
   }
 
   @Override
@@ -191,6 +237,8 @@ public class User   {
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    socialType: ").append(toIndentedString(socialType)).append("\n");
+    sb.append("    firstName: ").append(toIndentedString(firstName)).append("\n");
+    sb.append("    lastName: ").append(toIndentedString(lastName)).append("\n");
     sb.append("}");
     return sb.toString();
   }

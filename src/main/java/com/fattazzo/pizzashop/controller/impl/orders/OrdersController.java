@@ -10,6 +10,8 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -174,6 +176,26 @@ public class OrdersController implements OrdersApi {
 		wsOrdersController.sendOrderUpdated(orderEntity.getId());
 
 		return ResponseEntity.ok(mapper.map(orderEntity, OrderDetails.class));
+	}
+
+	@Override
+	public ResponseEntity<Void> validateOrder(@Valid OrderRequest body, @Valid Boolean validateTransactionId) {
+		final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		OrderDetails order = orderMapper.toOrderDetails(body, ((JwtUser) auth.getPrincipal()).getUsername());
+
+		// fake transaction id for success validation
+		if (BooleanUtils.isFalse(validateTransactionId) && StringUtils.isBlank(order.getTransactionId())) {
+			order.setTransactionId("xxxxxxxxxxx");
+		}
+		try {
+			order = orderValidator.validate(order, request);
+		} catch (final ValidatorException e) {
+			throw RestException.newBuilder()
+					.title(localeUtilsMessage.getMessage("order.insert.failed.title", null, request))
+					.detail(localeUtilsMessage.getMessage(e.getMessageKey(), e.getMessageParams(), request))
+					.status(e.getError()).build();
+		}
+		return ResponseEntity.status(HttpStatus.ACCEPTED).build();
 	}
 
 }

@@ -25,12 +25,6 @@ public class UserDetails extends User  {
   @JsonProperty("password")
   private String password = null;
 
-  @JsonProperty("firstName")
-  private String firstName = null;
-
-  @JsonProperty("lastName")
-  private String lastName = null;
-
   @JsonProperty("groups")
   @Valid
   private List<Group> groups = new ArrayList<>();
@@ -56,44 +50,6 @@ public class UserDetails extends User  {
 
   public void setPassword(String password) {
     this.password = password;
-  }
-
-  public UserDetails firstName(String firstName) {
-    this.firstName = firstName;
-    return this;
-  }
-
-  /**
-   * First name
-   * @return firstName
-  **/
-  @ApiModelProperty(value = "First name")
-  
-    public String getFirstName() {
-    return firstName;
-  }
-
-  public void setFirstName(String firstName) {
-    this.firstName = firstName;
-  }
-
-  public UserDetails lastName(String lastName) {
-    this.lastName = lastName;
-    return this;
-  }
-
-  /**
-   * Last name
-   * @return lastName
-  **/
-  @ApiModelProperty(value = "Last name")
-  
-    public String getLastName() {
-    return lastName;
-  }
-
-  public void setLastName(String lastName) {
-    this.lastName = lastName;
   }
 
   public UserDetails groups(List<Group> groups) {
@@ -159,8 +115,6 @@ public class UserDetails extends User  {
     }
     UserDetails userDetails = (UserDetails) o;
     return Objects.equals(this.password, userDetails.password) &&
-        Objects.equals(this.firstName, userDetails.firstName) &&
-        Objects.equals(this.lastName, userDetails.lastName) &&
         Objects.equals(this.groups, userDetails.groups) &&
         Objects.equals(this.deliveryAddresses, userDetails.deliveryAddresses) &&
         super.equals(o);
@@ -168,7 +122,7 @@ public class UserDetails extends User  {
 
   @Override
   public int hashCode() {
-    return Objects.hash(password, firstName, lastName, groups, deliveryAddresses, super.hashCode());
+    return Objects.hash(password, groups, deliveryAddresses, super.hashCode());
   }
 
   @Override
@@ -177,8 +131,6 @@ public class UserDetails extends User  {
     sb.append("class UserDetails {\n");
     sb.append("    ").append(toIndentedString(super.toString())).append("\n");
     sb.append("    password: ").append(toIndentedString(password)).append("\n");
-    sb.append("    firstName: ").append(toIndentedString(firstName)).append("\n");
-    sb.append("    lastName: ").append(toIndentedString(lastName)).append("\n");
     sb.append("    groups: ").append(toIndentedString(groups)).append("\n");
     sb.append("    deliveryAddresses: ").append(toIndentedString(deliveryAddresses)).append("\n");
     sb.append("}");

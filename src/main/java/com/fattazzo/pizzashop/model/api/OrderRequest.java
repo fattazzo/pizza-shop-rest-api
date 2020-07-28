@@ -121,9 +121,8 @@ public class OrderRequest   {
    * Get dateRequest
    * @return dateRequest
   **/
-  @ApiModelProperty(required = true, value = "")
-      @NotNull
-
+  @ApiModelProperty(value = "")
+  
     @Valid
     public OffsetDateTime getDateRequest() {
     return dateRequest;

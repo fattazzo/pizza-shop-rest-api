@@ -15,10 +15,7 @@ import org.springframework.context.annotation.Bean;
 
 import com.fattazzo.pizzashop.service.initializer.Initializer;
 
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
-
 @SpringBootApplication
-@EnableSwagger2
 public class PizzaShopApplication {
 
 	protected static final Logger logger = LoggerFactory.getLogger(PizzaShopApplication.class);

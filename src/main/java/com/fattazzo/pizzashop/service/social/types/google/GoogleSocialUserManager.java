@@ -3,6 +3,7 @@ package com.fattazzo.pizzashop.service.social.types.google;
 import java.util.Arrays;
 import java.util.Optional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -56,7 +57,8 @@ public class GoogleSocialUserManager implements SocialTypeManager {
 
 		final UserEntity user = UserEntity.builder().username(USERNAME_PREFIX + userName).email(email)
 				.password(passwordEncoder.encode("*")).groups(Arrays.asList(group)).status(UserStatus.ACTIVE)
-				.type(UserType.CUSTOMER).socialType(SocialTypeEnum.GOOGLE).build();
+				.firstName(firstName).lastName(lastName).type(UserType.CUSTOMER).socialType(SocialTypeEnum.GOOGLE)
+				.build();
 
 		return userService.save(user);
 	}
@@ -86,8 +88,14 @@ public class GoogleSocialUserManager implements SocialTypeManager {
 
 		final String userId = payload.getSubject();
 		final String email = payload.getEmail();
-		final String firstName = (String) payload.get(CLAIM_FIRST_NAME);
-		final String lastName = (String) payload.get(CLAIM_LAST_NAME);
+		String firstName = (String) payload.get(CLAIM_FIRST_NAME);
+		String lastName = (String) payload.get(CLAIM_LAST_NAME);
+		final String name = (String) payload.get("name");
+
+		if (StringUtils.isBlank(firstName)) {
+			firstName = name;
+			lastName = "";
+		}
 
 		final UserEntity userEntity = findUser(userId).orElse(createUser(userId, email, firstName, lastName));
 		return Optional.of(userEntity);
